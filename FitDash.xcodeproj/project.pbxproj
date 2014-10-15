@@ -7,12 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F182014419EAEEB500E5ACB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182014319EAEEB500E5ACB4 /* AppDelegate.swift */; };
-		F182014619EAEEB500E5ACB4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182014519EAEEB500E5ACB4 /* ViewController.swift */; };
+		481C547B8561380FE3795EA1 /* libPods-FitDash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 959AE73FC8B7B5D7F28B4BE7 /* libPods-FitDash.a */; };
+		F182014419EAEEB500E5ACB4 /* FDAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182014319EAEEB500E5ACB4 /* FDAppDelegate.swift */; };
+		F182014619EAEEB500E5ACB4 /* FDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182014519EAEEB500E5ACB4 /* FDViewController.swift */; };
 		F182014919EAEEB500E5ACB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F182014719EAEEB500E5ACB4 /* Main.storyboard */; };
 		F182014B19EAEEB500E5ACB4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F182014A19EAEEB500E5ACB4 /* Images.xcassets */; };
 		F182014E19EAEEB500E5ACB4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F182014C19EAEEB500E5ACB4 /* LaunchScreen.xib */; };
 		F182015A19EAEEB500E5ACB4 /* FitDashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182015919EAEEB500E5ACB4 /* FitDashTests.swift */; };
+		F182016519EAEF3C00E5ACB4 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F182016419EAEF3C00E5ACB4 /* HealthKit.framework */; };
+		F182016919EB379100E5ACB4 /* HKHealthStoreExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182016819EB379100E5ACB4 /* HKHealthStoreExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,16 +29,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		88CB010514E49C1D1EE27644 /* Pods-FitDash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitDash.release.xcconfig"; path = "Pods/Target Support Files/Pods-FitDash/Pods-FitDash.release.xcconfig"; sourceTree = "<group>"; };
+		959AE73FC8B7B5D7F28B4BE7 /* libPods-FitDash.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FitDash.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD227A865CC06CFC8F58812D /* Pods-FitDash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitDash.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FitDash/Pods-FitDash.debug.xcconfig"; sourceTree = "<group>"; };
+		F17ECB7219EB6DD9008E9FC9 /* FitDash-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FitDash-Bridging-Header.h"; sourceTree = "<group>"; };
 		F182013E19EAEEB500E5ACB4 /* FitDash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitDash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F182014219EAEEB500E5ACB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F182014319EAEEB500E5ACB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F182014519EAEEB500E5ACB4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F182014319EAEEB500E5ACB4 /* FDAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FDAppDelegate.swift; sourceTree = "<group>"; };
+		F182014519EAEEB500E5ACB4 /* FDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FDViewController.swift; sourceTree = "<group>"; };
 		F182014819EAEEB500E5ACB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F182014A19EAEEB500E5ACB4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F182014D19EAEEB500E5ACB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F182015319EAEEB500E5ACB4 /* FitDashTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FitDashTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F182015819EAEEB500E5ACB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F182015919EAEEB500E5ACB4 /* FitDashTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitDashTests.swift; sourceTree = "<group>"; };
+		F182016319EAEF3C00E5ACB4 /* FitDash.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FitDash.entitlements; sourceTree = "<group>"; };
+		F182016419EAEF3C00E5ACB4 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		F182016819EB379100E5ACB4 /* HKHealthStoreExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKHealthStoreExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F182016519EAEF3C00E5ACB4 /* HealthKit.framework in Frameworks */,
+				481C547B8561380FE3795EA1 /* libPods-FitDash.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,12 +68,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		02EA3E8FF2A66718705D850F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DD227A865CC06CFC8F58812D /* Pods-FitDash.debug.xcconfig */,
+				88CB010514E49C1D1EE27644 /* Pods-FitDash.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		3385C8B8D05D81FA7D2DBC61 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				959AE73FC8B7B5D7F28B4BE7 /* libPods-FitDash.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F182013519EAEEB500E5ACB4 = {
 			isa = PBXGroup;
 			children = (
+				F182016419EAEF3C00E5ACB4 /* HealthKit.framework */,
 				F182014019EAEEB500E5ACB4 /* FitDash */,
 				F182015619EAEEB500E5ACB4 /* FitDashTests */,
 				F182013F19EAEEB500E5ACB4 /* Products */,
+				02EA3E8FF2A66718705D850F /* Pods */,
+				3385C8B8D05D81FA7D2DBC61 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,12 +109,15 @@
 		F182014019EAEEB500E5ACB4 /* FitDash */ = {
 			isa = PBXGroup;
 			children = (
-				F182014319EAEEB500E5ACB4 /* AppDelegate.swift */,
-				F182014519EAEEB500E5ACB4 /* ViewController.swift */,
+				F182016319EAEF3C00E5ACB4 /* FitDash.entitlements */,
+				F182014319EAEEB500E5ACB4 /* FDAppDelegate.swift */,
+				F182014519EAEEB500E5ACB4 /* FDViewController.swift */,
+				F17ECB7219EB6DD9008E9FC9 /* FitDash-Bridging-Header.h */,
 				F182014719EAEEB500E5ACB4 /* Main.storyboard */,
 				F182014A19EAEEB500E5ACB4 /* Images.xcassets */,
 				F182014C19EAEEB500E5ACB4 /* LaunchScreen.xib */,
 				F182014119EAEEB500E5ACB4 /* Supporting Files */,
+				F182016819EB379100E5ACB4 /* HKHealthStoreExtension.swift */,
 			);
 			path = FitDash;
 			sourceTree = "<group>";
@@ -119,9 +154,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F182015D19EAEEB500E5ACB4 /* Build configuration list for PBXNativeTarget "FitDash" */;
 			buildPhases = (
+				237BA1E4BF52230BD4ED3CD2 /* Check Pods Manifest.lock */,
 				F182013A19EAEEB500E5ACB4 /* Sources */,
 				F182013B19EAEEB500E5ACB4 /* Frameworks */,
 				F182013C19EAEEB500E5ACB4 /* Resources */,
+				53AF295623A2C7E9C56BD371 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -161,6 +198,12 @@
 				TargetAttributes = {
 					F182013D19EAEEB500E5ACB4 = {
 						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = 643B3YP8BS;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
 					};
 					F182015219EAEEB500E5ACB4 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -207,13 +250,47 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		237BA1E4BF52230BD4ED3CD2 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		53AF295623A2C7E9C56BD371 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FitDash/Pods-FitDash-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F182013A19EAEEB500E5ACB4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F182014619EAEEB500E5ACB4 /* ViewController.swift in Sources */,
-				F182014419EAEEB500E5ACB4 /* AppDelegate.swift in Sources */,
+				F182014619EAEEB500E5ACB4 /* FDViewController.swift in Sources */,
+				F182014419EAEEB500E5ACB4 /* FDAppDelegate.swift in Sources */,
+				F182016919EB379100E5ACB4 /* HKHealthStoreExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,21 +413,33 @@
 		};
 		F182015E19EAEEB500E5ACB4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD227A865CC06CFC8F58812D /* Pods-FitDash.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FitDash/FitDash.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = FitDash/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "FitDash/FitDash-Bridging-Header.h";
 			};
 			name = Debug;
 		};
 		F182015F19EAEEB500E5ACB4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 88CB010514E49C1D1EE27644 /* Pods-FitDash.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FitDash/FitDash.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = FitDash/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "FitDash/FitDash-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -407,6 +496,7 @@
 				F182015F19EAEEB500E5ACB4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F182016019EAEEB500E5ACB4 /* Build configuration list for PBXNativeTarget "FitDashTests" */ = {
 			isa = XCConfigurationList;
@@ -415,6 +505,7 @@
 				F182016219EAEEB500E5ACB4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
