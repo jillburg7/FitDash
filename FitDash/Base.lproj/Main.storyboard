@@ -76,24 +76,36 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DataSource: com.Apple.Health" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lVO-c0-q3z">
+                                <rect key="frame" x="386" y="586" width="192" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="192" id="Fha-du-FU7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Mu3-CG-C2Z" firstAttribute="centerX" secondItem="d1m-Dc-Oau" secondAttribute="centerX" id="9fu-ZP-hao"/>
+                            <constraint firstAttribute="bottom" secondItem="d1m-Dc-Oau" secondAttribute="bottom" constant="20" symbolic="YES" id="0Ch-sk-Hul"/>
+                            <constraint firstItem="d1m-Dc-Oau" firstAttribute="top" secondItem="Mu3-CG-C2Z" secondAttribute="bottom" constant="8" symbolic="YES" id="9GK-zb-pUR"/>
                             <constraint firstItem="sXd-W5-dtw" firstAttribute="leading" secondItem="hZJ-Hf-DT1" secondAttribute="leading" id="9iC-Ii-WtO"/>
+                            <constraint firstItem="d1m-Dc-Oau" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="7" id="C5i-eC-TZr"/>
                             <constraint firstItem="6yj-Rd-U9Q" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="15" id="HPv-dX-yt9"/>
                             <constraint firstItem="6yj-Rd-U9Q" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="JoM-Tu-AcI"/>
                             <constraint firstItem="Wso-rz-LYB" firstAttribute="top" secondItem="g4I-ls-lV0" secondAttribute="bottom" constant="15" id="KxA-Ft-LlV"/>
                             <constraint firstItem="hZJ-Hf-DT1" firstAttribute="top" secondItem="Wso-rz-LYB" secondAttribute="bottom" constant="15" id="NN0-gs-iKP"/>
-                            <constraint firstItem="d1m-Dc-Oau" firstAttribute="top" secondItem="Mu3-CG-C2Z" secondAttribute="bottom" constant="8" symbolic="YES" id="OFJ-ad-VIW"/>
+                            <constraint firstItem="lVO-c0-q3z" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" placeholder="YES" id="QEB-A6-2lC"/>
+                            <constraint firstItem="lVO-c0-q3z" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="top" constant="566" id="Ran-55-hyX"/>
                             <constraint firstItem="g4I-ls-lV0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="cyx-fI-Z53"/>
+                            <constraint firstItem="lVO-c0-q3z" firstAttribute="trailing" secondItem="d1m-Dc-Oau" secondAttribute="trailing" id="d17-Z5-BHF"/>
                             <constraint firstItem="Mu3-CG-C2Z" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="251" id="ezu-So-ffg"/>
                             <constraint firstItem="g4I-ls-lV0" firstAttribute="leading" secondItem="Wso-rz-LYB" secondAttribute="leading" id="gIq-nx-UmB"/>
-                            <constraint firstItem="d1m-Dc-Oau" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="7" id="lkL-2f-7J3"/>
                             <constraint firstItem="g4I-ls-lV0" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="71" id="nGD-Fa-8Yp"/>
                             <constraint firstItem="sXd-W5-dtw" firstAttribute="top" secondItem="hZJ-Hf-DT1" secondAttribute="bottom" constant="15" id="ukY-ae-6fp"/>
+                            <constraint firstItem="d1m-Dc-Oau" firstAttribute="centerX" secondItem="Mu3-CG-C2Z" secondAttribute="centerX" id="va6-aC-by0"/>
                             <constraint firstItem="hZJ-Hf-DT1" firstAttribute="leading" secondItem="Wso-rz-LYB" secondAttribute="leading" id="y1H-nZ-2jt"/>
-                            <constraint firstAttribute="bottom" secondItem="d1m-Dc-Oau" secondAttribute="bottom" constant="20" symbolic="YES" id="y3F-qv-y3M"/>
                             <constraint firstItem="Mu3-CG-C2Z" firstAttribute="centerX" secondItem="6yj-Rd-U9Q" secondAttribute="centerX" id="yLE-b0-rMz"/>
                         </constraints>
                     </view>
@@ -107,6 +119,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="337" y="299"/>
         </scene>
     </scenes>
 </document>

@@ -22,8 +22,10 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	@IBOutlet var graphView: BEMSimpleLineGraphView!
 	@IBOutlet var xLabel: UILabel!
 	@IBOutlet var yLabel: UILabel!
+	let labelColor = UIColor.whiteColor()
 	
-	var dataPoints: [Double] = []
+	var values: [Double] = []
+	var dates: [NSDate] = []
 	
 	required init(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
@@ -40,7 +42,16 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		self.graphView.enableBezierCurve = true
 		self.graphView.enableYAxisLabel = true
 		self.graphView.autoScaleYAxis = true
-		
+		self.graphView.alwaysDisplayDots = true
+		self.graphView.alphaLine = 1.0
+		self.graphView.colorXaxisLabel = labelColor
+		self.graphView.colorYaxisLabel = labelColor
+//		self.graphView.widthLine = 3.0;
+		self.graphView.enableTouchReport = true
+		self.graphView.enablePopUpReport = true
+		self.graphView.enableReferenceAxisLines = true
+		self.graphView.enableReferenceAxisFrame = true
+//		self.graphView.animationGraphStyle = BEMLineAnimationDraw
 	}
 	
 	override func viewDidAppear(animated: Bool) {
@@ -255,28 +266,43 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 			}
 			self.graphView.reloadGraph()
 		}
-		
 		self.healthStore?.executeQuery(query)
 	}
 	
-	//MARK: Data Plotting
+	// MARK: Data Plotting
 	
-	func plotData(data: Double, forDate: NSDate) {
-		println("data: \(data)")
-		dataPoints.append(data)
+	func plotData(value: Double, forDate: NSDate) {
+		println("\(forDate) : \(value)")
+		values.append(value)
+		dates.append(forDate)
 	}
 	
+	// REQUIRED FUNCTION:
 	func numberOfPointsInLineGraph(graph: BEMSimpleLineGraphView!) -> Int {
-		return 5;
+		return 6
 	}
 	
+	// REQUIRED FUNCTION:
 	func lineGraph(graph: BEMSimpleLineGraphView!, valueForPointAtIndex index: Int) -> CGFloat {
-		if !dataPoints.isEmpty {
-			return CGFloat(dataPoints[index])
+		if !values.isEmpty {
+			return CGFloat(values[index])
 		}
 		else {
 			return 0.0
 		}
+	}
+	
+	
+	func lineGraph(graph: BEMSimpleLineGraphView!, labelOnXAxisForIndex index: Int) -> String! {
+		if (index % 2) == 1 && !dates.isEmpty {
+			let df = NSDateFormatter()
+			df.dateStyle = .ShortStyle
+			return df.stringFromDate(dates[index])
+		} else { return "" }
+	}
+
+	func numberOfYAxisLabelsOnLineGraph(graph: BEMSimpleLineGraphView!) -> Int {
+		return 5
 	}
 	
 }
