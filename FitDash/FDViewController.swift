@@ -20,7 +20,8 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	@IBOutlet var endDateLabel: UILabel!
 	
 	@IBOutlet var graphView: BEMSimpleLineGraphView!
-	@IBOutlet var maximumLabel: UILabel!
+	@IBOutlet var xLabel: UILabel!
+	@IBOutlet var yLabel: UILabel!
 	
 	var dataPoints: [Double] = []
 	
@@ -36,8 +37,10 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	}
 	
 	override func viewWillAppear(animated: Bool) {
-		
 		self.graphView.enableBezierCurve = true
+		self.graphView.enableYAxisLabel = true
+		self.graphView.autoScaleYAxis = true
+		
 	}
 	
 	override func viewDidAppear(animated: Bool) {
@@ -66,9 +69,6 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 				() -> Void in
 				
 				// Update the user interface based on the current user's health information.
-//				self.updateUserAge()
-//				self.updateUsersHeight()
-//				self.updateUsersWeight()
 				self.requestAgeAndUpdate()
 				self.getCumulativeSteps()
 				self.plotWeeklySteps()
@@ -77,7 +77,7 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		
 		self.healthStore?.requestAuthorizationToShareTypes(writeDataTypes, readTypes: readDataTypes, completion: completion)
 	}
-
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
@@ -133,7 +133,7 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		
 		self.ageLabel.text = "Age: \(age.year)"
 	}
-
+	
 	func requestStepsAndUpdate() {
 		var error: NSError?
 		let desc = self.healthStore?.description
@@ -184,7 +184,8 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 						steps = quantity.doubleValueForUnit(unit)
 						
 						let df = NSDateFormatter()
-						df.dateStyle = .FullStyle
+						df.dateStyle = .MediumStyle
+						df.timeStyle = .MediumStyle
 						
 						println("Start Date: \(df.stringFromDate(startDate))")
 						println("End Date: \(df.stringFromDate(endDate))")
@@ -258,12 +259,13 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		self.healthStore?.executeQuery(query)
 	}
 	
+	//MARK: Data Plotting
 	
 	func plotData(data: Double, forDate: NSDate) {
 		println("data: \(data)")
 		dataPoints.append(data)
 	}
-
+	
 	func numberOfPointsInLineGraph(graph: BEMSimpleLineGraphView!) -> Int {
 		return 5;
 	}
@@ -276,6 +278,6 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 			return 0.0
 		}
 	}
-
+	
 }
 
