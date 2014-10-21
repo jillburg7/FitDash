@@ -14,22 +14,39 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	var healthStore: HKHealthStore?
 	var stepSamples = [HKQuantitySample]()
 	
-	@IBOutlet var ageLabel: UILabel!
-	@IBOutlet var stepsLabel: UILabel!
-	@IBOutlet var startDateLabel: UILabel!
-	@IBOutlet var endDateLabel: UILabel!
-	
-	@IBOutlet var graphView: BEMSimpleLineGraphView!
-	@IBOutlet var xLabel: UILabel!
-	@IBOutlet var yLabel: UILabel!
-	let labelColor = UIColor.whiteColor()
-	
 	var values: [Double] = []
 	var dates: [NSDate] = []
+	
+	var startTime24HourData = NSDate()
+	var endDate = NSDate()
+	var numberOfPoints:Int = 0
+	let labelColor = UIColor.whiteColor()
+	
+	@IBOutlet var ageLabel: UILabel!
+	@IBOutlet var dataRefreshLabel: UILabel!
+	@IBOutlet var stepsLabel: UILabel!
+	@IBOutlet var distanceLabel: UILabel!
+	
+	@IBAction func refresh(sender: AnyObject) {
+		values.removeAll(keepCapacity: false)
+		dates.removeAll(keepCapacity: false)
+		getData()
+	}
+	
+	@IBOutlet var graphView: BEMSimpleLineGraphView!
 	
 	required init(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		createAndPropagateHealthStore()
+//		endDate = NSDate()
+//		startTime24HourData = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitDay, value: -1, toDate: endDate, options: nil)
+		
+//		let df = NSDateFormatter()
+//		df.dateStyle = .MediumStyle
+//		df.timeStyle = .MediumStyle
+//		println("Start Date: \(df.stringFromDate(startTime24HourData))")
+//		println("End Date: \(df.stringFromDate(endDate))")
+		
 	}
 	
 	private func createAndPropagateHealthStore() {
@@ -38,28 +55,17 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		}
 	}
 	
+	// MARK: - Overrides
+	
 	override func viewWillAppear(animated: Bool) {
-		self.graphView.enableBezierCurve = true
-		self.graphView.enableYAxisLabel = true
-		self.graphView.autoScaleYAxis = true
-		self.graphView.alwaysDisplayDots = true
-		self.graphView.alphaLine = 1.0
-		self.graphView.colorXaxisLabel = labelColor
-		self.graphView.colorYaxisLabel = labelColor
-//		self.graphView.widthLine = 3.0;
-		self.graphView.enableTouchReport = true
-		self.graphView.enablePopUpReport = true
-		self.graphView.enableReferenceAxisLines = true
-		self.graphView.enableReferenceAxisFrame = true
-//		self.graphView.animationGraphStyle = BEMLineAnimationDraw
 	}
 	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		// Set up an HKHealthStore, asking the user for read/write permissions. The profile view controller is the
-		// first view controller that's shown to the user, so we'll ask for all of the desired HealthKit permissions now.
-		// In your own app, you should consider requesting permissions the first time a user wants to interact with
+		// Set up an HKHealthStore, asking the user for read/write permissions. This view controller is the
+		// first view controller that's shown to the user, so all of the desired HealthKit permissions are
+		// asked for now. Should consider requesting permissions the first time a user wants to interact with
 		// HealthKit data.
 		if !HKHealthStore.isHealthDataAvailable() {
 			return
@@ -80,9 +86,8 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 				() -> Void in
 				
 				// Update the user interface based on the current user's health information.
-				self.requestAgeAndUpdate()
-				self.getCumulativeSteps()
-				self.plotWeeklySteps()
+//				self.requestAgeAndUpdate()
+				self.getData()
 			})
 		}
 		
@@ -92,6 +97,20 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
+		self.graphView.enableBezierCurve = true
+		self.graphView.enableYAxisLabel = true
+		self.graphView.autoScaleYAxis = true
+		self.graphView.alwaysDisplayDots = true
+		self.graphView.alphaLine = 1.0
+		self.graphView.colorXaxisLabel = labelColor
+		self.graphView.colorYaxisLabel = labelColor
+		self.graphView.colorTouchInputLine = UIColor.blackColor()
+		self.graphView.alphaTouchInputLine = 0.8
+//		self.graphView.widthLine = 3.0;
+		self.graphView.enableTouchReport = true
+		self.graphView.enablePopUpReport = true
+		self.graphView.enableReferenceAxisLines = true
+		self.graphView.enableReferenceAxisFrame = true
 	}
 	
 	override func didReceiveMemoryWarning() {
@@ -115,6 +134,7 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	private func dataTypesToRead() -> NSSet {
 		let dataTypesToRead = [
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount),
+			HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning),
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierBodyMass),
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeight),
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierBodyMassIndex),
@@ -124,6 +144,14 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 			HKCharacteristicType.characteristicTypeForIdentifier(HKCharacteristicTypeIdentifierBiologicalSex)
 		]
 		return NSSet(array: dataTypesToRead)
+	}
+	
+	func getData() {
+		self.endDate = NSDate()
+		self.startTime24HourData = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitDay, value: -1, toDate: endDate, options: nil)!
+		self.get24HoursCumulativeSteps()
+		self.get24HoursCumulativeDistance()
+		self.plotWeeklySteps()
 	}
 	
 	// MARK: - Read HealthKit data
@@ -173,12 +201,9 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	}
 	
 	// gets the cumlative steps taken over the past 24hours
-	func getCumulativeSteps() {
-		let endDate = NSDate()
-		let startDate = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitDay, value: -1, toDate: endDate, options: nil)
-		
+	func get24HoursCumulativeSteps() {
 		let stepsType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
-		let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
+		let predicate = HKQuery.predicateForSamplesWithStartDate(startTime24HourData, endDate: endDate, options: .None)
 		
 		let query = HKStatisticsQuery(quantityType: stepsType, 	quantitySamplePredicate: predicate,
 			options: .CumulativeSum) {
@@ -195,18 +220,39 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 						steps = quantity.doubleValueForUnit(unit)
 						
 						let df = NSDateFormatter()
-						df.dateStyle = .MediumStyle
+						df.dateStyle = .ShortStyle
 						df.timeStyle = .MediumStyle
-						
-						println("Start Date: \(df.stringFromDate(startDate))")
-						println("End Date: \(df.stringFromDate(endDate))")
-						self.stepsLabel.text = "Steps Taken: \(steps)"
-						self.startDateLabel.text = "Start Date: \(df.stringFromDate(startDate))"
-						self.endDateLabel.text = "End Date: \(df.stringFromDate(endDate))"
+						self.stepsLabel.text = "Step Count:  \(steps) steps"
+						self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.startTime24HourData))"
 					}
 				}
 		}
+		self.healthStore?.executeQuery(query)
+	}
+	
+	func get24HoursCumulativeDistance() {
+		let distanceType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)
+		let predicate = HKQuery.predicateForSamplesWithStartDate(startTime24HourData, endDate: endDate, options: .None)
 		
+		let query = HKStatisticsQuery(quantityType: distanceType, 	quantitySamplePredicate: predicate,
+			options: .CumulativeSum) {
+				(query, results, error) in
+				if results == nil {
+					println("There was an error running the query: \(error)")
+				}
+				
+				dispatch_async(dispatch_get_main_queue()) {
+					var distance = 0.0
+					
+					if let quantity = results.sumQuantity() {
+						let unit = HKUnit.mileUnit()
+						distance = quantity.doubleValueForUnit(unit)
+						
+						println("Distance: \(distance)")
+						self.distanceLabel.text = "Distance: \(distance) mi"
+					}
+				}
+		}
 		self.healthStore?.executeQuery(query)
 	}
 	
@@ -272,17 +318,34 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	// MARK: Data Plotting
 	
 	func plotData(value: Double, forDate: NSDate) {
-		println("\(forDate) : \(value)")
+		let df = NSDateFormatter()
+		df.dateStyle = .ShortStyle
+		println("\(df.stringFromDate(forDate)) : \(value)")
 		values.append(value)
 		dates.append(forDate)
+		if dates.count == 7 {
+			numberOfPoints = 7
+			println("numberOfPoints set")
+			self.graphView.reloadGraph()
+		}
 	}
 	
+	// MARK: - Required Data Source Methods
+	
 	// REQUIRED FUNCTION:
+	// Specify the number of points on the graph. BEMSimpleLineGraph will pass the
+	//	graph of interest in the graph parameter. The line graph gets the value
+	//	returned by this method from its data source and caches it.
+	// RETURNS: Number of points in the graph.
 	func numberOfPointsInLineGraph(graph: BEMSimpleLineGraphView!) -> Int {
-		return 6
+		return numberOfPoints
 	}
 	
 	// REQUIRED FUNCTION:
+	// Informs the position of each point on the Y-Axis at a given index. This method is
+	//	called for every point specified in the numberOfPointsInLineGraph: method. The
+	//	parameter index is the position from left to right of the point on the X-Axis.
+	// RETURNS: The value of the point on the Y-Axis for the index.
 	func lineGraph(graph: BEMSimpleLineGraphView!, valueForPointAtIndex index: Int) -> CGFloat {
 		if !values.isEmpty {
 			return CGFloat(values[index])
@@ -292,17 +355,27 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		}
 	}
 	
+	// MARK: BEMSimpleLineGraph Methods
 	
 	func lineGraph(graph: BEMSimpleLineGraphView!, labelOnXAxisForIndex index: Int) -> String! {
-		if (index % 2) == 1 && !dates.isEmpty {
+		if !dates.isEmpty {      //(index % 2) == 1 &&
 			let df = NSDateFormatter()
 			df.dateStyle = .ShortStyle
 			return df.stringFromDate(dates[index])
 		} else { return "" }
 	}
-
-	func numberOfYAxisLabelsOnLineGraph(graph: BEMSimpleLineGraphView!) -> Int {
-		return 5
+	
+	func lineGraphDidBeginLoading(graph: BEMSimpleLineGraphView!) {
+		println("-----------------------")
+		println("graph did begin loading")
+//		self.numberOfPoints = 7
+	}
+	
+	func lineGraphDidFinishLoading(graph: BEMSimpleLineGraphView!) {
+		println("dates: \(self.graphView.graphValuesForXAxis())")
+		println("values: \(self.graphView.graphValuesForDataPoints())")
+		println("graph did finish loading")
+		println("------------------------")
 	}
 	
 }
