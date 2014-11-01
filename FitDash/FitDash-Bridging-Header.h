@@ -10,5 +10,9 @@
 #define FitDash_FitDash_Bridging_Header_h
 
 #import "BEMSimpleLineGraphView.h"
+#import <UIKit/UIKit.h>
+#import "JBChartView/JBChartView.h"
+#import "JBChartView/JBBarChartView.h"
+#import "JBChartView/JBLineChartView.h"
 
 #endif

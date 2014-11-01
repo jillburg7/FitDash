@@ -17,8 +17,9 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	var values: [Double] = []
 	var dates: [NSDate] = []
 	
+	var midnight = NSDate()
 	var startTime24HourData = NSDate()
-	var endDate = NSDate()
+	var now = NSDate()
 	var numberOfPoints:Int = 0
 	let labelColor = UIColor.whiteColor()
 	
@@ -26,6 +27,8 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	@IBOutlet var dataRefreshLabel: UILabel!
 	@IBOutlet var stepsLabel: UILabel!
 	@IBOutlet var distanceLabel: UILabel!
+	@IBOutlet var flightsClimbedLabel: UILabel!
+	@IBOutlet var sleepLabel: UILabel!
 	
 	@IBAction func refresh(sender: AnyObject) {
 		values.removeAll(keepCapacity: false)
@@ -38,15 +41,6 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	required init(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		createAndPropagateHealthStore()
-//		endDate = NSDate()
-//		startTime24HourData = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitDay, value: -1, toDate: endDate, options: nil)
-		
-//		let df = NSDateFormatter()
-//		df.dateStyle = .MediumStyle
-//		df.timeStyle = .MediumStyle
-//		println("Start Date: \(df.stringFromDate(startTime24HourData))")
-//		println("End Date: \(df.stringFromDate(endDate))")
-		
 	}
 	
 	private func createAndPropagateHealthStore() {
@@ -88,6 +82,7 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 				// Update the user interface based on the current user's health information.
 //				self.requestAgeAndUpdate()
 				self.getData()
+				self.plotWeeklySteps()
 			})
 		}
 		
@@ -104,8 +99,8 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		self.graphView.alphaLine = 1.0
 		self.graphView.colorXaxisLabel = labelColor
 		self.graphView.colorYaxisLabel = labelColor
-		self.graphView.colorTouchInputLine = UIColor.blackColor()
-		self.graphView.alphaTouchInputLine = 0.8
+		self.graphView.colorTouchInputLine = UIColor.whiteColor()
+		self.graphView.alphaTouchInputLine = 1.0
 //		self.graphView.widthLine = 3.0;
 		self.graphView.enableTouchReport = true
 		self.graphView.enablePopUpReport = true
@@ -133,25 +128,32 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	
 	private func dataTypesToRead() -> NSSet {
 		let dataTypesToRead = [
+			//fitness
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount),
-			HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning),
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning),
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierFlightsClimbed),
+			HKCategoryType.categoryTypeForIdentifier(HKCategoryTypeIdentifierSleepAnalysis),
+			//calories
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDietaryEnergyConsumed),
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned),
+			//body
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierBodyMass),
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeight),
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierBodyMassIndex),
+			//personal info
 			HKCharacteristicType.characteristicTypeForIdentifier(HKCharacteristicTypeIdentifierDateOfBirth),
-			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDietaryEnergyConsumed),
-			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned),
 			HKCharacteristicType.characteristicTypeForIdentifier(HKCharacteristicTypeIdentifierBiologicalSex)
 		]
 		return NSSet(array: dataTypesToRead)
 	}
 	
 	func getData() {
-		self.endDate = NSDate()
-		self.startTime24HourData = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitDay, value: -1, toDate: endDate, options: nil)!
-		self.get24HoursCumulativeSteps()
-		self.get24HoursCumulativeDistance()
-		self.plotWeeklySteps()
+		self.now = NSDate()
+		self.midnight = NSCalendar.currentCalendar().dateBySettingHour(0, minute: 0, second: 0, ofDate: now, options: nil)!
+		self.startTime24HourData = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitDay, value: -1, toDate: now, options: nil)!
+		self.getTodaysCumulativeSteps()
+		self.getTodaysCumulativeDistance()
+		self.getTodaysFlightsClimbed()
 	}
 	
 	// MARK: - Read HealthKit data
@@ -167,9 +169,7 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		
 		// Calculate the age
 		let now = NSDate()
-		
 		let age = NSCalendar.currentCalendar().components(.YearCalendarUnit, fromDate: dob!, toDate: now, options: .WrapComponents)
-		
 		self.ageLabel.text = "Age: \(age.year)"
 	}
 	
@@ -200,12 +200,14 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		self.healthStore?.executeQuery(query)
 	}
 	
+	// MARK: - Today's Stats
+	
 	// gets the cumlative steps taken over the past 24hours
-	func get24HoursCumulativeSteps() {
+	func getTodaysCumulativeSteps() {
 		let stepsType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
-		let predicate = HKQuery.predicateForSamplesWithStartDate(startTime24HourData, endDate: endDate, options: .None)
+		let predicate = HKQuery.predicateForSamplesWithStartDate(midnight, endDate: now, options: .None)
 		
-		let query = HKStatisticsQuery(quantityType: stepsType, 	quantitySamplePredicate: predicate,
+		let query = HKStatisticsQuery(quantityType: stepsType, quantitySamplePredicate: predicate,
 			options: .CumulativeSum) {
 				(query, results, error) in
 				if results == nil {
@@ -222,19 +224,20 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 						let df = NSDateFormatter()
 						df.dateStyle = .ShortStyle
 						df.timeStyle = .MediumStyle
+						
+						self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
 						self.stepsLabel.text = "Step Count:  \(steps) steps"
-						self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.startTime24HourData))"
 					}
 				}
 		}
 		self.healthStore?.executeQuery(query)
 	}
 	
-	func get24HoursCumulativeDistance() {
+	func getTodaysCumulativeDistance() {
 		let distanceType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)
-		let predicate = HKQuery.predicateForSamplesWithStartDate(startTime24HourData, endDate: endDate, options: .None)
+		let predicate = HKQuery.predicateForSamplesWithStartDate(midnight, endDate: now, options: .None)
 		
-		let query = HKStatisticsQuery(quantityType: distanceType, 	quantitySamplePredicate: predicate,
+		let query = HKStatisticsQuery(quantityType: distanceType, quantitySamplePredicate: predicate,
 			options: .CumulativeSum) {
 				(query, results, error) in
 				if results == nil {
@@ -248,13 +251,44 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 						let unit = HKUnit.mileUnit()
 						distance = quantity.doubleValueForUnit(unit)
 						
-						println("Distance: \(distance)")
-						self.distanceLabel.text = "Distance: \(distance) mi"
+						var distanceString = String(format:"%.2f", distance)
+						self.distanceLabel.text = "Distance: \(distanceString) miles"
 					}
 				}
 		}
 		self.healthStore?.executeQuery(query)
 	}
+	
+	func getTodaysFlightsClimbed() {
+		let flightsClimbedType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierFlightsClimbed)
+		let predicate = HKQuery.predicateForSamplesWithStartDate(midnight, endDate: now, options: .None)
+		
+		let query = HKStatisticsQuery(quantityType: flightsClimbedType, quantitySamplePredicate: predicate,
+			options: .CumulativeSum) {
+				(query, results, error) in
+				if results == nil {
+					println("There was an error running the query: \(error)")
+				}
+				
+				dispatch_async(dispatch_get_main_queue()) {
+					var flightsClimbed = 0.0
+					
+					if let quantity = results.sumQuantity() {
+						let unit = HKUnit.countUnit()
+						flightsClimbed = quantity.doubleValueForUnit(unit)
+						
+						self.flightsClimbedLabel.text = "Flights Climbed: \(flightsClimbed) floors"
+					}
+				}
+		}
+		self.healthStore?.executeQuery(query)
+	}
+	
+	func getSleepAnalysis() {
+	//sleeps
+	}
+	
+	// MARK: - Graphing Functions
 	
 	//creates a collection for plotting weekly step counts
 	func plotWeeklySteps() {
@@ -263,16 +297,20 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		let interval = NSDateComponents()
 		interval.day = 7
 		
-		// Set the anchor date to Monday at 3:00 a.m.
+		// Set the anchor date to Monday at 12:00 a.m.
 		let anchorComponents =
 		calendar.components(.CalendarUnitDay | .CalendarUnitMonth |
 			.CalendarUnitYear | .CalendarUnitWeekday, fromDate: NSDate())
 		
 		let offset = (7 + anchorComponents.weekday - 2) % 7
 		anchorComponents.day -= offset
-		anchorComponents.hour = 3
+		anchorComponents.hour = 0
 		
 		let anchorDate = calendar.dateFromComponents(anchorComponents)
+		let df = NSDateFormatter()
+		df.dateStyle = .ShortStyle
+		df.timeStyle = .MediumStyle
+		println("anchorDate: \(df.stringFromDate(anchorDate!))")
 		
 		let quantityType =
 		HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
@@ -326,7 +364,7 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		if dates.count == 7 {
 			numberOfPoints = 7
 			println("numberOfPoints set")
-			self.graphView.reloadGraph()
+//			self.graphView.reloadGraph()
 		}
 	}
 	
@@ -368,7 +406,6 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	func lineGraphDidBeginLoading(graph: BEMSimpleLineGraphView!) {
 		println("-----------------------")
 		println("graph did begin loading")
-//		self.numberOfPoints = 7
 	}
 	
 	func lineGraphDidFinishLoading(graph: BEMSimpleLineGraphView!) {
