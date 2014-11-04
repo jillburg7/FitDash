@@ -1,18 +1,22 @@
 //
-//  ViewController.swift
+//  FDHealthStats.swift
 //  FitDash
 //
-//  Created by Jillian Burgess on 10/12/14.
+//  Created by Jillian Burgess on 11/3/14.
 //  Copyright (c) 2014 Jillian Burgess. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import HealthKit
 
-class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate {
+class FDHealthStats {
 	
+/*
 	var healthStore: HKHealthStore?
 	var stepSamples = [HKQuantitySample]()
+	var steps = 0.0
+	var distance = 0.0
+	var flightsClimbed = 0.0
 	
 	var values: [Double] = []
 	var dates: [NSDate] = []
@@ -21,97 +25,8 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	var startTime24HourData = NSDate()
 	var now = NSDate()
 	var numberOfPoints:Int = 0
-	let labelColor = UIColor.whiteColor()
 	
-	@IBOutlet var ageLabel: UILabel!
-	@IBOutlet var dataRefreshLabel: UILabel!
-	@IBOutlet var stepsLabel: UILabel!
-	@IBOutlet var distanceLabel: UILabel!
-	@IBOutlet var flightsClimbedLabel: UILabel!
-	@IBOutlet var sleepLabel: UILabel!
 	
-	@IBAction func refresh(sender: AnyObject) {
-		values.removeAll(keepCapacity: false)
-		dates.removeAll(keepCapacity: false)
-		getData()
-	}
-	
-	@IBOutlet var graphView: BEMSimpleLineGraphView!
-	
-	required init(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
-		createAndPropagateHealthStore()
-	}
-	
-	private func createAndPropagateHealthStore() {
-		if self.healthStore == nil {
-			self.healthStore = HKHealthStore()
-		}
-	}
-	
-	// MARK: - Overrides
-	
-	override func viewWillAppear(animated: Bool) {
-	}
-	
-	override func viewDidAppear(animated: Bool) {
-		super.viewDidAppear(animated)
-		
-		// Set up an HKHealthStore, asking the user for read/write permissions. This view controller is the
-		// first view controller that's shown to the user, so all of the desired HealthKit permissions are
-		// asked for now. Should consider requesting permissions the first time a user wants to interact with
-		// HealthKit data.
-		if !HKHealthStore.isHealthDataAvailable() {
-			return
-		}
-		
-		var writeDataTypes: NSSet = self.dataTypesToWrite()
-		var readDataTypes: NSSet = self.dataTypesToRead()
-		
-		var completion: ((Bool, NSError!) -> Void)! = {
-			(success, error) -> Void in
-			
-			if !success {
-				println("You didn't allow HealthKit to access these read/write data types. In your app, try to handle this error gracefully when a user decides not to provide access. The error was: \(error). If you're using a simulator, try it on a device.")
-				return
-			}
-			
-			dispatch_async(dispatch_get_main_queue(), {
-				() -> Void in
-				
-				// Update the user interface based on the current user's health information.
-//				self.requestAgeAndUpdate()
-				self.getData()
-				self.plotWeeklySteps()
-			})
-		}
-		
-		self.healthStore?.requestAuthorizationToShareTypes(writeDataTypes, readTypes: readDataTypes, completion: completion)
-	}
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
-		self.graphView.enableBezierCurve = true
-		self.graphView.enableYAxisLabel = true
-		self.graphView.autoScaleYAxis = true
-		self.graphView.alwaysDisplayDots = true
-		self.graphView.alphaLine = 1.0
-		self.graphView.colorXaxisLabel = labelColor
-		self.graphView.colorYaxisLabel = labelColor
-		self.graphView.colorTouchInputLine = UIColor.whiteColor()
-		self.graphView.alphaTouchInputLine = 1.0
-//		self.graphView.widthLine = 3.0;
-		self.graphView.enableTouchReport = true
-		self.graphView.enablePopUpReport = true
-		self.graphView.enableReferenceAxisLines = true
-		self.graphView.enableReferenceAxisFrame = true
-	}
-	
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
-	}
 	
 	//MARK: - Private Method
 	//MARK: HealthKit Permissions
@@ -158,21 +73,6 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	
 	// MARK: - Read HealthKit data
 	
-	func requestAgeAndUpdate() {
-		var error: NSError?
-		let dob = self.healthStore?.dateOfBirthWithError(&error)
-		
-		if error != nil {
-			println("There was an error requesting the date of birth: \(error)")
-			return
-		}
-		
-		// Calculate the age
-		let now = NSDate()
-		let age = NSCalendar.currentCalendar().components(.YearCalendarUnit, fromDate: dob!, toDate: now, options: .WrapComponents)
-		self.ageLabel.text = "Age: \(age.year)"
-	}
-	
 	func requestStepsAndUpdate() {
 		var error: NSError?
 		let desc = self.healthStore?.description
@@ -192,7 +92,6 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 			
 			dispatch_async(dispatch_get_main_queue()) {
 				self.stepSamples = results as [HKQuantitySample]
-				self.stepsLabel.text = "steps: \(self.stepSamples)"
 				println("steps: \(self.stepSamples)")
 			}
 		})
@@ -215,18 +114,18 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 				}
 				
 				dispatch_async(dispatch_get_main_queue()) {
-					var steps = 0.0
+					
 					
 					if let quantity = results.sumQuantity() {
 						let unit = HKUnit.countUnit()
-						steps = quantity.doubleValueForUnit(unit)
+						self.steps = quantity.doubleValueForUnit(unit)
 						
 						let df = NSDateFormatter()
 						df.dateStyle = .ShortStyle
 						df.timeStyle = .MediumStyle
 						
-						self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
-						self.stepsLabel.text = "Step Count:  \(steps) steps"
+						//						self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
+						//						self.stepsLabel.text = "Step Count:  \(steps) steps"
 					}
 				}
 		}
@@ -245,14 +144,13 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 				}
 				
 				dispatch_async(dispatch_get_main_queue()) {
-					var distance = 0.0
 					
 					if let quantity = results.sumQuantity() {
 						let unit = HKUnit.mileUnit()
-						distance = quantity.doubleValueForUnit(unit)
+						self.distance = quantity.doubleValueForUnit(unit)
 						
-						var distanceString = String(format:"%.2f", distance)
-						self.distanceLabel.text = "Distance: \(distanceString) miles"
+						//						var distanceString = String(format:"%.2f", distance)
+						//						self.distanceLabel.text = "Distance: \(distanceString) miles"
 					}
 				}
 		}
@@ -271,13 +169,12 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 				}
 				
 				dispatch_async(dispatch_get_main_queue()) {
-					var flightsClimbed = 0.0
 					
 					if let quantity = results.sumQuantity() {
 						let unit = HKUnit.countUnit()
-						flightsClimbed = quantity.doubleValueForUnit(unit)
+						self.flightsClimbed = quantity.doubleValueForUnit(unit)
 						
-						self.flightsClimbedLabel.text = "Flights Climbed: \(flightsClimbed) floors"
+						//						self.flightsClimbedLabel.text = "Flights Climbed: \(flightsClimbed) floors"
 					}
 				}
 		}
@@ -285,7 +182,7 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 	}
 	
 	func getSleepAnalysis() {
-	//sleeps
+		//sleeps
 	}
 	
 	// MARK: - Graphing Functions
@@ -348,7 +245,7 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 					self.plotData(value, forDate: date)
 				}
 			}
-			self.graphView.reloadGraph()
+			//			self.graphView.reloadGraph()
 		}
 		self.healthStore?.executeQuery(query)
 	}
@@ -361,59 +258,11 @@ class FDViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpl
 		println("\(df.stringFromDate(forDate)) : \(value)")
 		values.append(value)
 		dates.append(forDate)
-		if dates.count == 7 {
-			numberOfPoints = 7
+		if dates.count == 8 {
+			numberOfPoints = 8
 			println("numberOfPoints set")
-//			self.graphView.reloadGraph()
 		}
 	}
-	
-	// MARK: - Required Data Source Methods
-	
-	// REQUIRED FUNCTION:
-	// Specify the number of points on the graph. BEMSimpleLineGraph will pass the
-	//	graph of interest in the graph parameter. The line graph gets the value
-	//	returned by this method from its data source and caches it.
-	// RETURNS: Number of points in the graph.
-	func numberOfPointsInLineGraph(graph: BEMSimpleLineGraphView!) -> Int {
-		return numberOfPoints
-	}
-	
-	// REQUIRED FUNCTION:
-	// Informs the position of each point on the Y-Axis at a given index. This method is
-	//	called for every point specified in the numberOfPointsInLineGraph: method. The
-	//	parameter index is the position from left to right of the point on the X-Axis.
-	// RETURNS: The value of the point on the Y-Axis for the index.
-	func lineGraph(graph: BEMSimpleLineGraphView!, valueForPointAtIndex index: Int) -> CGFloat {
-		if !values.isEmpty {
-			return CGFloat(values[index])
-		}
-		else {
-			return 0.0
-		}
-	}
-	
-	// MARK: BEMSimpleLineGraph Methods
-	
-	func lineGraph(graph: BEMSimpleLineGraphView!, labelOnXAxisForIndex index: Int) -> String! {
-		if !dates.isEmpty {      //(index % 2) == 1 &&
-			let df = NSDateFormatter()
-			df.dateStyle = .ShortStyle
-			return df.stringFromDate(dates[index])
-		} else { return "" }
-	}
-	
-	func lineGraphDidBeginLoading(graph: BEMSimpleLineGraphView!) {
-		println("-----------------------")
-		println("graph did begin loading")
-	}
-	
-	func lineGraphDidFinishLoading(graph: BEMSimpleLineGraphView!) {
-		println("dates: \(self.graphView.graphValuesForXAxis())")
-		println("values: \(self.graphView.graphValuesForDataPoints())")
-		println("graph did finish loading")
-		println("------------------------")
-	}
-	
+	// MARK - END
+*/
 }
-
