@@ -9,15 +9,15 @@
 import UIKit
 import HealthKit
 
-class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSource, JBLineChartViewDelegate  {
+class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSource, JBLineChartViewDelegate {
 	
 	let labelColor = UIColor.whiteColor()
 	
-	@IBAction func refresh(sender: AnyObject) {
-		values.removeAll(keepCapacity: false)
-		dates.removeAll(keepCapacity: false)
-		super.getData()
-	}
+//	@IBAction func refresh(sender: AnyObject) {
+//		values.removeAll(keepCapacity: false)
+//		dates.removeAll(keepCapacity: false)
+////		super.getData()
+//	}
 	
 	@IBOutlet var lineChart: JBLineChartView!
 	
@@ -25,11 +25,16 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		self.lineChart.reloadData()
+		self.lineChart.dataSource = self
+		self.lineChart.delegate = self
+		view.addSubview(lineChart)
 	}
 	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(true)
+		self.dates = self.tupleData.0
+		self.values = self.tupleData.1
+		numberOfPoints = 9
 		self.lineChart.reloadData()
 	}
 	
@@ -44,7 +49,7 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 	func lineChartView(lineChartView: JBLineChartView!, numberOfVerticalValuesAtLineIndex lineIndex: UInt) -> UInt {
 		return UInt(numberOfPoints)
 	}
-	
+
 	// MARK: - JBLineChartViewDelegate
 	//	inform the delegate of the y-position of each point (automatically normalized across the entire chart)
 	//	for each line in the chart
@@ -57,4 +62,6 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 			return 0.0
 		}
 	}
+	
+	
 }

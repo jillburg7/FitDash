@@ -20,25 +20,25 @@ class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDa
 //	@IBOutlet var flightsClimbedLabel: UILabel!
 //	@IBOutlet var sleepLabel: UILabel!
 //	
-	@IBAction func refresh(sender: AnyObject) {
-		values.removeAll(keepCapacity: false)
-		dates.removeAll(keepCapacity: false)
-		super.getData()
-	}
+//	@IBAction func refresh(sender: AnyObject) {
+//		values.removeAll(keepCapacity: false)
+//		dates.removeAll(keepCapacity: false)
+//		super.getData()
+//	}
 	
 	@IBOutlet var graphView: BEMSimpleLineGraphView!
-//	var graphView: BEMSimpleLineGraphView!
 	
 	// MARK: - Overrides
+	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated)
+		self.dates = self.tupleData.0
+		self.values = self.tupleData.1
+		numberOfPoints = 9
 		self.graphView.reloadGraph()
 	}
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		self.graphView.reloadGraph()
-		
 		// Do any additional setup after loading the view, typically from a nib.
 		self.graphView.enableBezierCurve = true
 		self.graphView.enableYAxisLabel = true

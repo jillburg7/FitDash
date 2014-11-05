@@ -63,4 +63,37 @@ extension HKHealthStore {
 		self.executeQuery(query)
 	}
 	
+	func dataTypesToWrite() -> NSSet {
+		let dataTypesToWrite = [
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierBodyMass),
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDietaryEnergyConsumed),
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned),
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeight)
+		]
+		return NSSet(array: dataTypesToWrite)
+	}
+	
+	func dataTypesToRead() -> NSSet {
+		let dataTypesToRead = [
+			//fitness
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount),
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning),
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierFlightsClimbed),
+			HKCategoryType.categoryTypeForIdentifier(HKCategoryTypeIdentifierSleepAnalysis),
+			//calories
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDietaryEnergyConsumed),
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned),
+			//body
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierBodyMass),
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeight),
+			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierBodyMassIndex),
+			//personal info
+			HKCharacteristicType.characteristicTypeForIdentifier(HKCharacteristicTypeIdentifierDateOfBirth),
+			HKCharacteristicType.characteristicTypeForIdentifier(HKCharacteristicTypeIdentifierBiologicalSex)
+		]
+		return NSSet(array: dataTypesToRead)
+	}
+
+	
+	
 }
