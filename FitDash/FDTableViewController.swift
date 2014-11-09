@@ -13,8 +13,8 @@ import HealthKit
 class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
 	@IBOutlet var tableView: UITableView!
-	var items = ["BEMLineGraph", "JawboneChart"]
-	var segueID = ["bemGraphView", "jawboneLineChart"]
+	var items = ["BEMLineGraph", "JawboneChart", "JawboneBar"]
+	var segueID = ["bemGraphView", "jawboneLineChart", "barChartView"]
 	
 	var healthStore: HKHealthStore?
 	var stepSamples = [HKQuantitySample]()
@@ -71,9 +71,8 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				() -> Void in
 				
 				// Update the user interface based on the current user's health information.
-				//				self.requestAgeAndUpdate()
-//				self.getData()
 				self.plotWeeklySteps()
+				self.isReady()
 			})
 		}
 		
@@ -83,6 +82,19 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+		
+	}
+	
+	//check if data is ready
+	func isReady() -> Bool {
+		if ready {
+			var readyLabel = UILabel()
+			readyLabel.frame = CGRect(x: self.view.frame.width/3, y: self.view.frame.height/4, width: 200, height: 40)
+			readyLabel.font = UIFont(name: "Helvetica Neue", size: 32.0)
+			readyLabel.text = "ready"
+			self.view.addSubview(readyLabel)
+		}
+		return ready
 	}
 	
 	// MARK: - TableView
@@ -105,149 +117,26 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	}
  
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-		if segue.identifier == "bemGraphView" {
+		if segue.identifier != nil {
+			var chartDetails = segue.destinationViewController as FDBaseViewController
 			let indexPath = self.tableView.indexPathForSelectedRow()!
 			let destinationTitle = self.items[indexPath.row]
 			
-			let chartDetails = segue.destinationViewController as FDBEMSimpleGraphViewController
+			if segue.identifier == "bemGraphView" {
+				chartDetails = segue.destinationViewController as FDBEMSimpleGraphViewController
+			} else if segue.identifier == "jawboneLineChart" {
+				chartDetails = segue.destinationViewController as FDJawboneChartViewController
+			} else if segue.identifier == "barChartView" {
+				chartDetails = segue.destinationViewController as FDBarChartViewController
+			}
+			
+			chartDetails.title = destinationTitle
 			chartDetails.healthStore = self.healthStore
 			chartDetails.tupleData = (dates, values)
-			chartDetails.title = destinationTitle
-			
-		} else if segue.identifier == "jawboneLineChart" {
-			let indexPath = self.tableView.indexPathForSelectedRow()!
-			let destinationTitle = self.items[indexPath.row]
-			
-			let chartDetails = segue.destinationViewController as FDJawboneChartViewController
-			chartDetails.healthStore = self.healthStore
-			chartDetails.tupleData = (dates, values)
-			chartDetails.title = destinationTitle
+//			chartDetails.steps = self.steps
+//			chartDetails.distance = self.distance
+//			chartDetails.flightsClimbed = self.flightsClimbed
 		}
-	}
-	
-	
-	//MARK: - Private Method
-	//MARK: HealthKit Permissions
-	
-//	
-//	func getData() {
-//		self.now = NSDate()
-//		self.midnight = NSCalendar.currentCalendar().dateBySettingHour(0, minute: 0, second: 0, ofDate: now, options: nil)!
-//		self.startTime24HourData = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitDay, value: -1, toDate: now, options: nil)!
-//		self.getTodaysCumulativeSteps()
-//		self.getTodaysCumulativeDistance()
-//		self.getTodaysFlightsClimbed()
-//	}
-//	
-//	// MARK: - Read HealthKit data
-//	
-//	func requestStepsAndUpdate() {
-//		var error: NSError?
-//		let desc = self.healthStore?.description
-//		println("description of healthStore obj: \(desc)")
-//		
-//		let endDate = NSDate()
-//		let startDate = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitMonth, value: -1, toDate: endDate, options: nil)
-//		
-//		let stepsType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
-//		let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
-//		
-//		let query = HKSampleQuery(sampleType: stepsType, predicate: predicate, limit: 0, sortDescriptors: nil, resultsHandler: {
-//			(query, results, error) in
-//			if results == nil {
-//				println("There was an error running the query: \(error)")
-//			}
-//			
-//			dispatch_async(dispatch_get_main_queue()) {
-//				self.stepSamples = results as [HKQuantitySample]
-//				println("steps: \(self.stepSamples)")
-//			}
-//		})
-//		
-//		self.healthStore?.executeQuery(query)
-//	}
-//	
-//	// MARK: - Today's Stats
-//	
-//	// gets the cumlative steps taken over the past 24hours
-//	func getTodaysCumulativeSteps() {
-//		let stepsType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
-//		let predicate = HKQuery.predicateForSamplesWithStartDate(midnight, endDate: now, options: .None)
-//		
-//		let query = HKStatisticsQuery(quantityType: stepsType, quantitySamplePredicate: predicate,
-//			options: .CumulativeSum) {
-//				(query, results, error) in
-//				if results == nil {
-//					println("There was an error running the query: \(error)")
-//				}
-//				
-//				dispatch_async(dispatch_get_main_queue()) {
-//					
-//					
-//					if let quantity = results.sumQuantity() {
-//						let unit = HKUnit.countUnit()
-//						self.steps = quantity.doubleValueForUnit(unit)
-//						
-//												
-////						self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
-////						self.stepsLabel.text = "Step Count:  \(self.steps) steps"
-//					}
-//				}
-//		}
-//		self.healthStore?.executeQuery(query)
-//	}
-//	
-//	func getTodaysCumulativeDistance() {
-//		let distanceType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)
-//		let predicate = HKQuery.predicateForSamplesWithStartDate(midnight, endDate: now, options: .None)
-//		
-//		let query = HKStatisticsQuery(quantityType: distanceType, quantitySamplePredicate: predicate,
-//			options: .CumulativeSum) {
-//				(query, results, error) in
-//				if results == nil {
-//					println("There was an error running the query: \(error)")
-//				}
-//				
-//				dispatch_async(dispatch_get_main_queue()) {
-//					
-//					if let quantity = results.sumQuantity() {
-//						let unit = HKUnit.mileUnit()
-//						self.distance = quantity.doubleValueForUnit(unit)
-//						
-//						var distanceString = String(format:"%.2f", self.distance)
-//						self.distanceLabel.text = "Distance: \(distanceString) miles"
-//					}
-//				}
-//		}
-//		self.healthStore?.executeQuery(query)
-//	}
-//	
-//	func getTodaysFlightsClimbed() {
-//		let flightsClimbedType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierFlightsClimbed)
-//		let predicate = HKQuery.predicateForSamplesWithStartDate(midnight, endDate: now, options: .None)
-//		
-//		let query = HKStatisticsQuery(quantityType: flightsClimbedType, quantitySamplePredicate: predicate,
-//			options: .CumulativeSum) {
-//				(query, results, error) in
-//				if results == nil {
-//					println("There was an error running the query: \(error)")
-//				}
-//				
-//				dispatch_async(dispatch_get_main_queue()) {
-//					
-//					if let quantity = results.sumQuantity() {
-//						let unit = HKUnit.countUnit()
-//						self.flightsClimbed = quantity.doubleValueForUnit(unit)
-//						
-//						self.flightsClimbedLabel.text = "Flights Climbed: \(self.flightsClimbed) floors"
-//					}
-//				}
-//		}
-//		self.healthStore?.executeQuery(query)
-//	}
-	
-	func getSleepAnalysis() {
-		//sleeps
 	}
 	
 	// MARK: - Graphing Functions
@@ -272,7 +161,6 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		let df = NSDateFormatter()
 		df.dateStyle = .ShortStyle
 		df.timeStyle = .MediumStyle
-		println("anchorDate: \(df.stringFromDate(anchorDate!))")
 		
 		let quantityType =
 		HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
@@ -310,15 +198,10 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 					self.plotData(value, forDate: date)
 				}
 			}
-			//			self.graphView.reloadGraph()
-			println("isReady?? \(self.ready)")
 			self.ready = true
+			println("isReady?? \(self.ready)")
 		}
 		self.healthStore?.executeQuery(query)
-	}
-	
-	func isReady() -> Bool {
-		return ready
 	}
 	
 	// MARK: Data Plotting
@@ -329,10 +212,36 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		println("\(df.stringFromDate(forDate)) : \(value)")
 		values.append(value)
 		dates.append(forDate)
-		if dates.count == 8 {
-			numberOfPoints = 8
+		if dates.count == 9 {
+			numberOfPoints = 9
 			println("numberOfPoints set")
 		}
 	}
-	// MARK - END
+	
+	func requestStepsAndUpdate() {
+		var error: NSError?
+		let desc = self.healthStore?.description
+		println("description of healthStore obj: \(desc)")
+		
+		let endDate = NSDate()
+		let startDate = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitMonth, value: -1, toDate: endDate, options: nil)
+		
+		let stepsType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
+		let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
+		
+		let query = HKSampleQuery(sampleType: stepsType, predicate: predicate, limit: 0, sortDescriptors: nil, resultsHandler: {
+			(query, results, error) in
+			if results == nil {
+				println("There was an error running the query: \(error)")
+			}
+			
+			dispatch_async(dispatch_get_main_queue()) {
+				self.stepSamples = results as [HKQuantitySample]
+				println("steps: \(self.stepSamples)")
+			}
+		})
+		
+		self.healthStore?.executeQuery(query)
+	}
+	// MARK - END	
 }

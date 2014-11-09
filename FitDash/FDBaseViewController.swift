@@ -17,16 +17,17 @@ class FDBaseViewController: UIViewController {
 	var steps = 0.0
 	var distance = 0.0
 	var flightsClimbed = 0.0
-//
+	var sleeps = 0.0
+	
 	var values: [Double] = []
 	var dates: [NSDate] = []
-//
+
 	var midnight = NSDate()
 	var startTime24HourData = NSDate()
 	var now = NSDate()
 	var numberOfPoints:Int = 0
-//
-//	var ready = false
+	
+	let df = NSDateFormatter()
 	
 	@IBOutlet var ageLabel: UILabel!
 	@IBOutlet var dataRefreshLabel: UILabel!
@@ -36,15 +37,16 @@ class FDBaseViewController: UIViewController {
 	@IBOutlet var sleepLabel: UILabel!
 	
 	@IBAction func refresh(sender: AnyObject) {
-		values.removeAll(keepCapacity: false)
-		dates.removeAll(keepCapacity: false)
-//		getData()
+		//update the refresh time
+		self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
 	}
 	
 	// MARK: - Overrides
 	
 	required init(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
+		df.dateStyle = .ShortStyle
+		df.timeStyle = .MediumStyle
 	}
 	
 	override func viewWillAppear(animated: Bool) {
@@ -54,16 +56,12 @@ class FDBaseViewController: UIViewController {
 	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated)
+		//update the refresh time
+		self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
 	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let df = NSDateFormatter()
-		df.dateStyle = .ShortStyle
-		df.timeStyle = .MediumStyle
-
-		self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
-		self.stepsLabel.text = "Step Count:  \(self.steps) steps"
 		// Do any additional setup after loading the view.
 	}
 	
@@ -73,8 +71,16 @@ class FDBaseViewController: UIViewController {
 		// Dispose of any resources that can be recreated.
 	}
 	
-    
-
+	func displayTodaysStats() {
+		//update the refresh time
+		self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
+		
+		self.stepsLabel.text = "Step Count:  \(self.steps) steps"
+		self.flightsClimbedLabel.text = "Flights Climbed: \(self.flightsClimbed) floors"
+		var distanceString = String(format:"%.2f", self.distance)
+		self.distanceLabel.text = "Distance: \(distanceString) miles"
+	}
+	
     /*
     // MARK: - Navigation
 
@@ -84,5 +90,87 @@ class FDBaseViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+	
+	// MARK: - Read HealthKit data
+	
+	func getData() {
+		self.now = NSDate()
+		self.midnight = NSCalendar.currentCalendar().dateBySettingHour(0, minute: 0, second: 0, ofDate: now, options: nil)!
+		self.startTime24HourData = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitDay, value: -1, toDate: now, options: nil)!
+		self.getTodaysCumulativeSteps()
+		self.getTodaysCumulativeDistance()
+		self.getTodaysFlightsClimbed()
+	}
+	
+	// MARK: - Today's Stats
+	
+	// gets the cumlative steps taken over the past 24hours
+	func getTodaysCumulativeSteps() {
+		let stepsType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
+		let predicate = HKQuery.predicateForSamplesWithStartDate(midnight, endDate: now, options: .None)
+		
+		let query = HKStatisticsQuery(quantityType: stepsType, quantitySamplePredicate: predicate,
+			options: .CumulativeSum) {
+				(query, results, error) in
+				if results == nil {
+					println("There was an error running the query: \(error)")
+				}
+				
+				dispatch_async(dispatch_get_main_queue()) {
+					if let quantity = results.sumQuantity() {
+						let unit = HKUnit.countUnit()
+						self.steps = quantity.doubleValueForUnit(unit)
+					}
+				}
+		}
+		self.healthStore?.executeQuery(query)
+	}
+	
+	func getTodaysCumulativeDistance() {
+		let distanceType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)
+		let predicate = HKQuery.predicateForSamplesWithStartDate(midnight, endDate: now, options: .None)
+		
+		let query = HKStatisticsQuery(quantityType: distanceType, quantitySamplePredicate: predicate,
+			options: .CumulativeSum) {
+				(query, results, error) in
+				if results == nil {
+					println("There was an error running the query: \(error)")
+				}
+				
+				dispatch_async(dispatch_get_main_queue()) {
+					
+					if let quantity = results.sumQuantity() {
+						let unit = HKUnit.mileUnit()
+						self.distance = quantity.doubleValueForUnit(unit)
+					}
+				}
+		}
+		self.healthStore?.executeQuery(query)
+	}
+	
+	func getTodaysFlightsClimbed() {
+		let flightsClimbedType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierFlightsClimbed)
+		let predicate = HKQuery.predicateForSamplesWithStartDate(midnight, endDate: now, options: .None)
+		
+		let query = HKStatisticsQuery(quantityType: flightsClimbedType, quantitySamplePredicate: predicate,
+			options: .CumulativeSum) {
+				(query, results, error) in
+				if results == nil {
+					println("There was an error running the query: \(error)")
+				}
+				
+				dispatch_async(dispatch_get_main_queue()) {
+					
+					if let quantity = results.sumQuantity() {
+						let unit = HKUnit.countUnit()
+						self.flightsClimbed = quantity.doubleValueForUnit(unit)
+					}
+				}
+		}
+		self.healthStore?.executeQuery(query)
+	}
+	
+	func getSleepAnalysis() {
+		//sleeps
+	}
 }

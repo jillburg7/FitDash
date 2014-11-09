@@ -23,19 +23,15 @@ typealias HKCompletionHandle = ((HKQuantity!, NSError!) -> Void!)
 
 extension HKHealthStore {
 	
-	func getClassName(obj : AnyObject) -> String
-	{
+	func getClassName(obj : AnyObject) -> String {
 		let objectClass : AnyClass! = object_getClass(obj)
 		let className = objectClass.description()
 		
 		return className
 	}
 	
-	func mostRecentQuantitySampleOfType(quantityType: HKQuantityType,
-		predicate: NSPredicate!,
-		completion: HKCompletionHandle!
-		) -> Void
-	{
+	func mostRecentQuantitySampleOfType(quantityType: HKQuantityType, predicate: NSPredicate!, completion: HKCompletionHandle!) -> Void {
+		
 		var timeSortDescriptor: NSSortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
 		
 		// Since we are interested in retrieving the user's latest sample, we sort the samples in descending order, and set the limit to 1. We are not filtering the data, and so the predicate is set to nil.
@@ -63,6 +59,10 @@ extension HKHealthStore {
 		self.executeQuery(query)
 	}
 	
+	
+	//MARK: - Private Method
+	//MARK: HealthKit Permissions
+
 	func dataTypesToWrite() -> NSSet {
 		let dataTypesToWrite = [
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierBodyMass),

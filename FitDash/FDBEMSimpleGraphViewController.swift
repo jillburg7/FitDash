@@ -20,12 +20,13 @@ class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDa
 //	@IBOutlet var flightsClimbedLabel: UILabel!
 //	@IBOutlet var sleepLabel: UILabel!
 //	
-//	@IBAction func refresh(sender: AnyObject) {
-//		values.removeAll(keepCapacity: false)
-//		dates.removeAll(keepCapacity: false)
-//		super.getData()
-//	}
-	
+	@IBAction override func refresh(sender: AnyObject) {
+		//update the refresh time
+		self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
+		getData()
+		displayTodaysStats()
+	}
+
 	@IBOutlet var graphView: BEMSimpleLineGraphView!
 	
 	// MARK: - Overrides
@@ -37,8 +38,10 @@ class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDa
 		numberOfPoints = 9
 		self.graphView.reloadGraph()
 	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		displayTodaysStats()
 		// Do any additional setup after loading the view, typically from a nib.
 		self.graphView.enableBezierCurve = true
 		self.graphView.enableYAxisLabel = true

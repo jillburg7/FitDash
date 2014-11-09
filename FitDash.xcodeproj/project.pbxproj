@@ -18,6 +18,7 @@
 		F182015A19EAEEB500E5ACB4 /* FitDashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182015919EAEEB500E5ACB4 /* FitDashTests.swift */; };
 		F182016519EAEF3C00E5ACB4 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F182016419EAEF3C00E5ACB4 /* HealthKit.framework */; };
 		F182016919EB379100E5ACB4 /* HKHealthStoreExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182016819EB379100E5ACB4 /* HKHealthStoreExtension.swift */; };
+		F1C213801A0C0A0C0050E00C /* FDBarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C2137F1A0C0A0C0050E00C /* FDBarChartViewController.swift */; };
 		F1DD11801A058EC500602C53 /* FDJawboneChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DD117F1A058EC500602C53 /* FDJawboneChartViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		F182016319EAEF3C00E5ACB4 /* FitDash.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FitDash.entitlements; sourceTree = "<group>"; };
 		F182016419EAEF3C00E5ACB4 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		F182016819EB379100E5ACB4 /* HKHealthStoreExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKHealthStoreExtension.swift; sourceTree = "<group>"; };
+		F1C2137F1A0C0A0C0050E00C /* FDBarChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDBarChartViewController.swift; sourceTree = "<group>"; };
 		F1DD117F1A058EC500602C53 /* FDJawboneChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDJawboneChartViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,6 +123,7 @@
 				F10C21891A071E1A000B7D8B /* FDBaseViewController.swift */,
 				F182014519EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift */,
 				F1DD117F1A058EC500602C53 /* FDJawboneChartViewController.swift */,
+				F1C2137F1A0C0A0C0050E00C /* FDBarChartViewController.swift */,
 				F107F9721A05CCA000E3801C /* FDTableViewController.swift */,
 				F182016819EB379100E5ACB4 /* HKHealthStoreExtension.swift */,
 				F182014A19EAEEB500E5ACB4 /* Images.xcassets */,
@@ -297,6 +300,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1C213801A0C0A0C0050E00C /* FDBarChartViewController.swift in Sources */,
 				F107F9731A05CCA000E3801C /* FDTableViewController.swift in Sources */,
 				F1DD11801A058EC500602C53 /* FDJawboneChartViewController.swift in Sources */,
 				F182014619EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift in Sources */,

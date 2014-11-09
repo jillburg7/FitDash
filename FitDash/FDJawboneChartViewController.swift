@@ -12,14 +12,17 @@ import HealthKit
 class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSource, JBLineChartViewDelegate {
 	
 	let labelColor = UIColor.whiteColor()
-	
-//	@IBAction func refresh(sender: AnyObject) {
-//		values.removeAll(keepCapacity: false)
-//		dates.removeAll(keepCapacity: false)
-////		super.getData()
-//	}
+	let theme = UIColor(red: 30.0/255.0, green: 200.0/255.0, blue: 200.0/255.0, alpha: 0.5)
+	var colors = UIColor(hue: 45.9/255.0, saturation: 205.0/255.0, brightness: 40.8/255.0, alpha: 1.0)
 	
 	@IBOutlet var lineChart: JBLineChartView!
+	
+	@IBAction override func refresh(sender: AnyObject) {
+		//update the refresh time
+		self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
+		getData()
+		displayTodaysStats()
+	}
 	
 	// MARK: - Overrides
 	
@@ -28,14 +31,24 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 		self.lineChart.dataSource = self
 		self.lineChart.delegate = self
 		view.addSubview(lineChart)
+		println("viewDidLoad")
 	}
 	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(true)
+		getData()
+		displayTodaysStats()
+		self.lineChart.backgroundColor = theme
+		println("~~~~~~~~~~~~~~~~~~~~")
+		println("viewDidAppear")
 		self.dates = self.tupleData.0
 		self.values = self.tupleData.1
+		println("initialized data points with tupleData")
 		numberOfPoints = 9
 		self.lineChart.reloadData()
+		println("~~~~~~~~~~~~~~~~~~~~")
+		getTodaysFlightsClimbed()
+		self.flightsClimbedLabel.text = "Flights Climbed: \(self.flightsClimbed) floors"
 	}
 	
 	
@@ -63,5 +76,36 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 		}
 	}
 	
+	// MARK: JBLineChartView Methods
 	
+	func lineChartView(lineChartView: JBLineChartView!, fillColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
+		return labelColor
+	}
+	
+	func lineChartView(lineChartView: JBLineChartView!, showsDotsForLineAtLineIndex lineIndex: UInt) -> Bool {
+		return true
+	}
+	
+	func lineChartView(lineChartView: JBLineChartView!, smoothLineAtLineIndex lineIndex: UInt) -> Bool {
+		return true
+	}
+	
+	func lineChartView(lineChartView: JBLineChartView!, verticalSelectionColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
+		return colors
+	}
+	
+	func lineChartView(lineChartView: JBLineChartView!, selectionFillColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
+		return UIColor.clearColor()
+	}
+	
+	func lineChartView(lineChartView: JBLineChartView!, colorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
+		return theme
+	}
+	
+	func lineChartView(lineChartView: JBLineChartView!, didSelectLineAtIndex lineIndex: UInt, horizontalIndex: UInt) {
+		var value = self.values[Int(horizontalIndex)]
+		var date = self.dates[Int(horizontalIndex)]
+		self.sleepLabel.text = "value: \(value), date: \(date)"
+	}
+
 }
