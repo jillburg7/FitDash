@@ -18,9 +18,9 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	
 	var healthStore: HKHealthStore?
 	var stepSamples = [HKQuantitySample]()
-	var steps = 0.0
-	var distance = 0.0
-	var flightsClimbed = 0.0
+//	var steps = 0.0
+//	var distance = 0.0
+//	var flightsClimbed = 0.0
 	
 	var values: [Double] = []
 	var dates: [NSDate] = []
@@ -70,9 +70,11 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 			dispatch_async(dispatch_get_main_queue(), {
 				() -> Void in
 				
+				if self.values.isEmpty {
 				// Update the user interface based on the current user's health information.
-				self.plotWeeklySteps()
-				self.isReady()
+					self.plotWeeklySteps()
+					self.isReady()
+				}
 			})
 		}
 		
@@ -133,9 +135,6 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 			chartDetails.title = destinationTitle
 			chartDetails.healthStore = self.healthStore
 			chartDetails.tupleData = (dates, values)
-//			chartDetails.steps = self.steps
-//			chartDetails.distance = self.distance
-//			chartDetails.flightsClimbed = self.flightsClimbed
 		}
 	}
 	

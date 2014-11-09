@@ -18,8 +18,7 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 	@IBOutlet var lineChart: JBLineChartView!
 	
 	@IBAction override func refresh(sender: AnyObject) {
-		//update the refresh time
-		self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
+		super.refresh(sender)
 		getData()
 		displayTodaysStats()
 	}
@@ -31,30 +30,23 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 		self.lineChart.dataSource = self
 		self.lineChart.delegate = self
 		view.addSubview(lineChart)
-		println("viewDidLoad")
+		getData()
 	}
 	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(true)
-		getData()
 		displayTodaysStats()
 		self.lineChart.backgroundColor = theme
-		println("~~~~~~~~~~~~~~~~~~~~")
-		println("viewDidAppear")
-		self.dates = self.tupleData.0
-		self.values = self.tupleData.1
-		println("initialized data points with tupleData")
-		numberOfPoints = 9
+		dates = self.tupleData.0
+		values = self.tupleData.1
+		numberOfPoints = values.count
 		self.lineChart.reloadData()
-		println("~~~~~~~~~~~~~~~~~~~~")
-		getTodaysFlightsClimbed()
-		self.flightsClimbedLabel.text = "Flights Climbed: \(self.flightsClimbed) floors"
 	}
 	
 	
 	// MARK: - JBLineChartViewDataSource
-	// inform the data source how many lines and vertical data points (for each line) are in the chart
 	
+	// inform the data source how many lines and vertical data points (for each line) are in the chart
 	func numberOfLinesInLineChartView(lineChartView: JBLineChartView!) -> UInt {
 		return 1
 	}
@@ -64,9 +56,9 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 	}
 
 	// MARK: - JBLineChartViewDelegate
+	
 	//	inform the delegate of the y-position of each point (automatically normalized across the entire chart)
 	//	for each line in the chart
-	
 	func lineChartView(lineChartView: JBLineChartView!, verticalValueForHorizontalIndex horizontalIndex: UInt, atLineIndex lineIndex: UInt) -> CGFloat {
 		if !values.isEmpty {
 			return CGFloat(values[Int(horizontalIndex)])
@@ -105,7 +97,8 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 	func lineChartView(lineChartView: JBLineChartView!, didSelectLineAtIndex lineIndex: UInt, horizontalIndex: UInt) {
 		var value = self.values[Int(horizontalIndex)]
 		var date = self.dates[Int(horizontalIndex)]
-		self.sleepLabel.text = "value: \(value), date: \(date)"
+		df.timeStyle = .NoStyle
+		self.sleepLabel.text = "value: \(value), date: \(df.stringFromDate(date))"
 	}
 
 }

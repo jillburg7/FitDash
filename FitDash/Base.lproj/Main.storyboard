@@ -537,13 +537,13 @@
                     <navigationItem key="navigationItem" title="BarChart" id="R1p-fF-IBK">
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="OQx-WJ-5ZK">
                             <connections>
-                                <action selector="refresh:" destination="guK-SB-LhG" id="Wyt-9P-1tA"/>
+                                <action selector="refresh:" destination="guK-SB-LhG" id="QKo-JU-eln"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="barChart" destination="pOq-Nm-LI2" id="78O-M6-Ul3"/>
-                        <outlet property="dataRefreshLabel" destination="XxT-jZ-Qfo" id="YRt-0a-M34"/>
+                        <outlet property="dataRefreshLabel" destination="XxT-jZ-Qfo" id="HSI-12-wLD"/>
                         <outlet property="maxDate" destination="Zku-uL-rkk" id="STw-gk-97P"/>
                         <outlet property="maxValue" destination="sQE-x1-UbG" id="wy6-mo-6GC"/>
                         <outlet property="minDate" destination="Bys-bi-URT" id="53u-57-nrp"/>

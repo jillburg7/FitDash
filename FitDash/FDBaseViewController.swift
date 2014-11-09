@@ -38,6 +38,9 @@ class FDBaseViewController: UIViewController {
 	
 	@IBAction func refresh(sender: AnyObject) {
 		//update the refresh time
+		df.dateStyle = .ShortStyle
+		df.timeStyle = .MediumStyle
+		self.now = NSDate()
 		self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
 	}
 	
@@ -52,6 +55,9 @@ class FDBaseViewController: UIViewController {
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		self.getTodaysCumulativeSteps()
+		self.getTodaysCumulativeDistance()
+		self.getTodaysFlightsClimbed()
 	}
 	
 	override func viewDidAppear(animated: Bool) {
@@ -71,6 +77,16 @@ class FDBaseViewController: UIViewController {
 		// Dispose of any resources that can be recreated.
 	}
 	
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+	*/
+	
 	func displayTodaysStats() {
 		//update the refresh time
 		self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
@@ -81,19 +97,10 @@ class FDBaseViewController: UIViewController {
 		self.distanceLabel.text = "Distance: \(distanceString) miles"
 	}
 	
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-	
 	// MARK: - Read HealthKit data
 	
 	func getData() {
+		println("please wait while I update the data you requested...")
 		self.now = NSDate()
 		self.midnight = NSCalendar.currentCalendar().dateBySettingHour(0, minute: 0, second: 0, ofDate: now, options: nil)!
 		self.startTime24HourData = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitDay, value: -1, toDate: now, options: nil)!

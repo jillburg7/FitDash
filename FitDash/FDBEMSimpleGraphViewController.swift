@@ -13,16 +13,8 @@ class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDa
 	
 	let labelColor = UIColor.whiteColor()
 	
-//	@IBOutlet var ageLabel: UILabel!
-//	@IBOutlet var dataRefreshLabel: UILabel!
-//	@IBOutlet var stepsLabel: UILabel!
-//	@IBOutlet var distanceLabel: UILabel!
-//	@IBOutlet var flightsClimbedLabel: UILabel!
-//	@IBOutlet var sleepLabel: UILabel!
-//	
 	@IBAction override func refresh(sender: AnyObject) {
-		//update the refresh time
-		self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
+		super.refresh(sender)
 		getData()
 		displayTodaysStats()
 	}
@@ -31,17 +23,9 @@ class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDa
 	
 	// MARK: - Overrides
 	
-	override func viewDidAppear(animated: Bool) {
-		super.viewDidAppear(animated)
-		self.dates = self.tupleData.0
-		self.values = self.tupleData.1
-		numberOfPoints = 9
-		self.graphView.reloadGraph()
-	}
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		displayTodaysStats()
+		getData()
 		// Do any additional setup after loading the view, typically from a nib.
 		self.graphView.enableBezierCurve = true
 		self.graphView.enableYAxisLabel = true
@@ -58,6 +42,19 @@ class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDa
 		self.graphView.enableReferenceAxisLines = true
 		self.graphView.enableReferenceAxisFrame = true
 		self.graphView.reloadGraph()
+	}
+	
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		self.dates = self.tupleData.0
+		self.values = self.tupleData.1
+		numberOfPoints = values.count
+		//		self.graphView.reloadGraph()
+	}
+	
+	override func viewDidAppear(animated: Bool) {
+		super.viewDidAppear(animated)
+		displayTodaysStats()
 	}
 	
 	// MARK: - BEMSimpleLineGraphDataSource

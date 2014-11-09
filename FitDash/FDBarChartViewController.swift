@@ -18,6 +18,7 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 	@IBOutlet var maxDate: UILabel!
 	@IBOutlet var minValue: UILabel!
 	@IBOutlet var maxValue: UILabel!
+	
 	@IBOutlet var barChart: JBBarChartView!
 	
 	// MARK: - Overrides
@@ -27,18 +28,15 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 		self.barChart.dataSource = self
 		self.barChart.delegate = self
 		view.addSubview(barChart)
-		println("viewDidLoad")
 	}
 	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(true)
-		self.barChart.backgroundColor = theme
-		println("~~~~~~~~~~~~~~~~~~~~")
-		self.dates = self.tupleData.0
-		self.values = self.tupleData.1
-		numberOfPoints = 9
+		barChart.backgroundColor = theme
+		dates = self.tupleData.0
+		values = self.tupleData.1
+		numberOfPoints = values.count
 		self.barChart.reloadData()
-		println("~~~~~~~~~~~~~~~~~~~~")
 	}
 	
 	// MARK: - JBBarChartViewDataSource
@@ -64,6 +62,7 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 		var value = self.values[Int(index)]
 		var date = self.dates[Int(index)]
 		self.minValue.text = "Value: \(value)"
+		df.timeStyle = .NoStyle
 		self.maxValue.text = "Date: \(df.stringFromDate(date))"
 	}
 	
