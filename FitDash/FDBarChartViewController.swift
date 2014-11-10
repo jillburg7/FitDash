@@ -73,4 +73,6 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 	func didDeselectBarChartView(barChartView: JBBarChartView!) {
 		
 	}
+	
+	
 }

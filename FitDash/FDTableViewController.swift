@@ -18,9 +18,6 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	
 	var healthStore: HKHealthStore?
 	var stepSamples = [HKQuantitySample]()
-//	var steps = 0.0
-//	var distance = 0.0
-//	var flightsClimbed = 0.0
 	
 	var values: [Double] = []
 	var dates: [NSDate] = []
@@ -72,7 +69,9 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				
 				if self.values.isEmpty {
 				// Update the user interface based on the current user's health information.
-					self.plotWeeklySteps()
+//					self.queryDayInSteps()
+					self.queryPastWeekInSteps()
+//					self.plotWeeklySteps()
 					self.isReady()
 				}
 			})
@@ -139,6 +138,133 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	}
 	
 	// MARK: - Graphing Functions
+	
+	//creates a collection for plotting the past week in step counts
+	func queryDayInSteps() {
+		let calendar = NSCalendar.currentCalendar()
+		
+		let interval = NSDateComponents()
+		interval.hour = 1
+		
+		// Set the anchor date to Monday at 12:00 a.m.
+		let anchorComponents =
+		calendar.components(.CalendarUnitDay | .CalendarUnitMonth |
+			.CalendarUnitYear | .CalendarUnitWeekday, fromDate: NSDate())
+		
+		//		let offset = (7 + anchorComponents.weekday - 2) % 7
+		//		anchorComponents.day -= offset
+		anchorComponents.hour = 0
+		
+		let anchorDate = calendar.dateFromComponents(anchorComponents)
+		let df = NSDateFormatter()
+		df.dateStyle = .ShortStyle
+		df.timeStyle = .MediumStyle
+		
+		let quantityType =
+		HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
+		
+		// Create the query
+		let query = HKStatisticsCollectionQuery(quantityType: quantityType,
+			quantitySamplePredicate: nil,
+			options: .CumulativeSum,
+			anchorDate: anchorDate,
+			intervalComponents: interval)
+		
+		// Set the results handler
+		query.initialResultsHandler = {
+			query, results, error in
+			
+			if error != nil {
+				// Perform proper error handling here
+				println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
+				abort()
+			}
+			
+			let endDate = NSDate()
+			let startDate = NSCalendar.currentCalendar().dateBySettingHour(0, minute: 0, second: 0, ofDate: endDate, options: nil)!
+//			calendar.dateByAddingUnit(.HourCalendarUnit,
+//				value: 0, toDate: endDate, options: nil)
+			
+			// Plot todayd step counts on the hour every hour until current time
+			results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
+				statistics, stop in
+				
+				if let quantity = statistics.sumQuantity() {
+					let date = statistics.startDate
+					let value = quantity.doubleValueForUnit(HKUnit.countUnit())
+					
+					self.plotData(value, forDate: date)
+				}
+			}
+			self.ready = true
+			println("isReady?? \(self.ready)")
+		}
+		self.healthStore?.executeQuery(query)
+	}
+	
+	
+	//creates a collection for plotting the past week in step counts
+	func queryPastWeekInSteps() {
+		let calendar = NSCalendar.currentCalendar()
+		
+		let interval = NSDateComponents()
+		interval.day = 1
+		
+		// Set the anchor date to Monday at 12:00 a.m.
+		let anchorComponents =
+		calendar.components(.CalendarUnitDay | .CalendarUnitMonth |
+			.CalendarUnitYear | .CalendarUnitWeekday, fromDate: NSDate())
+		
+		//		let offset = (7 + anchorComponents.weekday - 2) % 7
+		//		anchorComponents.day -= offset
+		anchorComponents.hour = 0
+		
+		let anchorDate = calendar.dateFromComponents(anchorComponents)
+		let df = NSDateFormatter()
+		df.dateStyle = .ShortStyle
+		df.timeStyle = .MediumStyle
+		
+		let quantityType =
+		HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
+		
+		// Create the query
+		let query = HKStatisticsCollectionQuery(quantityType: quantityType,
+			quantitySamplePredicate: nil,
+			options: .CumulativeSum,
+			anchorDate: anchorDate,
+			intervalComponents: interval)
+		
+		// Set the results handler
+		query.initialResultsHandler = {
+			query, results, error in
+			
+			if error != nil {
+				// Perform proper error handling here
+				println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
+				abort()
+			}
+			
+			let endDate = NSDate()
+			let startDate =
+			calendar.dateByAddingUnit(.DayCalendarUnit,
+				value: -7, toDate: endDate, options: nil)
+			
+			// Plot the daily step counts over the past 7 days
+			results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
+				statistics, stop in
+				
+				if let quantity = statistics.sumQuantity() {
+					let date = statistics.startDate
+					let value = quantity.doubleValueForUnit(HKUnit.countUnit())
+					
+					self.plotData(value, forDate: date)
+				}
+			}
+			self.ready = true
+			println("isReady?? \(self.ready)")
+		}
+		self.healthStore?.executeQuery(query)
+	}
 	
 	//creates a collection for plotting weekly step counts
 	func plotWeeklySteps() {

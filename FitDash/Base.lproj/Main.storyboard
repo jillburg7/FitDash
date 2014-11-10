@@ -387,7 +387,7 @@
                         </userGuides>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pOq-Nm-LI2" customClass="JBBarChartView">
-                                <rect key="frame" x="0.0" y="90" width="600" height="400"/>
+                                <rect key="frame" x="0.0" y="90" width="600" height="200"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="data last refresh time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XxT-jZ-Qfo">
@@ -473,11 +473,11 @@
                             <constraint firstItem="Zku-uL-rkk" firstAttribute="firstBaseline" secondItem="sQE-x1-UbG" secondAttribute="firstBaseline" id="7TP-QU-HdN"/>
                             <constraint firstItem="edM-wY-4Ao" firstAttribute="top" secondItem="sQE-x1-UbG" secondAttribute="bottom" constant="39" id="7lC-2y-ACT"/>
                             <constraint firstItem="I1M-jj-TJ6" firstAttribute="baseline" secondItem="Bys-bi-URT" secondAttribute="baseline" id="8JH-0j-EKJ"/>
-                            <constraint firstItem="I1M-jj-TJ6" firstAttribute="top" secondItem="pOq-Nm-LI2" secondAttribute="bottom" constant="10" id="9Ea-S1-0EV"/>
+                            <constraint firstItem="I1M-jj-TJ6" firstAttribute="top" secondItem="pOq-Nm-LI2" secondAttribute="bottom" constant="210" id="9Ea-S1-0EV"/>
                             <constraint firstItem="sQE-x1-UbG" firstAttribute="leading" secondItem="0H3-HD-PBv" secondAttribute="leading" constant="30" id="Cau-IL-LFO"/>
                             <constraint firstItem="sQE-x1-UbG" firstAttribute="firstBaseline" secondItem="Zku-uL-rkk" secondAttribute="firstBaseline" id="CnL-kY-d4o"/>
                             <constraint firstItem="I1M-jj-TJ6" firstAttribute="leading" secondItem="sQE-x1-UbG" secondAttribute="leading" id="DlP-MN-G1c"/>
-                            <constraint firstItem="2bL-fY-VKg" firstAttribute="top" secondItem="pOq-Nm-LI2" secondAttribute="bottom" constant="94" id="ECX-Am-Ais"/>
+                            <constraint firstItem="2bL-fY-VKg" firstAttribute="top" secondItem="pOq-Nm-LI2" secondAttribute="bottom" constant="294" id="ECX-Am-Ais"/>
                             <constraint firstItem="Zku-uL-rkk" firstAttribute="firstBaseline" secondItem="sQE-x1-UbG" secondAttribute="firstBaseline" id="J3k-ei-xx9"/>
                             <constraint firstItem="XxT-jZ-Qfo" firstAttribute="top" secondItem="At7-fD-tAF" secondAttribute="bottom" id="KkZ-ti-c0m"/>
                             <constraint firstItem="Zku-uL-rkk" firstAttribute="baseline" secondItem="sQE-x1-UbG" secondAttribute="baseline" id="Kp5-1C-MQW"/>
