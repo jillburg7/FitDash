@@ -46,15 +46,15 @@ class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDa
 	
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
-		self.dates = self.tupleData.0
-		self.values = self.tupleData.1
-		numberOfPoints = values.count
-		//		self.graphView.reloadGraph()
+//		self.dates = self.tupleData.0
+//		self.values = self.tupleData.1
+//		numberOfPoints = values.count
 	}
 	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated)
 		displayTodaysStats()
+		self.graphView.reloadGraph()
 	}
 	
 	// MARK: - BEMSimpleLineGraphDataSource
@@ -89,6 +89,7 @@ class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDa
 		if !dates.isEmpty {      //(index % 2) == 1 &&
 			let df = NSDateFormatter()
 			df.dateStyle = .ShortStyle
+			df.timeStyle = .NoStyle
 			return df.stringFromDate(dates[index])
 		} else { return "" }
 	}

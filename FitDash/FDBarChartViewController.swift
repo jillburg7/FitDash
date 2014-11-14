@@ -27,17 +27,32 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 		super.viewDidLoad()
 		self.barChart.dataSource = self
 		self.barChart.delegate = self
-		view.addSubview(barChart)
+		self.view.addSubview(barChart)
+		self.minValue.text = ""
+		self.maxValue.text = ""
+		self.minDate.text = ""
+		self.maxDate.text = ""
 	}
 	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(true)
 		barChart.backgroundColor = theme
-		dates = self.tupleData.0
-		values = self.tupleData.1
-		numberOfPoints = values.count
+//		dates = self.tupleData.0
+//		values = self.tupleData.1
+//		numberOfPoints = values.count
+		self.barChart.minimumValue = 0
+//		var leftLabel = UILabel()
+//		leftLabel.textAlignment = .Left
+//		leftLabel.text = "12AM"
+//		var rightLabel = UILabel()
+//		rightLabel.textAlignment = .Right
+//		rightLabel.text = "12PM"
+//		self.barChart.footerView.addSubview(leftLabel)
+//		self.barChart.footerView.addSubview(rightLabel)
+//			readyLabel.frame = CGRect(x: self.view.frame.width/3, y: self.view.frame.height/4, width: 200, height: 40)
 		self.barChart.reloadData()
 	}
+	
 	
 	// MARK: - JBBarChartViewDataSource
 	
@@ -48,7 +63,7 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 	// MARK: - JBBarChartViewDelegate
 	
 	func barChartView(barChartView: JBBarChartView!, heightForBarViewAtIndex index: UInt) -> CGFloat {
-		if !values.isEmpty {
+		if !self.values.isEmpty {
 			return CGFloat(values[Int(index)])
 		}
 		else {
@@ -62,17 +77,19 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 		var value = self.values[Int(index)]
 		var date = self.dates[Int(index)]
 		self.minValue.text = "Value: \(value)"
-		df.timeStyle = .NoStyle
+		self.minDate.text = ""
+		self.maxDate.text = ""
+		df.dateStyle = .ShortStyle
+		df.timeStyle = .ShortStyle
 		self.maxValue.text = "Date: \(df.stringFromDate(date))"
 	}
 	
 	func barChartView(barChartView: JBBarChartView!, didSelectBarAtIndex index: UInt, touchPoint: CGPoint) {
-		
+//		barChartView.footerView
 	}
 	
 	func didDeselectBarChartView(barChartView: JBBarChartView!) {
 		
 	}
-	
 	
 }

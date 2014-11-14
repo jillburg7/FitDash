@@ -37,9 +37,9 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 		super.viewDidAppear(true)
 		displayTodaysStats()
 		self.lineChart.backgroundColor = theme
-		dates = self.tupleData.0
-		values = self.tupleData.1
-		numberOfPoints = values.count
+//		dates = self.tupleData.0
+//		values = self.tupleData.1
+//		numberOfPoints = values.count
 		self.lineChart.reloadData()
 	}
 	

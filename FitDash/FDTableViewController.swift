@@ -12,7 +12,10 @@ import HealthKit
 //UICollectionViewController
 class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
+	@IBOutlet var loader: UIActivityIndicatorView!
+	@IBOutlet var readyLabel: UILabel!
 	@IBOutlet var tableView: UITableView!
+	
 	var items = ["BEMLineGraph", "JawboneChart", "JawboneBar"]
 	var segueID = ["bemGraphView", "jawboneLineChart", "barChartView"]
 	
@@ -66,13 +69,15 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 			
 			dispatch_async(dispatch_get_main_queue(), {
 				() -> Void in
-				
+				if !self.isReady() {
+					self.loader.startAnimating()
+				}
 				if self.values.isEmpty {
 				// Update the user interface based on the current user's health information.
 //					self.queryDayInSteps()
 					self.queryPastWeekInSteps()
 //					self.plotWeeklySteps()
-					self.isReady()
+//					self.isReady()
 				}
 			})
 		}
@@ -88,12 +93,10 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	
 	//check if data is ready
 	func isReady() -> Bool {
+		println("isReady?? \(self.ready)")
 		if ready {
-			var readyLabel = UILabel()
-			readyLabel.frame = CGRect(x: self.view.frame.width/3, y: self.view.frame.height/4, width: 200, height: 40)
-			readyLabel.font = UIFont(name: "Helvetica Neue", size: 32.0)
-			readyLabel.text = "ready"
-			self.view.addSubview(readyLabel)
+			self.readyLabel.text = "ready!"
+			self.loader.stopAnimating()
 		}
 		return ready
 	}
@@ -158,14 +161,18 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		let anchorDate = calendar.dateFromComponents(anchorComponents)
 		let df = NSDateFormatter()
 		df.dateStyle = .ShortStyle
-		df.timeStyle = .MediumStyle
+		df.timeStyle = .ShortStyle
 		
 		let quantityType =
 		HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
 		
+		let endDate = NSDate()
+		let startDate = NSCalendar.currentCalendar().dateBySettingHour(0, minute: 0, second: 0, ofDate: endDate, options: nil)!
+		let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
+		
 		// Create the query
 		let query = HKStatisticsCollectionQuery(quantityType: quantityType,
-			quantitySamplePredicate: nil,
+			quantitySamplePredicate: predicate, //nil,
 			options: .CumulativeSum,
 			anchorDate: anchorDate,
 			intervalComponents: interval)
@@ -180,11 +187,6 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				abort()
 			}
 			
-			let endDate = NSDate()
-			let startDate = NSCalendar.currentCalendar().dateBySettingHour(0, minute: 0, second: 0, ofDate: endDate, options: nil)!
-//			calendar.dateByAddingUnit(.HourCalendarUnit,
-//				value: 0, toDate: endDate, options: nil)
-			
 			// Plot todayd step counts on the hour every hour until current time
 			results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
 				statistics, stop in
@@ -194,10 +196,14 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 					let value = quantity.doubleValueForUnit(HKUnit.countUnit())
 					
 					self.plotData(value, forDate: date)
+				} else if statistics.sumQuantity() == nil {
+					df.dateStyle = .NoStyle
+					df.timeStyle = .ShortStyle
+					print("\(df.stringFromDate(statistics.startDate)) is nil (or 0)?")
 				}
 			}
 			self.ready = true
-			println("isReady?? \(self.ready)")
+			self.isReady()
 		}
 		self.healthStore?.executeQuery(query)
 	}
@@ -215,21 +221,23 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		calendar.components(.CalendarUnitDay | .CalendarUnitMonth |
 			.CalendarUnitYear | .CalendarUnitWeekday, fromDate: NSDate())
 		
-		//		let offset = (7 + anchorComponents.weekday - 2) % 7
-		//		anchorComponents.day -= offset
 		anchorComponents.hour = 0
 		
 		let anchorDate = calendar.dateFromComponents(anchorComponents)
 		let df = NSDateFormatter()
 		df.dateStyle = .ShortStyle
-		df.timeStyle = .MediumStyle
+		df.timeStyle = .ShortStyle
 		
 		let quantityType =
 		HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
 		
+		let endDate = NSDate()
+		let startDate = calendar.dateByAddingUnit(.DayCalendarUnit, value: -7, toDate: endDate, options: nil)
+		let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
+		
 		// Create the query
 		let query = HKStatisticsCollectionQuery(quantityType: quantityType,
-			quantitySamplePredicate: nil,
+			quantitySamplePredicate: predicate, //nil,
 			options: .CumulativeSum,
 			anchorDate: anchorDate,
 			intervalComponents: interval)
@@ -244,10 +252,8 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				abort()
 			}
 			
-			let endDate = NSDate()
-			let startDate =
-			calendar.dateByAddingUnit(.DayCalendarUnit,
-				value: -7, toDate: endDate, options: nil)
+//			let endDate = NSDate()
+//			let startDate = calendar.dateByAddingUnit(.MonthCalendarUnit, value: -3, toDate: endDate, options: nil)
 			
 			// Plot the daily step counts over the past 7 days
 			results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
@@ -290,9 +296,13 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		let quantityType =
 		HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
 		
+		let endDate = NSDate()
+		let startDate = calendar.dateByAddingUnit(.MonthCalendarUnit, value: -3, toDate: endDate, options: nil)
+		let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
+		
 		// Create the query
 		let query = HKStatisticsCollectionQuery(quantityType: quantityType,
-			quantitySamplePredicate: nil,
+			quantitySamplePredicate: predicate, //nil,
 			options: .CumulativeSum,
 			anchorDate: anchorDate,
 			intervalComponents: interval)
@@ -307,10 +317,8 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				abort()
 			}
 			
-			let endDate = NSDate()
-			let startDate =
-			calendar.dateByAddingUnit(.MonthCalendarUnit,
-				value: -3, toDate: endDate, options: nil)
+//			let endDate = NSDate()
+//			let startDate = calendar.dateByAddingUnit(.MonthCalendarUnit, value: -3, toDate: endDate, options: nil)
 			
 			// Plot the weekly step counts over the past 3 months
 			results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
@@ -334,6 +342,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	func plotData(value: Double, forDate: NSDate) {
 		let df = NSDateFormatter()
 		df.dateStyle = .ShortStyle
+		df.timeStyle = .ShortStyle
 		println("\(df.stringFromDate(forDate)) : \(value)")
 		values.append(value)
 		dates.append(forDate)
