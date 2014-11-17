@@ -9,6 +9,11 @@
 import UIKit
 import HealthKit
 
+var weeklyValues: [Double] = []
+var weeklyDates: [NSDate] = []
+var weeklyOverview: (name: String, dates: [NSDate], values: [Double]) = ("", [],[])
+var dailyOverview: (name: String, dates: [NSDate], values: [Double]) = ("", [],[])
+
 //UICollectionViewController
 class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
@@ -16,8 +21,8 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	@IBOutlet var readyLabel: UILabel!
 	@IBOutlet var tableView: UITableView!
 	
-	var items = ["BEMLineGraph", "JawboneChart", "JawboneBar"]
-	var segueID = ["bemGraphView", "jawboneLineChart", "barChartView"]
+	var items = ["BEMLineGraph", "JawboneChart", "JawboneBar", "DailySteps", "DailySteps"]
+	var segueID = ["bemGraphView", "jawboneLineChart", "barChartView", "barChartView", "jawboneLineChart"]
 	
 	var healthStore: HKHealthStore?
 	var stepSamples = [HKQuantitySample]()
@@ -30,6 +35,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	var now = NSDate()
 	var numberOfPoints:Int = 0
 	var ready = false
+	var data = ""
 	
 	// MARK: init
 	
@@ -72,7 +78,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				if !self.isReady() {
 					self.loader.startAnimating()
 				}
-				if self.values.isEmpty {
+				if weeklyOverview.values.isEmpty {
 				// Update the user interface based on the current user's health information.
 //					self.queryDayInSteps()
 					self.queryPastWeekInSteps()
@@ -88,15 +94,34 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-		
 	}
 	
 	//check if data is ready
 	func isReady() -> Bool {
 		println("isReady?? \(self.ready)")
 		if ready {
-			self.readyLabel.text = "ready!"
-			self.loader.stopAnimating()
+			if weeklyOverview.values.isEmpty {
+				weeklyOverview = (name: "Past Week in Steps", self.dates, self.values)
+				println("-----------------------------")
+				println("weeklyOverview status: \(weeklyOverview.values.count)")
+				println("-----------------------------")
+				
+				dates = []
+				values = []
+				ready = false
+				self.queryDayInSteps()
+			} else if dailyOverview.values.isEmpty {
+				dailyOverview = (name: "Steps Taken Today", self.dates, self.values)
+				println("-----------------------------")
+				println("dailyOverview status: \(dailyOverview.values.count)")
+				println("-----------------------------")
+				
+				dates = []
+				values = []
+			} else {
+				self.readyLabel.text = "ready!"
+				self.loader.stopAnimating()
+			}
 		}
 		return ready
 	}
@@ -125,6 +150,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 			var chartDetails = segue.destinationViewController as FDBaseViewController
 			let indexPath = self.tableView.indexPathForSelectedRow()!
 			let destinationTitle = self.items[indexPath.row]
+			chartDetails.tupleData = ([],[])
 			
 			if segue.identifier == "bemGraphView" {
 				chartDetails = segue.destinationViewController as FDBEMSimpleGraphViewController
@@ -134,9 +160,18 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				chartDetails = segue.destinationViewController as FDBarChartViewController
 			}
 			
+			if self.items[indexPath.row] == "DailySteps" {
+				data = dailyOverview.name
+				chartDetails.tupleData = (dailyOverview.dates, dailyOverview.values)
+			} else {
+				data = weeklyOverview.name
+				chartDetails.tupleData = (weeklyOverview.dates, weeklyOverview.values)
+			}
+			
 			chartDetails.title = destinationTitle
 			chartDetails.healthStore = self.healthStore
-			chartDetails.tupleData = (dates, values)
+//			chartDetails.tupleData = (self.dates, self.values)
+			chartDetails.dataTitle = data
 		}
 	}
 	
@@ -199,7 +234,10 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				} else if statistics.sumQuantity() == nil {
 					df.dateStyle = .NoStyle
 					df.timeStyle = .ShortStyle
-					print("\(df.stringFromDate(statistics.startDate)) is nil (or 0)?")
+//					print("\(df.stringFromDate(statistics.startDate)) is nil (or 0)?")
+					let date = statistics.startDate
+					let value = 0.0
+					self.plotData(value, forDate: date)
 				}
 			}
 			self.ready = true

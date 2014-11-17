@@ -53,10 +53,10 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Steps/Week" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mu3-CG-C2Z">
-                                <rect key="frame" x="249" y="251" width="102" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Steps/Week" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mu3-CG-C2Z">
+                                <rect key="frame" x="0.0" y="251" width="600" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="102" id="yHq-gM-gd2"/>
+                                    <constraint firstAttribute="width" constant="600" id="yHq-gM-gd2"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -152,6 +152,7 @@
                         <outlet property="dataRefreshLabel" destination="Wso-rz-LYB" id="jwQ-bw-dkP"/>
                         <outlet property="distanceLabel" destination="hZJ-Hf-DT1" id="GgA-sc-HTC"/>
                         <outlet property="flightsClimbedLabel" destination="vkk-N2-lfL" id="Y0j-pF-oF6"/>
+                        <outlet property="graphTitle" destination="Mu3-CG-C2Z" id="oOI-vg-JTY"/>
                         <outlet property="graphView" destination="d1m-Dc-Oau" id="fer-LE-cb7"/>
                         <outlet property="sleepLabel" destination="KYb-2j-AlU" id="QOC-1U-U48"/>
                         <outlet property="stepsLabel" destination="sXd-W5-dtw" id="fmY-KI-L9R"/>
@@ -174,7 +175,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="distance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sOV-dn-NKJ">
-                                <rect key="frame" x="36" y="128" width="66" height="20"/>
+                                <rect key="frame" x="36" y="127" width="65.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -207,10 +208,10 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Steps/Week" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7uj-EX-o4e">
-                                <rect key="frame" x="249" y="251" width="102" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Steps/Week" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7uj-EX-o4e">
+                                <rect key="frame" x="0.0" y="251" width="600" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="102" id="M7u-Qu-h9X"/>
+                                    <constraint firstAttribute="width" constant="600" id="M7u-Qu-h9X"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -280,6 +281,7 @@
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="chartTitle" destination="7uj-EX-o4e" id="sys-FB-bN1"/>
                         <outlet property="dataRefreshLabel" destination="Xko-Eb-A5i" id="ZJK-AI-lS5"/>
                         <outlet property="distanceLabel" destination="sOV-dn-NKJ" id="8pw-CI-TZ3"/>
                         <outlet property="flightsClimbedLabel" destination="vdO-Og-fSY" id="Ps4-PO-VDQ"/>
@@ -488,9 +490,19 @@
                                     </mask>
                                 </variation>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Steps/Week" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZuY-ob-sVp">
+                                <rect key="frame" x="0.0" y="91" width="600" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="600" id="BF8-Hd-pMc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="ZuY-ob-sVp" firstAttribute="leading" secondItem="pOq-Nm-LI2" secondAttribute="leading" id="0AV-7g-5mn"/>
                             <constraint firstItem="Bys-bi-URT" firstAttribute="baseline" secondItem="I1M-jj-TJ6" secondAttribute="baseline" constant="-1" id="4Lu-Ld-IOG"/>
                             <constraint firstItem="Zku-uL-rkk" firstAttribute="leading" secondItem="sQE-x1-UbG" secondAttribute="trailing" constant="196" id="4Vh-fX-6EC"/>
                             <constraint firstItem="Bys-bi-URT" firstAttribute="firstBaseline" secondItem="I1M-jj-TJ6" secondAttribute="firstBaseline" id="5XP-7s-Suc"/>
@@ -513,6 +525,7 @@
                             <constraint firstItem="Bys-bi-URT" firstAttribute="baseline" secondItem="I1M-jj-TJ6" secondAttribute="baseline" id="Vs8-ly-rqF"/>
                             <constraint firstAttribute="trailing" secondItem="Zku-uL-rkk" secondAttribute="trailing" constant="231" id="WDh-de-E2W"/>
                             <constraint firstItem="Bys-bi-URT" firstAttribute="firstBaseline" secondItem="I1M-jj-TJ6" secondAttribute="firstBaseline" id="WwM-ab-Law"/>
+                            <constraint firstItem="pOq-Nm-LI2" firstAttribute="top" secondItem="ZuY-ob-sVp" secondAttribute="bottom" constant="8" symbolic="YES" id="YLi-RY-woK"/>
                             <constraint firstAttribute="centerX" secondItem="Bys-bi-URT" secondAttribute="centerX" constant="-32" id="Yo3-qH-i39"/>
                             <constraint firstItem="I1M-jj-TJ6" firstAttribute="leading" secondItem="0H3-HD-PBv" secondAttribute="leading" constant="30" id="bR7-eK-z5Y"/>
                             <constraint firstItem="2bL-fY-VKg" firstAttribute="bottom" secondItem="edM-wY-4Ao" secondAttribute="top" id="bRk-n5-tam"/>
@@ -527,6 +540,7 @@
                             <constraint firstItem="Bys-bi-URT" firstAttribute="trailing" secondItem="Zku-uL-rkk" secondAttribute="trailing" id="oMx-bP-Sn0"/>
                             <constraint firstItem="I1M-jj-TJ6" firstAttribute="leading" secondItem="0H3-HD-PBv" secondAttribute="leadingMargin" constant="14" id="oeO-r3-VOP"/>
                             <constraint firstItem="sQE-x1-UbG" firstAttribute="top" secondItem="I1M-jj-TJ6" secondAttribute="bottom" constant="20" id="tBp-wS-FyR"/>
+                            <constraint firstItem="ZuY-ob-sVp" firstAttribute="top" secondItem="XxT-jZ-Qfo" secondAttribute="bottom" constant="11" id="xyK-OX-PSW"/>
                             <constraint firstItem="Zku-uL-rkk" firstAttribute="leading" secondItem="sQE-x1-UbG" secondAttribute="trailing" constant="226" id="yPz-0D-Mr6"/>
                             <constraint firstItem="2bL-fY-VKg" firstAttribute="trailing" secondItem="pOq-Nm-LI2" secondAttribute="trailing" id="z2w-cj-wvi"/>
                             <constraint firstItem="Bys-bi-URT" firstAttribute="leading" secondItem="I1M-jj-TJ6" secondAttribute="trailing" constant="230.5" id="zK7-zZ-k5W"/>
@@ -568,6 +582,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="barChart" destination="pOq-Nm-LI2" id="78O-M6-Ul3"/>
+                        <outlet property="chartTitle" destination="ZuY-ob-sVp" id="w6b-u3-Mta"/>
                         <outlet property="dataRefreshLabel" destination="XxT-jZ-Qfo" id="HSI-12-wLD"/>
                         <outlet property="maxDate" destination="Zku-uL-rkk" id="STw-gk-97P"/>
                         <outlet property="maxValue" destination="sQE-x1-UbG" id="wy6-mo-6GC"/>

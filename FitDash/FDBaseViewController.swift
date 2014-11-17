@@ -11,6 +11,19 @@ import HealthKit
 
 class FDBaseViewController: UIViewController {
 	
+	// MARK: Colors
+	let white = UIColor.whiteColor()
+	let lightTurquoise = UIColor(red: 30.0/255.0, green: 200.0/255.0, blue: 200.0/255.0, alpha: 0.5)
+	
+	//colors from fitdash icon/logo design:
+	var navyBlue = UIColor(red: 44.0/255.0, green: 62.0/255.0, blue: 80.0/255.0, alpha: 1.0)
+	var golden = UIColor(red: 241.0/255.0, green: 196.0/255.0, blue: 15.0/255.0, alpha: 1.0)
+	var yellow = UIColor(red: 244.0/255.0, green: 208.0/255.0, blue: 63.0/255.0, alpha: 1.0)
+	var lime = UIColor(red: 135.0/255.0, green: 211.0/255.0, blue: 124.0/255.0, alpha: 1.0)
+	let turquoise = UIColor(red: 3.0/255.0, green: 201.0/255.0, blue: 169.0/255.0, alpha: 0.5)
+	
+	// MARK: 
+	
 	var healthStore: HKHealthStore?
 	var tupleData: ([NSDate], [Double]) = ([],[])
 	
@@ -28,6 +41,7 @@ class FDBaseViewController: UIViewController {
 	var numberOfPoints:Int = 0
 	
 	let df = NSDateFormatter()
+	var dataTitle = ""
 	
 	@IBOutlet var ageLabel: UILabel!
 	@IBOutlet var dataRefreshLabel: UILabel!

@@ -10,21 +10,21 @@ import UIKit
 import HealthKit
 
 class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate {
-	
-	let labelColor = UIColor.whiteColor()
+
+	@IBOutlet var graphView: BEMSimpleLineGraphView!
+	@IBOutlet var graphTitle: UILabel!
 	
 	@IBAction override func refresh(sender: AnyObject) {
 		super.refresh(sender)
 		getData()
 		displayTodaysStats()
 	}
-
-	@IBOutlet var graphView: BEMSimpleLineGraphView!
 	
 	// MARK: - Overrides
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		self.graphTitle.text = dataTitle
 		getData()
 		// Do any additional setup after loading the view, typically from a nib.
 		self.graphView.enableBezierCurve = true
@@ -32,9 +32,9 @@ class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDa
 		self.graphView.autoScaleYAxis = true
 		self.graphView.alwaysDisplayDots = true
 		self.graphView.alphaLine = 1.0
-		self.graphView.colorXaxisLabel = labelColor
-		self.graphView.colorYaxisLabel = labelColor
-		self.graphView.colorTouchInputLine = UIColor.whiteColor()
+		self.graphView.colorXaxisLabel = white
+		self.graphView.colorYaxisLabel = white
+		self.graphView.colorTouchInputLine = white
 		self.graphView.alphaTouchInputLine = 1.0
 		//		self.graphView.widthLine = 3.0;
 		self.graphView.enableTouchReport = true
@@ -46,9 +46,6 @@ class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDa
 	
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
-//		self.dates = self.tupleData.0
-//		self.values = self.tupleData.1
-//		numberOfPoints = values.count
 	}
 	
 	override func viewDidAppear(animated: Bool) {
@@ -95,15 +92,15 @@ class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDa
 	}
 	
 	func lineGraphDidBeginLoading(graph: BEMSimpleLineGraphView!) {
-		println("-----------------------")
-		println("graph did begin loading")
+//		println("-----------------------")
+//		println("graph did begin loading")
 	}
 	
 	func lineGraphDidFinishLoading(graph: BEMSimpleLineGraphView!) {
-		println("dates: \(self.graphView.graphValuesForXAxis())")
-		println("values: \(self.graphView.graphValuesForDataPoints())")
-		println("graph did finish loading")
-		println("------------------------")
+//		println("dates: \(self.graphView.graphValuesForXAxis())")
+//		println("values: \(self.graphView.graphValuesForDataPoints())")
+//		println("graph did finish loading")
+//		println("------------------------")
 	}
 	
 }

@@ -11,11 +11,12 @@ import HealthKit
 
 class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSource, JBLineChartViewDelegate {
 	
-	let labelColor = UIColor.whiteColor()
-	let theme = UIColor(red: 30.0/255.0, green: 200.0/255.0, blue: 200.0/255.0, alpha: 0.5)
-	var colors = UIColor(hue: 45.9/255.0, saturation: 205.0/255.0, brightness: 40.8/255.0, alpha: 1.0)
 	
+	@IBOutlet var chartTitle: UILabel!
 	@IBOutlet var lineChart: JBLineChartView!
+	
+	let FDLineChartViewControllerChartPadding:CGFloat = 20.0
+	let FDLineChartViewControllerChartFooterHeight:CGFloat = 20.0
 	
 	@IBAction override func refresh(sender: AnyObject) {
 		super.refresh(sender)
@@ -27,19 +28,28 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		self.chartTitle.text = dataTitle
+		
 		self.lineChart.dataSource = self
 		self.lineChart.delegate = self
-		view.addSubview(lineChart)
+		self.view.addSubview(lineChart)
 		getData()
 	}
 	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(true)
 		displayTodaysStats()
-		self.lineChart.backgroundColor = theme
-//		dates = self.tupleData.0
-//		values = self.tupleData.1
-//		numberOfPoints = values.count
+		self.lineChart.backgroundColor = turquoise
+		var footerView = FDAxisLabelView(frame: CGRectMake(FDLineChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(FDLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (FDLineChartViewControllerChartPadding * 3), FDLineChartViewControllerChartFooterHeight))
+		
+//		footerView.leftLabel.text = [[self.daysOfWeek firstObject] uppercaseString];
+//		footerView.rightLabel.text = [[self.daysOfWeek lastObject] uppercaseString];
+		
+		footerView.leftLabel.text = "lefty"
+		footerView.rightLabel.text = "today"
+		footerView.sectionCount = self.values.count
+		footerView.setFooterSeparatorColor(white)
+		self.lineChart.footerView = footerView
 		self.lineChart.reloadData()
 	}
 	
@@ -70,35 +80,58 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 	
 	// MARK: JBLineChartView Methods
 	
-	func lineChartView(lineChartView: JBLineChartView!, fillColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
-		return labelColor
+	//area under line  -- always displayed
+//	func lineChartView(lineChartView: JBLineChartView!, fillColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
+//		return UIColor.greenColor() //white
+//	}
+
+	//area under line  -- displayed when touched
+//	func lineChartView(lineChartView: JBLineChartView!, selectionFillColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
+//		return UIColor.blueColor()
+//	}
+	
+	// color of the line
+	func lineChartView(lineChartView: JBLineChartView!, colorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
+		return white
 	}
+	
+	// vertical selection bar -- color fades to tranparent from the returned color
+	func lineChartView(lineChartView: JBLineChartView!, verticalSelectionColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
+		return navyBlue
+	}
+	
+	// dots
 	
 	func lineChartView(lineChartView: JBLineChartView!, showsDotsForLineAtLineIndex lineIndex: UInt) -> Bool {
 		return true
 	}
 	
+	// dot size
+	func lineChartView(lineChartView: JBLineChartView!, dotRadiusForDotAtHorizontalIndex horizontalIndex: UInt, atLineIndex lineIndex: UInt) -> CGFloat {
+		return 8.0 // default is 3x the line width
+	}
+	
+	// dot color
+	func lineChartView(lineChartView: JBLineChartView!, colorForDotAtHorizontalIndex horizontalIndex: UInt, atLineIndex lineIndex: UInt) -> UIColor! {
+		return golden	//default is black (when not selected)
+	}
+	
+	// Bezier line (curved)
 	func lineChartView(lineChartView: JBLineChartView!, smoothLineAtLineIndex lineIndex: UInt) -> Bool {
 		return true
 	}
 	
-	func lineChartView(lineChartView: JBLineChartView!, verticalSelectionColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
-		return colors
+	func lineChartView(lineChartView: JBLineChartView!, widthForLineAtLineIndex lineIndex: UInt) -> CGFloat {
+		return 4.0
 	}
 	
-	func lineChartView(lineChartView: JBLineChartView!, selectionFillColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
-		return UIColor.clearColor()
-	}
+	// TODO: The touchPoint is especially important as it allows you to add custom elements to your chart during selection events. Refer to the demo project (JBLineChartViewController) to see how a tooltip can be used to display additional information during selection events.
 	
-	func lineChartView(lineChartView: JBLineChartView!, colorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
-		return theme
-	}
-	
+	// custom actions for selection events
 	func lineChartView(lineChartView: JBLineChartView!, didSelectLineAtIndex lineIndex: UInt, horizontalIndex: UInt) {
 		var value = self.values[Int(horizontalIndex)]
 		var date = self.dates[Int(horizontalIndex)]
 		df.timeStyle = .NoStyle
 		self.sleepLabel.text = "value: \(value), date: \(df.stringFromDate(date))"
 	}
-
 }
