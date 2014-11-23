@@ -75,7 +75,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 			
 			dispatch_async(dispatch_get_main_queue(), {
 				() -> Void in
-				if !self.isReady() {
+				if !self.ready{
 					self.loader.startAnimating()
 				}
 				if weeklyOverview.values.isEmpty {
@@ -89,6 +89,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		}
 		
 		self.healthStore?.requestAuthorizationToShareTypes(writeDataTypes, readTypes: readDataTypes, completion: completion)
+		self.loader.hidesWhenStopped = true
 	}
 	
 	override func viewDidLoad() {
@@ -99,16 +100,16 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	//check if data is ready
 	func isReady() -> Bool {
 		println("isReady?? \(self.ready)")
-		if ready {
+		if !self.ready {
 			if weeklyOverview.values.isEmpty {
 				weeklyOverview = (name: "Past Week in Steps", self.dates, self.values)
 				println("-----------------------------")
 				println("weeklyOverview status: \(weeklyOverview.values.count)")
 				println("-----------------------------")
 				
-				dates = []
-				values = []
-				ready = false
+				self.dates = []
+				self.values = []
+//				self.ready = false
 				self.queryDayInSteps()
 			} else if dailyOverview.values.isEmpty {
 				dailyOverview = (name: "Steps Taken Today", self.dates, self.values)
@@ -116,14 +117,19 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				println("dailyOverview status: \(dailyOverview.values.count)")
 				println("-----------------------------")
 				
-				dates = []
-				values = []
-			} else {
-				self.readyLabel.text = "ready!"
-				self.loader.stopAnimating()
+				self.dates = []
+				self.values = []
+				self.ready = true
+			}
+			else {
+				self.ready = true
 			}
 		}
-		return ready
+		if self.ready {
+			self.readyLabel.text = "Ready!"
+			self.loader.stopAnimating()
+		}
+		return self.ready
 	}
 	
 	// MARK: - TableView
@@ -135,7 +141,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell
 		
-		cell.textLabel.text = self.items[indexPath.row]
+		cell.textLabel?.text = self.items[indexPath.row]
 		
 		return cell
 	}
@@ -240,7 +246,6 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 					self.plotData(value, forDate: date)
 				}
 			}
-			self.ready = true
 			self.isReady()
 		}
 		self.healthStore?.executeQuery(query)
@@ -304,8 +309,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 					self.plotData(value, forDate: date)
 				}
 			}
-			self.ready = true
-			println("isReady?? \(self.ready)")
+			self.isReady()
 		}
 		self.healthStore?.executeQuery(query)
 	}
@@ -369,8 +373,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 					self.plotData(value, forDate: date)
 				}
 			}
-			self.ready = true
-			println("isReady?? \(self.ready)")
+			self.isReady()
 		}
 		self.healthStore?.executeQuery(query)
 	}
@@ -382,14 +385,11 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		df.dateStyle = .ShortStyle
 		df.timeStyle = .ShortStyle
 		println("\(df.stringFromDate(forDate)) : \(value)")
-		values.append(value)
-		dates.append(forDate)
-		if dates.count == 9 {
-			numberOfPoints = 9
-			println("numberOfPoints set")
-		}
+		self.values.append(value)
+		self.dates.append(forDate)
 	}
 	
+	// 
 	func requestStepsAndUpdate() {
 		var error: NSError?
 		let desc = self.healthStore?.description
