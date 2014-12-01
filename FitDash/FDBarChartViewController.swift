@@ -18,6 +18,10 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 	
 	@IBOutlet var barChart: JBBarChartView!
 	
+	let FDBarChartViewControllerChartPadding: CGFloat = 10.0
+	let FDBarChartViewControllerChartFooterPadding: CGFloat = 5.0
+	let FDBarChartViewControllerChartFooterHeight: CGFloat = 25.0
+	
 	// MARK: - Overrides
 	
 	override func viewDidLoad() {
@@ -38,6 +42,19 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 		super.viewDidAppear(true)
 		self.barChart.backgroundColor = lightTurquoise
 		self.barChart.minimumValue = 0
+		
+		var footerView = FDBarChartFooterView(frame: CGRectMake(FDBarChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(FDBarChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (FDBarChartViewControllerChartPadding * 2), FDBarChartViewControllerChartFooterHeight))
+		
+		footerView.padding = FDBarChartViewControllerChartFooterPadding
+		df.dateStyle = .ShortStyle
+		df.timeStyle = .ShortStyle
+		footerView.leftLabel.text = "\(df.stringFromDate(dates.first!))"
+		//footerView.leftLabel.textColor = white
+		footerView.rightLabel.text = "\(df.stringFromDate(dates.last!))"
+		//footerView.rightLabel.textColor = white
+		self.barChart.footerView = footerView
+		self.view.addSubview(self.barChart)
+		
 		self.barChart.reloadData()
 	}
 	

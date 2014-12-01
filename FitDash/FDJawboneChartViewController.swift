@@ -15,8 +15,8 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 	@IBOutlet var chartTitle: UILabel!
 	@IBOutlet var lineChart: JBLineChartView!
 	
-	let FDLineChartViewControllerChartPadding:CGFloat = 20.0
-	let FDLineChartViewControllerChartFooterHeight:CGFloat = 50.0
+	let FDLineChartViewControllerChartPadding:CGFloat = 10.0
+	let FDLineChartViewControllerChartFooterHeight:CGFloat = 25.0
 	
 	@IBAction override func refresh(sender: AnyObject) {
 		super.refresh(sender)
@@ -42,15 +42,18 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 		self.lineChart.backgroundColor = turquoise
 		var footerView = FDAxisFooterView(frame: CGRectMake(FDLineChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(FDLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (FDLineChartViewControllerChartPadding * 3), FDLineChartViewControllerChartFooterHeight))
 		
-//		footerView.leftLabel.text = [[self.daysOfWeek firstObject] uppercaseString];
-//		footerView.rightLabel.text = [[self.daysOfWeek lastObject] uppercaseString];
-		println(df.shortWeekdaySymbols)
+//		println(df.shortWeekdaySymbols)
 		
-		footerView.leftLabel.text = "lefty"
-		footerView.rightLabel.text = "today"
-		footerView.sectionCount = self.values.count
-//		footerView.setFooterSeparatorColor(UIColor.blackColor())
+		df.dateStyle = .ShortStyle
+		df.timeStyle = .ShortStyle
+		footerView.leftLabel.text = "\(df.stringFromDate(dates.first!))"
+		//footerView.leftLabel.textColor = white
+		footerView.rightLabel.text = "\(df.stringFromDate(dates.last!))"
+		//footerView.rightLabel.textColor = white
+		footerView.sectionCount = values.count
+		footerView.setFooterSeparatorColor(navyBlue)
 		self.lineChart.footerView = footerView
+		self.view.addSubview(self.lineChart)
 		self.lineChart.reloadData()
 	}
 	
@@ -116,7 +119,7 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 	
 	// dot color
 	func lineChartView(lineChartView: JBLineChartView!, colorForDotAtHorizontalIndex horizontalIndex: UInt, atLineIndex lineIndex: UInt) -> UIColor! {
-		return golden	//default is black (when not selected)
+		return navyBlue	//default is black (when not selected)
 	}
 	
 	// Bezier line (curved)

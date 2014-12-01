@@ -10,6 +10,7 @@
 		481C547B8561380FE3795EA1 /* libPods-FitDash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 959AE73FC8B7B5D7F28B4BE7 /* libPods-FitDash.a */; };
 		F107F9731A05CCA000E3801C /* FDTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F107F9721A05CCA000E3801C /* FDTableViewController.swift */; };
 		F10C218A1A071E1A000B7D8B /* FDBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10C21891A071E1A000B7D8B /* FDBaseViewController.swift */; };
+		F11D25161A2D0CE100945526 /* FDBarChartFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11D25151A2D0CE100945526 /* FDBarChartFooterView.swift */; };
 		F136CA8B1A2B987B0071EA51 /* FDCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F136CA8A1A2B987B0071EA51 /* FDCollectionHeaderView.swift */; };
 		F136CA8E1A2B9EAA0071EA51 /* FDCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F136CA8D1A2B9EAA0071EA51 /* FDCollectionViewCell.swift */; };
 		F136CA901A2BAAC20071EA51 /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F136CA8F1A2BAAC20071EA51 /* ColorConstants.swift */; };
@@ -43,6 +44,7 @@
 		DD227A865CC06CFC8F58812D /* Pods-FitDash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitDash.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FitDash/Pods-FitDash.debug.xcconfig"; sourceTree = "<group>"; };
 		F107F9721A05CCA000E3801C /* FDTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDTableViewController.swift; sourceTree = "<group>"; };
 		F10C21891A071E1A000B7D8B /* FDBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDBaseViewController.swift; sourceTree = "<group>"; };
+		F11D25151A2D0CE100945526 /* FDBarChartFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDBarChartFooterView.swift; sourceTree = "<group>"; };
 		F136CA8A1A2B987B0071EA51 /* FDCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDCollectionHeaderView.swift; sourceTree = "<group>"; };
 		F136CA8D1A2B9EAA0071EA51 /* FDCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDCollectionViewCell.swift; sourceTree = "<group>"; };
 		F136CA8F1A2BAAC20071EA51 /* ColorConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorConstants.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				F138D0C21A195B4B00F8256E /* FDAxisFooterView.swift */,
+				F11D25151A2D0CE100945526 /* FDBarChartFooterView.swift */,
 				F1C2137F1A0C0A0C0050E00C /* FDBarChartViewController.swift */,
 				F10C21891A071E1A000B7D8B /* FDBaseViewController.swift */,
 				F182014519EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift */,
@@ -337,6 +340,7 @@
 				F136CA901A2BAAC20071EA51 /* ColorConstants.swift in Sources */,
 				F136CA8B1A2B987B0071EA51 /* FDCollectionHeaderView.swift in Sources */,
 				F138D0C31A195B4B00F8256E /* FDAxisFooterView.swift in Sources */,
+				F11D25161A2D0CE100945526 /* FDBarChartFooterView.swift in Sources */,
 				F136CA8E1A2B9EAA0071EA51 /* FDCollectionViewCell.swift in Sources */,
 				F1DD11801A058EC500602C53 /* FDJawboneChartViewController.swift in Sources */,
 				F182014619EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift in Sources */,
