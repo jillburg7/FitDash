@@ -21,8 +21,8 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	@IBOutlet var readyLabel: UILabel!
 	@IBOutlet var tableView: UITableView!
 	
-	var items = ["BEMLineGraph", "JawboneChart", "JawboneBar", "DailySteps", "DailySteps"]
-	var segueID = ["bemGraphView", "jawboneLineChart", "barChartView", "barChartView", "jawboneLineChart"]
+	var items = ["BEMLineGraph", "JawboneChart", "JawboneBar", "DailySteps", "DailySteps", "collectionView"]
+	var segueID = ["bemGraphView", "jawboneLineChart", "barChartView", "barChartView", "jawboneLineChart", "collectionView"]
 	
 	var healthStore: HKHealthStore?
 	var stepSamples = [HKQuantitySample]()
@@ -35,7 +35,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	var now = NSDate()
 	var numberOfPoints:Int = 0
 	var ready = false
-	var data = ""
+	var dataDescription = ""
 	
 	// MARK: init
 	
@@ -75,7 +75,8 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 			
 			dispatch_async(dispatch_get_main_queue(), {
 				() -> Void in
-				if !self.ready{
+				// TODO: needs refactoring and/or code re-written
+				if !self.ready {
 					self.loader.startAnimating()
 				}
 				if weeklyOverview.values.isEmpty {
@@ -83,13 +84,12 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 //					self.queryDayInSteps()
 					self.queryPastWeekInSteps()
 //					self.plotWeeklySteps()
-//					self.isReady()
 				}
 			})
 		}
 		
 		self.healthStore?.requestAuthorizationToShareTypes(writeDataTypes, readTypes: readDataTypes, completion: completion)
-		self.loader.hidesWhenStopped = true
+		loader.hidesWhenStopped = true
 	}
 	
 	override func viewDidLoad() {
@@ -97,45 +97,10 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
 	}
 	
-	//check if data is ready
-	func isReady() -> Bool {
-		println("isReady?? \(self.ready)")
-		if !self.ready {
-			if weeklyOverview.values.isEmpty {
-				weeklyOverview = (name: "Past Week in Steps", self.dates, self.values)
-				println("-----------------------------")
-				println("weeklyOverview status: \(weeklyOverview.values.count)")
-				println("-----------------------------")
-				
-				self.dates = []
-				self.values = []
-//				self.ready = false
-				self.queryDayInSteps()
-			} else if dailyOverview.values.isEmpty {
-				dailyOverview = (name: "Steps Taken Today", self.dates, self.values)
-				println("-----------------------------")
-				println("dailyOverview status: \(dailyOverview.values.count)")
-				println("-----------------------------")
-				
-				self.dates = []
-				self.values = []
-				self.ready = true
-			}
-			else {
-				self.ready = true
-			}
-		}
-		if self.ready {
-			self.readyLabel.text = "Ready!"
-			self.loader.stopAnimating()
-		}
-		return self.ready
-	}
-	
 	// MARK: - TableView
 	
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return self.items.count;
+		return self.items.count
 	}
 	
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -153,32 +118,71 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
  
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
 		if segue.identifier != nil {
-			var chartDetails = segue.destinationViewController as FDBaseViewController
-			let indexPath = self.tableView.indexPathForSelectedRow()!
-			let destinationTitle = self.items[indexPath.row]
-			chartDetails.tupleData = ([],[])
-			
-			if segue.identifier == "bemGraphView" {
-				chartDetails = segue.destinationViewController as FDBEMSimpleGraphViewController
-			} else if segue.identifier == "jawboneLineChart" {
-				chartDetails = segue.destinationViewController as FDJawboneChartViewController
-			} else if segue.identifier == "barChartView" {
-				chartDetails = segue.destinationViewController as FDBarChartViewController
-			}
-			
-			if self.items[indexPath.row] == "DailySteps" {
-				data = dailyOverview.name
-				chartDetails.tupleData = (dailyOverview.dates, dailyOverview.values)
+			if segue.identifier == "collectionView" {
+				var collectionview = segue.destinationViewController as FDCollectionViewController
+				let indexPath = self.tableView.indexPathForSelectedRow()!
+				collectionview.title = self.items[indexPath.row]
 			} else {
-				data = weeklyOverview.name
-				chartDetails.tupleData = (weeklyOverview.dates, weeklyOverview.values)
+				var chartDetails = segue.destinationViewController as FDBaseViewController
+				let indexPath = self.tableView.indexPathForSelectedRow()!
+				let destinationTitle = self.items[indexPath.row]
+				chartDetails.tupleData = ([],[])
+				
+				if segue.identifier == "bemGraphView" {
+					chartDetails = segue.destinationViewController as FDBEMSimpleGraphViewController
+				} else if segue.identifier == "jawboneLineChart" {
+					chartDetails = segue.destinationViewController as FDJawboneChartViewController
+				} else if segue.identifier == "barChartView" {
+					chartDetails = segue.destinationViewController as FDBarChartViewController
+				}
+				
+				if self.items[indexPath.row] == "DailySteps" {
+					dataDescription = dailyOverview.name
+					chartDetails.tupleData = (dailyOverview.dates, dailyOverview.values)
+				} else {
+					dataDescription = weeklyOverview.name
+					chartDetails.tupleData = (weeklyOverview.dates, weeklyOverview.values)
+				}
+				
+				chartDetails.title = destinationTitle
+				chartDetails.healthStore = self.healthStore
+				chartDetails.dataTitle = dataDescription
 			}
-			
-			chartDetails.title = destinationTitle
-			chartDetails.healthStore = self.healthStore
-//			chartDetails.tupleData = (self.dates, self.values)
-			chartDetails.dataTitle = data
 		}
+	}
+	
+	// MARK: - isReady()
+	
+	//check if data is ready
+	func isReady() -> Bool {
+		// TODO: needs factoring
+		println("isReady?? \(ready)")
+		if !ready {
+			if weeklyOverview.values.isEmpty {
+				weeklyOverview = (name: "Past Week in Steps", dates, values)
+				println("-----------------------------")
+				println("weeklyOverview status: \(weeklyOverview.values.count)")
+				println("-----------------------------")
+				
+				dates = []
+				values = []
+				queryDayInSteps()
+			} else if dailyOverview.values.isEmpty {
+				dailyOverview = (name: "Steps Taken Today", dates, values)
+				println("-----------------------------")
+				println("dailyOverview status: \(dailyOverview.values.count)")
+				println("-----------------------------")
+				
+				dates = []
+				values = []
+				ready = true
+			}
+		}
+		if ready {
+			readyLabel.text = "Ready!"
+			loader.stopAnimating()
+		}
+		return ready
 	}
 	
 	// MARK: - Graphing Functions
@@ -240,7 +244,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				} else if statistics.sumQuantity() == nil {
 					df.dateStyle = .NoStyle
 					df.timeStyle = .ShortStyle
-//					print("\(df.stringFromDate(statistics.startDate)) is nil (or 0)?")
+					
 					let date = statistics.startDate
 					let value = 0.0
 					self.plotData(value, forDate: date)
@@ -271,8 +275,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		df.dateStyle = .ShortStyle
 		df.timeStyle = .ShortStyle
 		
-		let quantityType =
-		HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
+		let quantityType = HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
 		
 		let endDate = NSDate()
 		let startDate = calendar.dateByAddingUnit(.DayCalendarUnit, value: -7, toDate: endDate, options: nil)
@@ -280,7 +283,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		
 		// Create the query
 		let query = HKStatisticsCollectionQuery(quantityType: quantityType,
-			quantitySamplePredicate: predicate, //nil,
+			quantitySamplePredicate: predicate,
 			options: .CumulativeSum,
 			anchorDate: anchorDate,
 			intervalComponents: interval)
@@ -385,8 +388,8 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		df.dateStyle = .ShortStyle
 		df.timeStyle = .ShortStyle
 		println("\(df.stringFromDate(forDate)) : \(value)")
-		self.values.append(value)
-		self.dates.append(forDate)
+		values.append(value)
+		dates.append(forDate)
 	}
 	
 	// 

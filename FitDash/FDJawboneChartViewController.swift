@@ -16,7 +16,7 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 	@IBOutlet var lineChart: JBLineChartView!
 	
 	let FDLineChartViewControllerChartPadding:CGFloat = 20.0
-	let FDLineChartViewControllerChartFooterHeight:CGFloat = 20.0
+	let FDLineChartViewControllerChartFooterHeight:CGFloat = 50.0
 	
 	@IBAction override func refresh(sender: AnyObject) {
 		super.refresh(sender)
@@ -40,15 +40,16 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 		super.viewDidAppear(true)
 		displayTodaysStats()
 		self.lineChart.backgroundColor = turquoise
-		var footerView = FDAxisLabelView(frame: CGRectMake(FDLineChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(FDLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (FDLineChartViewControllerChartPadding * 3), FDLineChartViewControllerChartFooterHeight))
+		var footerView = FDAxisFooterView(frame: CGRectMake(FDLineChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(FDLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (FDLineChartViewControllerChartPadding * 3), FDLineChartViewControllerChartFooterHeight))
 		
 //		footerView.leftLabel.text = [[self.daysOfWeek firstObject] uppercaseString];
 //		footerView.rightLabel.text = [[self.daysOfWeek lastObject] uppercaseString];
+		println(df.shortWeekdaySymbols)
 		
 		footerView.leftLabel.text = "lefty"
 		footerView.rightLabel.text = "today"
 		footerView.sectionCount = self.values.count
-		footerView.setFooterSeparatorColor(white)
+//		footerView.setFooterSeparatorColor(UIColor.blackColor())
 		self.lineChart.footerView = footerView
 		self.lineChart.reloadData()
 	}
@@ -80,15 +81,17 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 	
 	// MARK: JBLineChartView Methods
 	
+	/*
 	//area under line  -- always displayed
-//	func lineChartView(lineChartView: JBLineChartView!, fillColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
-//		return UIColor.greenColor() //white
-//	}
+	func lineChartView(lineChartView: JBLineChartView!, fillColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
+		return UIColor.greenColor() //white
+	}
 
 	//area under line  -- displayed when touched
-//	func lineChartView(lineChartView: JBLineChartView!, selectionFillColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
-//		return UIColor.blueColor()
-//	}
+	func lineChartView(lineChartView: JBLineChartView!, selectionFillColorForLineAtLineIndex lineIndex: UInt) -> UIColor! {
+		return UIColor.blueColor()
+	}
+	*/
 	
 	// color of the line
 	func lineChartView(lineChartView: JBLineChartView!, colorForLineAtLineIndex lineIndex: UInt) -> UIColor! {

@@ -13,31 +13,32 @@ let AxisLabelSeparatorWidth:CGFloat = 0.5
 let AxisLabelSeparatorHeight:CGFloat = 3.0
 let AxisLabelSectionPadding:CGFloat = 1.0
 
-class FDAxisLabelView: UIView {
+class FDAxisFooterView: UIView {
 	
 	var leftLabel: UILabel!
 	var rightLabel: UILabel!
 	
 	var sectionCount = 5
-	var separatorColor = UIColor.whiteColor()
+	var separatorColor = UIColor.blackColor()
 	
 	override init(frame aRect: CGRect) {
 		super.init(frame: aRect)
 		self.backgroundColor = UIColor.clearColor()
+		separatorColor = UIColor.blackColor()
 		
-		self.leftLabel = UILabel()
-		self.leftLabel.textAlignment = .Left
-		self.leftLabel.adjustsFontSizeToFitWidth = true
-		self.leftLabel.textColor = UIColor.whiteColor()
-		self.leftLabel.backgroundColor = UIColor.clearColor()
-		self.addSubview(self.leftLabel)
+		leftLabel = UILabel()
+		leftLabel.textAlignment = .Left
+		leftLabel.adjustsFontSizeToFitWidth = true
+		leftLabel.textColor = UIColor.whiteColor()
+		leftLabel.backgroundColor = UIColor.clearColor()
+		self.addSubview(leftLabel)
 		
-		self.rightLabel = UILabel()
-		self.rightLabel.textAlignment = .Right
-		self.rightLabel.adjustsFontSizeToFitWidth = true
-		self.rightLabel.textColor = UIColor.whiteColor()
-		self.rightLabel.backgroundColor = UIColor.clearColor()
-		self.addSubview(self.rightLabel)
+		rightLabel = UILabel()
+		rightLabel.textAlignment = .Right
+		rightLabel.adjustsFontSizeToFitWidth = true
+		rightLabel.textColor = UIColor.whiteColor()
+		rightLabel.backgroundColor = UIColor.clearColor()
+		self.addSubview(rightLabel)
 	}
 
 	required init(coder aDecoder: NSCoder) {
@@ -45,11 +46,11 @@ class FDAxisLabelView: UIView {
 	}
 	
 	func setLeftLabelText(left: String) {
-		self.leftLabel.text = left
+		leftLabel.text = left
 	}
 	
 	func setRightLabelText(right: String) {
-		self.rightLabel.text = right
+		rightLabel.text = right
 	}
 	
     // Only override drawRect: if you perform custom drawing.
@@ -59,15 +60,15 @@ class FDAxisLabelView: UIView {
 		
         // Drawing code
 		var context = UIGraphicsGetCurrentContext()
-		CGContextSetStrokeColorWithColor(context, self.separatorColor.CGColor)
+		CGContextSetStrokeColorWithColor(context, separatorColor.CGColor)
 		CGContextSetLineWidth(context, 0.5)
 		CGContextSetShouldAntialias(context, true)
 		
 		var xOffset:CGFloat = 0.0
 		var yOffset = AxisLabelSeparatorWidth
-		var stepLength = ceil(self.bounds.size.width / CGFloat(self.sectionCount - 1))
+		var stepLength = ceil(self.bounds.size.width / CGFloat(sectionCount - 1))
 		
-		for var i=0; i<self.sectionCount; i++ {
+		for var i=0; i < sectionCount; i++ {
 			CGContextSaveGState(context)
 			CGContextMoveToPoint(context, xOffset + AxisLabelSeparatorWidth * 0.5, yOffset)
 			CGContextAddLineToPoint(context, xOffset + AxisLabelSeparatorWidth * 0.5, yOffset + AxisLabelSeparatorWidth)
@@ -77,7 +78,7 @@ class FDAxisLabelView: UIView {
 			CGContextRestoreGState(context);
 		}
 		
-		if self.sectionCount > 1 {
+		if sectionCount > 1 {
 			CGContextSaveGState(context)
 			CGContextMoveToPoint(context, self.bounds.size.width - AxisLabelSeparatorWidth * 0.5, yOffset)
 			CGContextAddLineToPoint(context, self.bounds.size.width - AxisLabelSeparatorWidth * 0.5, yOffset + AxisLabelSeparatorHeight)
@@ -93,18 +94,18 @@ class FDAxisLabelView: UIView {
 		var yOffset = AxisLabelSectionPadding
 		var width = ceil(self.bounds.size.width * 0.5)
 		
-		self.leftLabel.frame = CGRectMake(xOffset, yOffset, width, self.bounds.size.height)
-		self.rightLabel.frame = CGRectMake(CGRectGetMaxX(leftLabel.frame), yOffset, width, self.bounds.size.height);
+		leftLabel.frame = CGRectMake(xOffset, yOffset, width, self.bounds.size.height)
+		rightLabel.frame = CGRectMake(CGRectGetMaxX(leftLabel.frame), yOffset, width, self.bounds.size.height);
 
 	}
 	
 	func setSectionCount(sections: Int) {
-		self.sectionCount = sections
+		sectionCount = sections
 		self.setNeedsDisplay()
 	}
 	
 	func setFooterSeparatorColor(footerSeparatorColor: UIColor) {
-		self.separatorColor = footerSeparatorColor
+		separatorColor = footerSeparatorColor
 		self.setNeedsDisplay()
 	}
 }

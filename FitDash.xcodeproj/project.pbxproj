@@ -10,7 +10,11 @@
 		481C547B8561380FE3795EA1 /* libPods-FitDash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 959AE73FC8B7B5D7F28B4BE7 /* libPods-FitDash.a */; };
 		F107F9731A05CCA000E3801C /* FDTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F107F9721A05CCA000E3801C /* FDTableViewController.swift */; };
 		F10C218A1A071E1A000B7D8B /* FDBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10C21891A071E1A000B7D8B /* FDBaseViewController.swift */; };
-		F138D0C31A195B4B00F8256E /* FDAxisLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F138D0C21A195B4B00F8256E /* FDAxisLabelView.swift */; };
+		F136CA8B1A2B987B0071EA51 /* FDCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F136CA8A1A2B987B0071EA51 /* FDCollectionHeaderView.swift */; };
+		F136CA8E1A2B9EAA0071EA51 /* FDCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F136CA8D1A2B9EAA0071EA51 /* FDCollectionViewCell.swift */; };
+		F136CA901A2BAAC20071EA51 /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F136CA8F1A2BAAC20071EA51 /* ColorConstants.swift */; };
+		F138D0C31A195B4B00F8256E /* FDAxisFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F138D0C21A195B4B00F8256E /* FDAxisFooterView.swift */; };
+		F1562DB31A29645A003F5B48 /* FDCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1562DB21A29645A003F5B48 /* FDCollectionViewController.swift */; };
 		F182014419EAEEB500E5ACB4 /* FDAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182014319EAEEB500E5ACB4 /* FDAppDelegate.swift */; };
 		F182014619EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182014519EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift */; };
 		F182014919EAEEB500E5ACB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F182014719EAEEB500E5ACB4 /* Main.storyboard */; };
@@ -39,7 +43,11 @@
 		DD227A865CC06CFC8F58812D /* Pods-FitDash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FitDash.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FitDash/Pods-FitDash.debug.xcconfig"; sourceTree = "<group>"; };
 		F107F9721A05CCA000E3801C /* FDTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDTableViewController.swift; sourceTree = "<group>"; };
 		F10C21891A071E1A000B7D8B /* FDBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDBaseViewController.swift; sourceTree = "<group>"; };
-		F138D0C21A195B4B00F8256E /* FDAxisLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDAxisLabelView.swift; sourceTree = "<group>"; };
+		F136CA8A1A2B987B0071EA51 /* FDCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDCollectionHeaderView.swift; sourceTree = "<group>"; };
+		F136CA8D1A2B9EAA0071EA51 /* FDCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDCollectionViewCell.swift; sourceTree = "<group>"; };
+		F136CA8F1A2BAAC20071EA51 /* ColorConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorConstants.swift; sourceTree = "<group>"; };
+		F138D0C21A195B4B00F8256E /* FDAxisFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDAxisFooterView.swift; sourceTree = "<group>"; };
+		F1562DB21A29645A003F5B48 /* FDCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDCollectionViewController.swift; sourceTree = "<group>"; };
 		F17ECB7219EB6DD9008E9FC9 /* FitDash-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FitDash-Bridging-Header.h"; sourceTree = "<group>"; };
 		F182013E19EAEEB500E5ACB4 /* FitDash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitDash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F182014219EAEEB500E5ACB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -95,6 +103,28 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F136CA891A2B97FE0071EA51 /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				F138D0C21A195B4B00F8256E /* FDAxisFooterView.swift */,
+				F1C2137F1A0C0A0C0050E00C /* FDBarChartViewController.swift */,
+				F10C21891A071E1A000B7D8B /* FDBaseViewController.swift */,
+				F182014519EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift */,
+				F1DD117F1A058EC500602C53 /* FDJawboneChartViewController.swift */,
+			);
+			name = Charts;
+			sourceTree = "<group>";
+		};
+		F136CA8C1A2B98820071EA51 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				F136CA8A1A2B987B0071EA51 /* FDCollectionHeaderView.swift */,
+				F136CA8D1A2B9EAA0071EA51 /* FDCollectionViewCell.swift */,
+				F1562DB21A29645A003F5B48 /* FDCollectionViewController.swift */,
+			);
+			name = CollectionView;
+			sourceTree = "<group>";
+		};
 		F182013519EAEEB500E5ACB4 = {
 			isa = PBXGroup;
 			children = (
@@ -119,15 +149,13 @@
 		F182014019EAEEB500E5ACB4 /* FitDash */ = {
 			isa = PBXGroup;
 			children = (
-				F182016319EAEF3C00E5ACB4 /* FitDash.entitlements */,
-				F17ECB7219EB6DD9008E9FC9 /* FitDash-Bridging-Header.h */,
+				F136CA891A2B97FE0071EA51 /* Charts */,
+				F136CA8C1A2B98820071EA51 /* CollectionView */,
+				F136CA8F1A2BAAC20071EA51 /* ColorConstants.swift */,
 				F182014319EAEEB500E5ACB4 /* FDAppDelegate.swift */,
-				F10C21891A071E1A000B7D8B /* FDBaseViewController.swift */,
-				F138D0C21A195B4B00F8256E /* FDAxisLabelView.swift */,
-				F182014519EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift */,
-				F1DD117F1A058EC500602C53 /* FDJawboneChartViewController.swift */,
-				F1C2137F1A0C0A0C0050E00C /* FDBarChartViewController.swift */,
 				F107F9721A05CCA000E3801C /* FDTableViewController.swift */,
+				F17ECB7219EB6DD9008E9FC9 /* FitDash-Bridging-Header.h */,
+				F182016319EAEF3C00E5ACB4 /* FitDash.entitlements */,
 				F182016819EB379100E5ACB4 /* HKHealthStoreExtension.swift */,
 				F182014A19EAEEB500E5ACB4 /* Images.xcassets */,
 				F182014C19EAEEB500E5ACB4 /* LaunchScreen.xib */,
@@ -304,8 +332,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1C213801A0C0A0C0050E00C /* FDBarChartViewController.swift in Sources */,
+				F1562DB31A29645A003F5B48 /* FDCollectionViewController.swift in Sources */,
 				F107F9731A05CCA000E3801C /* FDTableViewController.swift in Sources */,
-				F138D0C31A195B4B00F8256E /* FDAxisLabelView.swift in Sources */,
+				F136CA901A2BAAC20071EA51 /* ColorConstants.swift in Sources */,
+				F136CA8B1A2B987B0071EA51 /* FDCollectionHeaderView.swift in Sources */,
+				F138D0C31A195B4B00F8256E /* FDAxisFooterView.swift in Sources */,
+				F136CA8E1A2B9EAA0071EA51 /* FDCollectionViewCell.swift in Sources */,
 				F1DD11801A058EC500602C53 /* FDJawboneChartViewController.swift in Sources */,
 				F182014619EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift in Sources */,
 				F182014419EAEEB500E5ACB4 /* FDAppDelegate.swift in Sources */,
