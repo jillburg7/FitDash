@@ -9,8 +9,6 @@
 import UIKit
 import HealthKit
 
-var weeklyValues: [Double] = []
-var weeklyDates: [NSDate] = []
 var weeklyOverview: (name: String, dates: [NSDate], values: [Double]) = ("", [],[])
 var dailyOverview: (name: String, dates: [NSDate], values: [Double]) = ("", [],[])
 
@@ -21,8 +19,8 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	@IBOutlet var readyLabel: UILabel!
 	@IBOutlet var tableView: UITableView!
 	
-	var items = ["BEMLineGraph", "JawboneChart", "JawboneBar", "DailySteps", "DailySteps", "collectionView"]
-	var segueID = ["bemGraphView", "jawboneLineChart", "barChartView", "barChartView", "jawboneLineChart", "collectionView"]
+	var items = ["BEMLineGraph", "JawboneChart", "JawboneBar", "collectionView"]
+	var segueID = ["bemGraphView", "jawboneLineChart", "barChartView", "collectionView"]
 	
 	var healthStore: HKHealthStore?
 	var stepSamples = [HKQuantitySample]()
@@ -81,7 +79,6 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				}
 				if weeklyOverview.values.isEmpty {
 				// Update the user interface based on the current user's health information.
-//					self.queryDayInSteps()
 					self.queryPastWeekInSteps()
 //					self.plotWeeklySteps()
 				}
@@ -122,6 +119,8 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				var collectionview = segue.destinationViewController as FDCollectionViewController
 				let indexPath = self.tableView.indexPathForSelectedRow()!
 				collectionview.title = self.items[indexPath.row]
+				
+				collectionview.healthData = FDDayStatsPerHour(store: healthStore!)
 			} else {
 				var chartDetails = segue.destinationViewController as FDBaseViewController
 				let indexPath = self.tableView.indexPathForSelectedRow()!
@@ -136,13 +135,13 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 					chartDetails = segue.destinationViewController as FDBarChartViewController
 				}
 				
-				if self.items[indexPath.row] == "DailySteps" {
-					dataDescription = dailyOverview.name
-					chartDetails.tupleData = (dailyOverview.dates, dailyOverview.values)
-				} else {
-					dataDescription = weeklyOverview.name
-					chartDetails.tupleData = (weeklyOverview.dates, weeklyOverview.values)
-				}
+//				if self.items[indexPath.row] == "DailySteps" {
+//					dataDescription = dailyOverview.name
+//					chartDetails.tupleData = (dailyOverview.dates, dailyOverview.values)
+//				} else {
+//					dataDescription = weeklyOverview.name
+//					chartDetails.tupleData = (weeklyOverview.dates, weeklyOverview.values)
+//				}
 				
 				chartDetails.title = destinationTitle
 				chartDetails.healthStore = self.healthStore
@@ -166,7 +165,8 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				
 				dates = []
 				values = []
-				queryDayInSteps()
+				
+//				queryDayInSteps()
 			} else if dailyOverview.values.isEmpty {
 				dailyOverview = (name: "Steps Taken Today", dates, values)
 				println("-----------------------------")
@@ -186,74 +186,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	}
 	
 	// MARK: - Graphing Functions
-	
-	//creates a collection for plotting the past week in step counts
-	func queryDayInSteps() {
-		let calendar = NSCalendar.currentCalendar()
-		
-		let interval = NSDateComponents()
-		interval.hour = 1
-		
-		// Set the anchor date to Monday at 12:00 a.m.
-		let anchorComponents =
-		calendar.components(.CalendarUnitDay | .CalendarUnitMonth |
-			.CalendarUnitYear | .CalendarUnitWeekday, fromDate: NSDate())
-		
-		//		let offset = (7 + anchorComponents.weekday - 2) % 7
-		//		anchorComponents.day -= offset
-		anchorComponents.hour = 0
-		
-		let anchorDate = calendar.dateFromComponents(anchorComponents)
-		let df = NSDateFormatter()
-		df.dateStyle = .ShortStyle
-		df.timeStyle = .ShortStyle
-		
-		let quantityType =
-		HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
-		
-		let endDate = NSDate()
-		let startDate = NSCalendar.currentCalendar().dateBySettingHour(0, minute: 0, second: 0, ofDate: endDate, options: nil)!
-		let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
-		
-		// Create the query
-		let query = HKStatisticsCollectionQuery(quantityType: quantityType,
-			quantitySamplePredicate: predicate, //nil,
-			options: .CumulativeSum,
-			anchorDate: anchorDate,
-			intervalComponents: interval)
-		
-		// Set the results handler
-		query.initialResultsHandler = {
-			query, results, error in
-			
-			if error != nil {
-				// Perform proper error handling here
-				println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
-				abort()
-			}
-			
-			// Plot todayd step counts on the hour every hour until current time
-			results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
-				statistics, stop in
-				
-				if let quantity = statistics.sumQuantity() {
-					let date = statistics.startDate
-					let value = quantity.doubleValueForUnit(HKUnit.countUnit())
-					
-					self.plotData(value, forDate: date)
-				} else if statistics.sumQuantity() == nil {
-					df.dateStyle = .NoStyle
-					df.timeStyle = .ShortStyle
-					
-					let date = statistics.startDate
-					let value = 0.0
-					self.plotData(value, forDate: date)
-				}
-			}
-			self.isReady()
-		}
-		self.healthStore?.executeQuery(query)
-	}
+
 	
 	
 	//creates a collection for plotting the past week in step counts

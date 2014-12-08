@@ -11,9 +11,11 @@ import HealthKit
 
 class FDBaseViewController: UIViewController {
 	
-	// MARK:
+	// MARK: properties
+	
 	
 	var healthStore: HKHealthStore?
+	
 	var tupleData: ([NSDate], [Double]) = ([],[])
 	
 	var steps = 0.0
@@ -116,6 +118,7 @@ class FDBaseViewController: UIViewController {
 		self.getTodaysCumulativeDistance()
 		self.getTodaysFlightsClimbed()
 		self.getSleepAnalysis()
+		self.getTodaysActiveCalories()
 	}
 	
 	// MARK: - Today's Stats
@@ -186,6 +189,30 @@ class FDBaseViewController: UIViewController {
 		self.healthStore?.executeQuery(query)
 	}
 	
+	func getTodaysActiveCalories() {
+		let activeCal = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned)
+		let threeDaysAgo = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitDay, value: -7, toDate: now, options: nil)!
+		let predicate = HKQuery.predicateForSamplesWithStartDate(threeDaysAgo, endDate: now, options: .StrictStartDate)
+		
+		let query = HKStatisticsQuery(quantityType: activeCal, quantitySamplePredicate: predicate, options: .CumulativeSum) {
+				(query, results, error) in
+			if results == nil {
+				println("There was an error running the query: \(error)")
+			}
+			
+			dispatch_async(dispatch_get_main_queue()) {
+				println("Sample Description: \(results.description)")
+//				println("Active Calories Source: \(results.sources)")
+				
+				if let quantity = results.sumQuantity() {
+					let unit = HKUnit.calorieUnit()
+					println("Active Calories: \(quantity.doubleValueForUnit(unit))")
+				}
+			}
+		}
+		self.healthStore?.executeQuery(query)
+	}
+	
 	//By comparing the start and end times of these samples, apps can calculate a number of secondary statistics: 
 	//	- the amount of time it took for the user to fall asleep,
 	//	- the percentage of time in bed that the user actually spent sleeping,
@@ -208,7 +235,6 @@ class FDBaseViewController: UIViewController {
 				
 				if let quantity = results.first as? HKCategorySample {
 					println("Sleep Description: \(quantity.description)")
-					println(results.count)
 					println(quantity.source.description)
 					println()
 					

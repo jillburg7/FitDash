@@ -79,6 +79,7 @@ extension HKHealthStore {
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount),
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning),
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierFlightsClimbed),
+			//sleep
 			HKCategoryType.categoryTypeForIdentifier(HKCategoryTypeIdentifierSleepAnalysis),
 			//calories
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDietaryEnergyConsumed),
@@ -94,6 +95,4 @@ extension HKHealthStore {
 		return NSSet(array: dataTypesToRead)
 	}
 
-	
-	
 }

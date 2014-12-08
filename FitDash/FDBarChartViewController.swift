@@ -51,6 +51,9 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 		footerView.leftLabel.text = "\(df.stringFromDate(dates.first!))"
 		//footerView.leftLabel.textColor = white
 		footerView.rightLabel.text = "\(df.stringFromDate(dates.last!))"
+		
+		footerView.sectionCount = values.count
+		footerView.setFooterSeparatorColor(navyBlue)
 		//footerView.rightLabel.textColor = white
 		self.barChart.footerView = footerView
 		self.view.addSubview(self.barChart)

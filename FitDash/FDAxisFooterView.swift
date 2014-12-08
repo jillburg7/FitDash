@@ -9,7 +9,7 @@
 import UIKit
 import CoreGraphics
 
-let AxisLabelSeparatorWidth:CGFloat = 0.5
+let AxisLabelSeparatorWidth:CGFloat = 0.4
 let AxisLabelSeparatorHeight:CGFloat = 3.0
 let AxisLabelSectionPadding:CGFloat = 1.0
 

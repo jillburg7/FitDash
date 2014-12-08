@@ -8,11 +8,17 @@
 
 import UIKit
 
+
 class FDCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
-//	let reuseIdentifier = "Cell"
-	var collectionItems = ["Steps", "Distance", "Flights Climbed", "Sleep", "Active Calories"]
-	var segueID = ["barChartView", "barChartView", "barChartView", "barChartView", "barChartView"] //bemGraphView
+	// MARK: Class properties
+	var healthData: FDHealthData?
+	var selected = ""
+	
+	var collectionItems = ["Steps", "Distance", "Flights Climbed", "Sleep", "Active Calories", "Dietary Calories"]
+	var segueID = ["barChartView", "barChartView", "barChartView", "barChartView", "barChartView", "barChartView"] //bemGraphView
+	
+	// MARK: - Overrides
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +30,7 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
 //        self.collectionView!.registerClass(FDCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
+		setup()
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,6 +38,11 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
         // Dispose of any resources that can be recreated.
     }
 
+	// MARK: - Setup Statistic Collection Queries
+	
+	func setup() {
+		(healthData as FDDayStatsPerHour).startQueries()
+	}
 	
     // MARK: - Navigation
 
@@ -40,8 +52,30 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
         // Pass the selected object to the new view controller.
 		if segue.identifier == "barChartView" {
 			var chartDetails = segue.destinationViewController as FDBarChartViewController
-			println("sender: \(sender.description)")
+			chartDetails.tupleData = ([],[])
 			
+			if selected == "Steps" {
+				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInStepsPerHour()
+				chartDetails.dataTitle = "DayInSteps"
+			} else if selected == "Distance" {
+				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInDistancePerHour()
+				chartDetails.dataTitle = "Day in Distance"
+			} else if selected == "Flights Climbed" {
+				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInFlightsClimbedPerHour()
+				chartDetails.dataTitle = "Day in Flights Climbed"
+			} else if selected == "Sleep" {
+				chartDetails.tupleData = ([NSDate()],[0.0])
+//				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInSleepPerHour()
+				chartDetails.dataTitle = "Day in Sleep"
+			} else if selected == "Active Calories" {
+				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInActiveCaloriesPerHour()
+				chartDetails.dataTitle = "Day in Active Calories"
+			} else if selected == "Dietary Calories" {
+				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInDietaryCaloriesPerHour()
+				chartDetails.dataTitle = "Day in Dietary Calories"
+			}
+			
+			chartDetails.title = selected
 		}
     }
 
@@ -67,9 +101,11 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
         return cell
 	}
 	
+	/*
 	override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 		println("You selected collectionView cell \(self.collectionItems[indexPath.item])")
 	}
+	*/
 	
 	/*
 	override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
@@ -91,13 +127,13 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
     override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
-    
-	/*
+	
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+		println("You selected collectionView cell \(self.collectionItems[indexPath.item])")
+		selected = self.collectionItems[indexPath.item]
+		return true
     }
-	*/
 
     /*
     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
@@ -122,10 +158,8 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
 		return CGSize(width: square, height: square)
 	}
 	
-	private let sectionInsets = UIEdgeInsets(top: 10.0, left: 20.0, bottom: 30.0, right: 20.0)
- 
 	func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-		return sectionInsets
+		return UIEdgeInsets(top: 10.0, left: 20.0, bottom: 30.0, right: 20.0)
 	}
 	
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
