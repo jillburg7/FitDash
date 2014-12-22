@@ -52,7 +52,7 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 		//footerView.leftLabel.textColor = white
 		footerView.rightLabel.text = "\(df.stringFromDate(dates.last!))"
 		
-		footerView.sectionCount = values.count
+		footerView.sectionCount = values.count - 2
 		footerView.setFooterSeparatorColor(navyBlue)
 		//footerView.rightLabel.textColor = white
 		self.barChart.footerView = footerView
@@ -61,17 +61,18 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 		self.barChart.reloadData()
 	}
 	
-	
 	// MARK: - JBBarChartViewDataSource
 	
+	// number of values/bars to plot
 	func numberOfBarsInBarChartView(barChartView: JBBarChartView!) -> UInt {
 		return UInt(numberOfPoints)
 	}
 	
 	// MARK: - JBBarChartViewDelegate
 	
+	//value of bar, also the height
 	func barChartView(barChartView: JBBarChartView!, heightForBarViewAtIndex index: UInt) -> CGFloat {
-		if !self.values.isEmpty {
+		if !values.isEmpty {
 			return CGFloat(values[Int(index)])
 		}
 		else {
@@ -81,10 +82,13 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 	
 	//MARK: JBBarChartView methods
 	
+	// a bar is selected (user touched)
 	func barChartView(barChartView: JBBarChartView!, didSelectBarAtIndex index: UInt) {
 		var value = self.values[Int(index)]
 		var date = self.dates[Int(index)]
-		self.minValue.text = "Value: \(value)"
+//		self.minValue.text = "Value: \(value)"
+		var valueString = String(format:"%.2f", value)
+		self.minValue.text = "Value: \(valueString)"
 		self.minDate.text = ""
 		self.maxDate.text = ""
 		df.dateStyle = .ShortStyle
@@ -92,8 +96,9 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 		self.maxValue.text = "Date: \(df.stringFromDate(date))"
 	}
 	
+	//touchPoint is where the user touched on the bar that was selected.
 	func barChartView(barChartView: JBBarChartView!, didSelectBarAtIndex index: UInt, touchPoint: CGPoint) {
-//		barChartView.footerView
+//		println("user touchPoint: (\(touchPoint.x), \(touchPoint.y))")
 	}
 	
 	func didDeselectBarChartView(barChartView: JBBarChartView!) {

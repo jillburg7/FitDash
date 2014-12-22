@@ -18,18 +18,13 @@ class FDHealthData {
 	var dates: [NSDate] = []
 	
 	
-//	var daySteps: [Double] = []
-//	var timeInHours: [NSDate] = []
-//	var weeklySteps: [Double] = []
-//	var weeklyDates: [NSDate] = []
-//	var weeklyDistance: [Double] = []
-//	var weeklyFlightsClimbed: [Double] = []
-	
 	// MARK: - Overrides
 	
 	init(store: HKHealthStore) {
 		healthStore = store
 	}
+	
+	/*
 	
 	func addData(value: Double, forDate: NSDate) {
 		let df = NSDateFormatter()
@@ -103,4 +98,6 @@ class FDHealthData {
 		}
 		self.healthStore?.executeQuery(query)
 	}
+	*/
+	
 }

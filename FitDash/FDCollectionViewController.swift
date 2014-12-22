@@ -30,7 +30,6 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
 //        self.collectionView!.registerClass(FDCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
-		setup()
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,8 +39,14 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
 
 	// MARK: - Setup Statistic Collection Queries
 	
-	func setup() {
-		(healthData as FDDayStatsPerHour).startQueries()
+	// initializes model data depending on the string was passed in denoting the class to use for function calls
+	func setup(objType: String) {
+		// TODO: add other Model classes
+		if objType == "day" {
+			(healthData as FDDayStatsPerHour).startQueries()
+		} else if objType == "week" {
+			(healthData as FDWeekStatsPerDay).startQueries()
+		}
 	}
 	
     // MARK: - Navigation
@@ -54,25 +59,47 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
 			var chartDetails = segue.destinationViewController as FDBarChartViewController
 			chartDetails.tupleData = ([],[])
 			
-			if selected == "Steps" {
-				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInStepsPerHour()
-				chartDetails.dataTitle = "DayInSteps"
-			} else if selected == "Distance" {
-				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInDistancePerHour()
-				chartDetails.dataTitle = "Day in Distance"
-			} else if selected == "Flights Climbed" {
-				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInFlightsClimbedPerHour()
-				chartDetails.dataTitle = "Day in Flights Climbed"
-			} else if selected == "Sleep" {
-				chartDetails.tupleData = ([NSDate()],[0.0])
-//				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInSleepPerHour()
-				chartDetails.dataTitle = "Day in Sleep"
-			} else if selected == "Active Calories" {
-				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInActiveCaloriesPerHour()
-				chartDetails.dataTitle = "Day in Active Calories"
-			} else if selected == "Dietary Calories" {
-				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInDietaryCaloriesPerHour()
-				chartDetails.dataTitle = "Day in Dietary Calories"
+			if healthData is FDWeekStatsPerDay {
+				if selected == "Steps" {
+					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInStepsPerDay()
+					chartDetails.dataTitle = "Week In Steps"
+				} else if selected == "Distance" {
+					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInDistancePerDay()
+					chartDetails.dataTitle = "Week in Distance"
+				} else if selected == "Flights Climbed" {
+					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInFlightsClimbedPerDay()
+					chartDetails.dataTitle = "Week in Flights Climbed"
+				} else if selected == "Sleep" {
+					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInSleepPerDay()
+					chartDetails.dataTitle = "Week in Sleep"
+				} else if selected == "Active Calories" {
+					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInActiveCaloriesPerDay()
+					chartDetails.dataTitle = "Week in Active Calories"
+				} else if selected == "Dietary Calories" {
+					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInDietaryCaloriesPerDay()
+					chartDetails.dataTitle = "Week in Dietary Calories"
+				}
+			} else if healthData is FDDayStatsPerHour {
+				if selected == "Steps" {
+					chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInStepsPerHour()
+					chartDetails.dataTitle = "Day In Steps"
+				} else if selected == "Distance" {
+					chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInDistancePerHour()
+					chartDetails.dataTitle = "Day in Distance"
+				} else if selected == "Flights Climbed" {
+					chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInFlightsClimbedPerHour()
+					chartDetails.dataTitle = "Day in Flights Climbed"
+				} else if selected == "Sleep" {
+					chartDetails.tupleData = ([NSDate()],[0.0])
+					//				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInSleepPerHour()
+					chartDetails.dataTitle = "Day in Sleep"
+				} else if selected == "Active Calories" {
+					chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInActiveCaloriesPerHour()
+					chartDetails.dataTitle = "Day in Active Calories"
+				} else if selected == "Dietary Calories" {
+					chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInDietaryCaloriesPerHour()
+					chartDetails.dataTitle = "Day in Dietary Calories"
+				}
 			}
 			
 			chartDetails.title = selected

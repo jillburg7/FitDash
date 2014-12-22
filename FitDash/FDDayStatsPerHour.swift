@@ -90,7 +90,7 @@ class FDDayStatsPerHour: FDHealthData {
 	
 	//creates a collection for plotting the past week in step counts
 	func queryDayInStepsPerHour() {
-		let quantityType = HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
+		let quantityType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
 		
 		// Create the query
 		let query = HKStatisticsCollectionQuery(quantityType: quantityType, quantitySamplePredicate: predicate, options: .CumulativeSum, anchorDate: anchorDate, intervalComponents: interval)
@@ -125,10 +125,10 @@ class FDDayStatsPerHour: FDHealthData {
 	}
 
 	func queryDayInDistancePerHour() {
-		let distanceType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)
+		let quantityType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)
 		
 		// Create the query
-		let query = HKStatisticsCollectionQuery(quantityType: distanceType, quantitySamplePredicate: predicate, options: .CumulativeSum, anchorDate: anchorDate, intervalComponents: interval)
+		let query = HKStatisticsCollectionQuery(quantityType: quantityType, quantitySamplePredicate: predicate, options: .CumulativeSum, anchorDate: anchorDate, intervalComponents: interval)
 		
 		// Set the results handler
 		query.initialResultsHandler = {
@@ -160,25 +160,115 @@ class FDDayStatsPerHour: FDHealthData {
 	}
 
 	func queryDayInFlightsClimbedPerHour() {
+		let quantityType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierFlightsClimbed)
+		
+		// Create the query
+		let query = HKStatisticsCollectionQuery(quantityType: quantityType, quantitySamplePredicate: predicate, options: .CumulativeSum, anchorDate: anchorDate, intervalComponents: interval)
+		
+		// Set the results handler
+		query.initialResultsHandler = {
+			query, results, error in
+			
+			if error != nil {
+				// Perform proper error handling here
+				println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
+				abort()
+			}
+			
+			// Plot todays step counts on the hour every hour until current time
+			results.enumerateStatisticsFromDate(self.startTime, toDate: self.endTime) {
+				statistics, stop in
+				
+				if let quantity = statistics.sumQuantity() {
+					let date = statistics.startDate
+					let value = quantity.doubleValueForUnit(HKUnit.countUnit())
+					self.addDayFlightsClimbedData(value, forDate: date)
+				} else if statistics.sumQuantity() == nil {
+					// if statistics collection returns no samples for a particular time interval
+					let date = statistics.startDate
+					let value = 0.0
+					self.addDayFlightsClimbedData(value, forDate: date)
+				}
+			}
+		}
+		self.healthStore?.executeQuery(query)
+	}
+	
+	func queryDayInSleepPerHour() {
 		
 	}
 
 	func queryDayInActiveCaloriesPerHour() {
+		let quantityType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned)
 		
+		// Create the query
+		let query = HKStatisticsCollectionQuery(quantityType: quantityType, quantitySamplePredicate: predicate, options: .CumulativeSum, anchorDate: anchorDate, intervalComponents: interval)
+		
+		// Set the results handler
+		query.initialResultsHandler = {
+			query, results, error in
+			
+			if error != nil {
+				// Perform proper error handling here
+				println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
+				abort()
+			}
+			
+			// Plot todays step counts on the hour every hour until current time
+			results.enumerateStatisticsFromDate(self.startTime, toDate: self.endTime) {
+				statistics, stop in
+				
+				if let quantity = statistics.sumQuantity() {
+					let date = statistics.startDate
+					let value = quantity.doubleValueForUnit(HKUnit.calorieUnit())
+					self.addDayActiveCaloriesData(value, forDate: date)
+				} else if statistics.sumQuantity() == nil {
+					// if statistics collection returns no samples for a particular time interval
+					let date = statistics.startDate
+					let value = 0.0
+					self.addDayActiveCaloriesData(value, forDate: date)
+				}
+			}
+		}
+		self.healthStore?.executeQuery(query)
 	}
 
 	func queryDayInDietaryCaloriesPerHour() {
+		let quantityType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDietaryEnergyConsumed)
 		
+		// Create the query
+		let query = HKStatisticsCollectionQuery(quantityType: quantityType, quantitySamplePredicate: predicate, options: .CumulativeSum, anchorDate: anchorDate, intervalComponents: interval)
+		
+		// Set the results handler
+		query.initialResultsHandler = {
+			query, results, error in
+			
+			if error != nil {
+				// Perform proper error handling here
+				println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
+				abort()
+			}
+			
+			// Plot todays step counts on the hour every hour until current time
+			results.enumerateStatisticsFromDate(self.startTime, toDate: self.endTime) {
+				statistics, stop in
+				
+				if let quantity = statistics.sumQuantity() {
+					let date = statistics.startDate
+					let value = quantity.doubleValueForUnit(HKUnit.calorieUnit())
+					self.addDayDietaryCaloriesData(value, forDate: date)
+				} else if statistics.sumQuantity() == nil {
+					// if statistics collection returns no samples for a particular time interval
+					let date = statistics.startDate
+					let value = 0.0
+					self.addDayDietaryCaloriesData(value, forDate: date)
+				}
+			}
+		}
+		self.healthStore?.executeQuery(query)
 	}
 
-	
-	func addDayDistanceData(value: Double, forDate: NSDate) {
-		df.dateStyle = .NoStyle
-		df.timeStyle = .ShortStyle
-		dayInDistancePerHour.append(value)
-		timeInHours.append(forDate)
-		println("\(df.stringFromDate(forDate)) : \(value)")
-	}
+	// MARK: Add data points to data structure
 	
 	func addDayStepData(value: Double, forDate: NSDate) {
 		df.dateStyle = .NoStyle
@@ -188,5 +278,36 @@ class FDDayStatsPerHour: FDHealthData {
 		hours.append(df.stringFromDate(forDate))
 		println("\(df.stringFromDate(forDate)) : \(value)")
 	}
-
+	
+	func addDayDistanceData(value: Double, forDate: NSDate) {
+		df.dateStyle = .NoStyle
+		df.timeStyle = .ShortStyle
+		dayInDistancePerHour.append(value)
+		timeInHours.append(forDate)
+		println("\(df.stringFromDate(forDate)) : \(value)")
+	}
+	
+	func addDayFlightsClimbedData(value: Double, forDate: NSDate) {
+		df.dateStyle = .NoStyle
+		df.timeStyle = .ShortStyle
+		dayInFlightsClimbedPerHour.append(value)
+		timeInHours.append(forDate)
+		println("\(df.stringFromDate(forDate)) : \(value)")
+	}
+	
+	func addDayActiveCaloriesData(value: Double, forDate: NSDate) {
+		df.dateStyle = .NoStyle
+		df.timeStyle = .ShortStyle
+		dayInActiveCaloriesPerHour.append(value)
+		timeInHours.append(forDate)
+		println("\(df.stringFromDate(forDate)) : \(value)")
+	}
+	
+	func addDayDietaryCaloriesData(value: Double, forDate: NSDate) {
+		df.dateStyle = .NoStyle
+		df.timeStyle = .ShortStyle
+		dayInDietaryCaloriesPerHour.append(value)
+		timeInHours.append(forDate)
+		println("\(df.stringFromDate(forDate)) : \(value)")
+	}
 }

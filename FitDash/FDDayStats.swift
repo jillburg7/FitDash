@@ -56,6 +56,16 @@ class FDDayStats: FDHealthData {
 		super.init(store: store)
 	}
 	
+	func getDataTuple() -> [[String: Double]] {
+		var dataTuple: [[String: Double]] = []
+		dataTuple.append(["Steps": dayInSteps])
+		dataTuple.append(["Distance": dayInDistance])
+		dataTuple.append(["Flights Climbed": dayInFlightsClimbed])
+		dataTuple.append(["Active Calories": dayInActiveCalories])
+		dataTuple.append(["Dietary Calories": dayInDietaryCalories])
+		return dataTuple
+	}
+	
 	// MARK: - class functions
 	
 	func queryDayInSteps() {

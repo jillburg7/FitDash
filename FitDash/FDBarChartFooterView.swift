@@ -72,6 +72,7 @@ class FDBarChartFooterView: UIView {
 		var xOffset:CGFloat = 0.0
 		var yOffset = AxisLabelSeparatorWidth
 		var stepLength = ceil(self.bounds.size.width / CGFloat(sectionCount - 1))
+	
 		
 		for var i=0; i < sectionCount; i++ {
 			CGContextSaveGState(context)

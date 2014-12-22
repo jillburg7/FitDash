@@ -12,15 +12,14 @@ import HealthKit
 var weeklyOverview: (name: String, dates: [NSDate], values: [Double]) = ("", [],[])
 var dailyOverview: (name: String, dates: [NSDate], values: [Double]) = ("", [],[])
 
-//UICollectionViewController
 class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
 	@IBOutlet var loader: UIActivityIndicatorView!
 	@IBOutlet var readyLabel: UILabel!
 	@IBOutlet var tableView: UITableView!
 	
-	var items = ["BEMLineGraph", "JawboneChart", "JawboneBar", "collectionView"]
-	var segueID = ["bemGraphView", "jawboneLineChart", "barChartView", "collectionView"]
+	var items = ["BEMLineGraph", "JawboneChart", "Today's Hourly Statistics", "This Week's Daily Statistics"] //, "Yesterday's Hourly Statistics"
+	var segueID = ["bemGraphView", "jawboneLineChart", "collectionView", "collectionView"]  //, "collectionView"]
 	
 	var healthStore: HKHealthStore?
 	var stepSamples = [HKQuantitySample]()
@@ -79,7 +78,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				}
 				if weeklyOverview.values.isEmpty {
 				// Update the user interface based on the current user's health information.
-					self.queryPastWeekInSteps()
+//					self.queryPastWeekInSteps()
 //					self.plotWeeklySteps()
 				}
 			})
@@ -101,8 +100,10 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	}
 	
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell
-		
+//		var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell
+		let cell = tableView.dequeueReusableCellWithIdentifier("StatisticsCell", forIndexPath: indexPath)
+			as UITableViewCell
+
 		cell.textLabel?.text = self.items[indexPath.row]
 		
 		return cell
@@ -120,7 +121,19 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				let indexPath = self.tableView.indexPathForSelectedRow()!
 				collectionview.title = self.items[indexPath.row]
 				
-				collectionview.healthData = FDDayStatsPerHour(store: healthStore!)
+				if self.items[indexPath.row] == "Today's Hourly Statistics" {
+					collectionview.healthData = FDDayStatsPerHour(store: healthStore!)
+					collectionview.setup("day")
+				} else if self.items[indexPath.row] == "This Week's Daily Statistics" {
+					collectionview.healthData = FDWeekStatsPerDay(store: healthStore!)
+					collectionview.setup("week")
+				}
+				/*
+				else if self.items[indexPath.row] == "Yesterday's Hourly Statistics" {
+					
+				}
+				*/
+				
 			} else {
 				var chartDetails = segue.destinationViewController as FDBaseViewController
 				let indexPath = self.tableView.indexPathForSelectedRow()!
@@ -131,17 +144,21 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 					chartDetails = segue.destinationViewController as FDBEMSimpleGraphViewController
 				} else if segue.identifier == "jawboneLineChart" {
 					chartDetails = segue.destinationViewController as FDJawboneChartViewController
-				} else if segue.identifier == "barChartView" {
+				}
+				/*
+				else if segue.identifier == "barChartView" {
 					chartDetails = segue.destinationViewController as FDBarChartViewController
 				}
-				
-//				if self.items[indexPath.row] == "DailySteps" {
-//					dataDescription = dailyOverview.name
+				*/
+				if self.items[indexPath.row] == "DailySteps" {
+					dataDescription = dailyOverview.name
+					chartDetails.tupleData = ([NSDate()],[0.0])
 //					chartDetails.tupleData = (dailyOverview.dates, dailyOverview.values)
-//				} else {
-//					dataDescription = weeklyOverview.name
+				} else {
+					dataDescription = weeklyOverview.name
+					chartDetails.tupleData = ([NSDate()],[0.0])
 //					chartDetails.tupleData = (weeklyOverview.dates, weeklyOverview.values)
-//				}
+				}
 				
 				chartDetails.title = destinationTitle
 				chartDetails.healthStore = self.healthStore
@@ -250,7 +267,8 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 		self.healthStore?.executeQuery(query)
 	}
 	
-	//creates a collection for plotting weekly step counts
+	//creates a collection for plotting weekly step counts on a week-by-week basis
+	// every sample is included
 	func plotWeeklySteps() {
 		let calendar = NSCalendar.currentCalendar()
 		
