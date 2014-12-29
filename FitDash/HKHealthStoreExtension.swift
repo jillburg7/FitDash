@@ -75,6 +75,9 @@ extension HKHealthStore {
 	
 	func dataTypesToRead() -> NSSet {
 		let dataTypesToRead = [
+			//workouts
+			HKWorkoutType.workoutType(),
+//			HKWorkoutType.quantityTypeForIdentifier(HKWorkoutTypeIdentifier),
 			//fitness
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount),
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning),

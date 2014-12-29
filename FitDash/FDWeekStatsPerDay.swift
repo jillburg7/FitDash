@@ -94,9 +94,53 @@ class FDWeekStatsPerDay: FDHealthData {
 		queryWeekInSleepPerDay()
 		queryWeekInActiveCaloriesPerDay()
 		queryWeekInDietaryCaloriesPerDay()
+		queryDayInWorkouts()
 	}
 	
 	// MARK: - class functions
+	
+	//query the past week in workouts
+	func queryDayInWorkouts() {
+		let quantityType = HKSampleType.workoutType() //HKSampleType.quantityTypeForIdentifier(HKWorkoutTypeIdentifier)
+		
+		let startDateSort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
+		
+		let query = HKSampleQuery(sampleType: quantityType, predicate: predicate, limit: 0, sortDescriptors: nil) {
+			(sampleQuery, results, error) -> Void in
+			
+			if let workoutSamples = results as?  [HKWorkout] {
+				println()
+				println("~~~~~~~~~~~~~~~~~~ workoutSamples ~~~~~~~~~~~~~~~~~~")
+				for workout in workoutSamples {
+					println(workout)
+					println()
+					
+					let workoutType = workout.workoutActivityType
+					switch workoutType {
+					case .Running:
+						println("Activity Type: Running")
+					default:
+						println("Activity Type: n/a, enum numeric value = \(workoutType.rawValue)")
+					}
+					println("Duration: \(workout.duration)")
+					println("Total Distance: \(workout.totalDistance)")
+					println("Total Energy Burned: \(workout.totalEnergyBurned)")
+					println("Workout Events:")
+					println(workout.workoutEvents)
+					println("--------------------------")
+					println()
+				}
+				println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+				println()
+			}
+			else if error != nil {
+				//// Perform proper error handling here...
+				println("*** An error occurred while querying workouts: \(error.localizedDescription) ***")
+				abort()
+			}
+		}
+		self.healthStore?.executeQuery(query)
+	}
 	
 	func queryWeekInStepsPerDay() {
 		let quantityType = HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
@@ -212,13 +256,15 @@ class FDWeekStatsPerDay: FDHealthData {
 				for sleeps in results.generate() {
 					let sleepValue = sleeps as? HKCategorySample
 					var sleepDate = sleepValue?.startDate
-					var sleepEndDate = sleepValue?.startDate
+					var sleepEndDate = sleepValue?.endDate
 					let timeAsleep = sleepValue?.endDate.timeIntervalSinceDate(sleepDate!)
 					
 					let bundleID = sleeps.source as HKSource
 					if bundleID.bundleIdentifier == "com.lark.Meadowlark" {
-						println("source added: \(bundleID.bundleIdentifier)")
-						self.addWeekSleepData(Double(timeAsleep!), forDate: sleepEndDate!)
+//						println("source added: \(bundleID.bundleIdentifier)")
+						
+						let hours = self.durationInHours(seconds: timeAsleep!)
+						self.addWeekSleepData(hours, forDate: sleepEndDate!)
 					}
 					
 //					let (h,m,s) = self.durationsBySecond(seconds: timeAsleep!)
@@ -232,6 +278,10 @@ class FDWeekStatsPerDay: FDHealthData {
 	
 	func durationsBySecond(seconds s: Double) -> (hours:Int,minutes:Int,seconds:Double) {
 		return (Int((s % (24 * 3600)) / 3600), Int(s % 3600 / 60), s % 60)
+	}
+	
+	func durationInHours (seconds s: Double) -> Double {
+		return (s % (24 * 3600)) / 3600
 	}
 
 	func queryWeekInActiveCaloriesPerDay() {

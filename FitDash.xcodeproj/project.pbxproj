@@ -115,17 +115,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F136CA891A2B97FE0071EA51 /* Charts */ = {
+		F136CA891A2B97FE0071EA51 /* Chart Views */ = {
 			isa = PBXGroup;
 			children = (
 				F138D0C21A195B4B00F8256E /* FDAxisFooterView.swift */,
 				F11D25151A2D0CE100945526 /* FDBarChartFooterView.swift */,
-				F1C2137F1A0C0A0C0050E00C /* FDBarChartViewController.swift */,
-				F10C21891A071E1A000B7D8B /* FDBaseViewController.swift */,
-				F182014519EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift */,
-				F1DD117F1A058EC500602C53 /* FDJawboneChartViewController.swift */,
 			);
-			name = Charts;
+			name = "Chart Views";
 			sourceTree = "<group>";
 		};
 		F136CA8C1A2B98820071EA51 /* CollectionView */ = {
@@ -133,7 +129,6 @@
 			children = (
 				F136CA8A1A2B987B0071EA51 /* FDCollectionHeaderView.swift */,
 				F136CA8D1A2B9EAA0071EA51 /* FDCollectionViewCell.swift */,
-				F1562DB21A29645A003F5B48 /* FDCollectionViewController.swift */,
 			);
 			name = CollectionView;
 			sourceTree = "<group>";
@@ -155,6 +150,37 @@
 				F182016319EAEF3C00E5ACB4 /* FitDash.entitlements */,
 			);
 			name = App;
+			sourceTree = "<group>";
+		};
+		F15897251A48845700E40C18 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F136CA891A2B97FE0071EA51 /* Chart Views */,
+				F136CA8C1A2B98820071EA51 /* CollectionView */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		F15897261A48846C00E40C18 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F15897271A48849700E40C18 /* Chart VIew Controllers */,
+				F1562DB21A29645A003F5B48 /* FDCollectionViewController.swift */,
+				F1A19A651A3FDF8500237EBC /* FDStatisticDetailsViewController.swift */,
+				F107F9721A05CCA000E3801C /* FDTableViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		F15897271A48849700E40C18 /* Chart VIew Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F1C2137F1A0C0A0C0050E00C /* FDBarChartViewController.swift */,
+				F10C21891A071E1A000B7D8B /* FDBaseViewController.swift */,
+				F182014519EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift */,
+				F1DD117F1A058EC500602C53 /* FDJawboneChartViewController.swift */,
+			);
+			name = "Chart VIew Controllers";
 			sourceTree = "<group>";
 		};
 		F182013519EAEEB500E5ACB4 = {
@@ -181,17 +207,15 @@
 		F182014019EAEEB500E5ACB4 /* FitDash */ = {
 			isa = PBXGroup;
 			children = (
-				F1A19A651A3FDF8500237EBC /* FDStatisticDetailsViewController.swift */,
-				F107F9721A05CCA000E3801C /* FDTableViewController.swift */,
-				F182014A19EAEEB500E5ACB4 /* Images.xcassets */,
 				F1473F4B1A33FC5E00F1E6E1 /* App */,
-				F136CA891A2B97FE0071EA51 /* Charts */,
-				F136CA8C1A2B98820071EA51 /* CollectionView */,
 				F1473F4A1A33FC4D00F1E6E1 /* Constants */,
+				F182014A19EAEEB500E5ACB4 /* Images.xcassets */,
 				F182014C19EAEEB500E5ACB4 /* LaunchScreen.xib */,
 				F182014719EAEEB500E5ACB4 /* Main.storyboard */,
 				F1B281F61A34E02C006C42A3 /* Models */,
 				F182014119EAEEB500E5ACB4 /* Supporting Files */,
+				F15897261A48846C00E40C18 /* View Controllers */,
+				F15897251A48845700E40C18 /* Views */,
 			);
 			path = FitDash;
 			sourceTree = "<group>";

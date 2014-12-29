@@ -58,7 +58,9 @@ class FDDayStatsPerHour: FDHealthData {
 		queryDayInFlightsClimbedPerHour()
 		queryDayInActiveCaloriesPerHour()
 		queryDayInDietaryCaloriesPerHour()
+		queryDayInWorkouts()
 	}
+	
 	
 	// MARK: - getters for model data
 	
@@ -86,9 +88,39 @@ class FDDayStatsPerHour: FDHealthData {
 		return (timeInHours, dayInDietaryCaloriesPerHour)
 	}
 	
+	
 	// MARK: - class functions
 	
-	//creates a collection for plotting the past week in step counts
+	// TODO: move where appropriate!!
+	//querys the past day in workouts
+	func queryDayInWorkouts() {
+		let quantityType = HKSampleType.workoutType() //HKSampleType.quantityTypeForIdentifier(HKWorkoutTypeIdentifier)
+		
+		let startDateSort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
+		
+		let query = HKSampleQuery(sampleType: quantityType, predicate: predicate, limit: 0, sortDescriptors: nil) {
+			(sampleQuery, results, error) -> Void in
+			
+			if let workoutSamples = results as?  [HKWorkout] {
+				println()
+				println("~~~~~~~~~~~~~~~~~~ workoutSamples ~~~~~~~~~~~~~~~~~~")
+				for workout in workoutSamples {
+					println(workout)
+					println()
+				}
+				println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+				println()
+			}
+			else if error != nil {
+				//// Perform proper error handling here...
+				println("*** An error occurred while querying workouts: \(error.localizedDescription) ***")
+				abort()
+			}
+		}
+		self.healthStore?.executeQuery(query)
+	}
+	
+	//creates a collection for plotting the past day in step counts per hour
 	func queryDayInStepsPerHour() {
 		let quantityType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
 		
@@ -268,6 +300,7 @@ class FDDayStatsPerHour: FDHealthData {
 		self.healthStore?.executeQuery(query)
 	}
 
+	
 	// MARK: Add data points to data structure
 	
 	func addDayStepData(value: Double, forDate: NSDate) {
