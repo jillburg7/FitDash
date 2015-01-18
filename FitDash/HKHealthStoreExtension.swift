@@ -58,8 +58,7 @@ extension HKHealthStore {
 		
 		self.executeQuery(query)
 	}
-	
-	
+
 	//MARK: - Private Method
 	//MARK: HealthKit Permissions
 
@@ -77,7 +76,6 @@ extension HKHealthStore {
 		let dataTypesToRead = [
 			//workouts
 			HKWorkoutType.workoutType(),
-//			HKWorkoutType.quantityTypeForIdentifier(HKWorkoutTypeIdentifier),
 			//fitness
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount),
 			HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning),

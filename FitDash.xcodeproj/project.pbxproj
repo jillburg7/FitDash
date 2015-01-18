@@ -17,7 +17,7 @@
 		F138D0C31A195B4B00F8256E /* FDAxisFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F138D0C21A195B4B00F8256E /* FDAxisFooterView.swift */; };
 		F1473F491A33F85F00F1E6E1 /* FDHealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1473F481A33F85F00F1E6E1 /* FDHealthData.swift */; };
 		F1562DB31A29645A003F5B48 /* FDCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1562DB21A29645A003F5B48 /* FDCollectionViewController.swift */; };
-		F182014419EAEEB500E5ACB4 /* FDAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182014319EAEEB500E5ACB4 /* FDAppDelegate.swift */; };
+		F182014419EAEEB500E5ACB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182014319EAEEB500E5ACB4 /* AppDelegate.swift */; };
 		F182014619EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182014519EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift */; };
 		F182014919EAEEB500E5ACB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F182014719EAEEB500E5ACB4 /* Main.storyboard */; };
 		F182014B19EAEEB500E5ACB4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F182014A19EAEEB500E5ACB4 /* Images.xcassets */; };
@@ -28,8 +28,9 @@
 		F1A19A661A3FDF8500237EBC /* FDStatisticDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A19A651A3FDF8500237EBC /* FDStatisticDetailsViewController.swift */; };
 		F1B281F81A34E04E006C42A3 /* FDDayStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B281F71A34E04E006C42A3 /* FDDayStats.swift */; };
 		F1B281FA1A34E08C006C42A3 /* FDDayStatsPerHour.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B281F91A34E08C006C42A3 /* FDDayStatsPerHour.swift */; };
-		F1B281FC1A34E0C3006C42A3 /* FDWeekStatsPerDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B281FB1A34E0C3006C42A3 /* FDWeekStatsPerDay.swift */; };
+		F1B281FC1A34E0C3006C42A3 /* WeekStatsPerDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B281FB1A34E0C3006C42A3 /* WeekStatsPerDay.swift */; };
 		F1C213801A0C0A0C0050E00C /* FDBarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C2137F1A0C0A0C0050E00C /* FDBarChartViewController.swift */; };
+		F1CCA3411A6B6B2C001A4866 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CCA3401A6B6B2C001A4866 /* HealthManager.swift */; };
 		F1DD11801A058EC500602C53 /* FDJawboneChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DD117F1A058EC500602C53 /* FDJawboneChartViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,7 +60,7 @@
 		F17ECB7219EB6DD9008E9FC9 /* FitDash-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FitDash-Bridging-Header.h"; sourceTree = "<group>"; };
 		F182013E19EAEEB500E5ACB4 /* FitDash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitDash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F182014219EAEEB500E5ACB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F182014319EAEEB500E5ACB4 /* FDAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FDAppDelegate.swift; sourceTree = "<group>"; };
+		F182014319EAEEB500E5ACB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F182014519EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FDBEMSimpleGraphViewController.swift; sourceTree = "<group>"; };
 		F182014819EAEEB500E5ACB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F182014A19EAEEB500E5ACB4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -73,8 +74,9 @@
 		F1A19A651A3FDF8500237EBC /* FDStatisticDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDStatisticDetailsViewController.swift; sourceTree = "<group>"; };
 		F1B281F71A34E04E006C42A3 /* FDDayStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDDayStats.swift; sourceTree = "<group>"; };
 		F1B281F91A34E08C006C42A3 /* FDDayStatsPerHour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDDayStatsPerHour.swift; sourceTree = "<group>"; };
-		F1B281FB1A34E0C3006C42A3 /* FDWeekStatsPerDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDWeekStatsPerDay.swift; sourceTree = "<group>"; };
+		F1B281FB1A34E0C3006C42A3 /* WeekStatsPerDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekStatsPerDay.swift; sourceTree = "<group>"; };
 		F1C2137F1A0C0A0C0050E00C /* FDBarChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDBarChartViewController.swift; sourceTree = "<group>"; };
+		F1CCA3401A6B6B2C001A4866 /* HealthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthManager.swift; sourceTree = "<group>"; };
 		F1DD117F1A058EC500602C53 /* FDJawboneChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDJawboneChartViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,6 +140,7 @@
 			children = (
 				F182016819EB379100E5ACB4 /* HKHealthStoreExtension.swift */,
 				F136CA8F1A2BAAC20071EA51 /* ColorConstants.swift */,
+				F1CCA3401A6B6B2C001A4866 /* HealthManager.swift */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -145,7 +148,7 @@
 		F1473F4B1A33FC5E00F1E6E1 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				F182014319EAEEB500E5ACB4 /* FDAppDelegate.swift */,
+				F182014319EAEEB500E5ACB4 /* AppDelegate.swift */,
 				F17ECB7219EB6DD9008E9FC9 /* FitDash-Bridging-Header.h */,
 				F182016319EAEF3C00E5ACB4 /* FitDash.entitlements */,
 			);
@@ -251,7 +254,7 @@
 				F1473F481A33F85F00F1E6E1 /* FDHealthData.swift */,
 				F1B281F71A34E04E006C42A3 /* FDDayStats.swift */,
 				F1B281F91A34E08C006C42A3 /* FDDayStatsPerHour.swift */,
-				F1B281FB1A34E0C3006C42A3 /* FDWeekStatsPerDay.swift */,
+				F1B281FB1A34E0C3006C42A3 /* WeekStatsPerDay.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -407,10 +410,11 @@
 				F11D25161A2D0CE100945526 /* FDBarChartFooterView.swift in Sources */,
 				F136CA8E1A2B9EAA0071EA51 /* FDCollectionViewCell.swift in Sources */,
 				F1DD11801A058EC500602C53 /* FDJawboneChartViewController.swift in Sources */,
+				F1CCA3411A6B6B2C001A4866 /* HealthManager.swift in Sources */,
 				F1B281F81A34E04E006C42A3 /* FDDayStats.swift in Sources */,
 				F182014619EAEEB500E5ACB4 /* FDBEMSimpleGraphViewController.swift in Sources */,
-				F182014419EAEEB500E5ACB4 /* FDAppDelegate.swift in Sources */,
-				F1B281FC1A34E0C3006C42A3 /* FDWeekStatsPerDay.swift in Sources */,
+				F182014419EAEEB500E5ACB4 /* AppDelegate.swift in Sources */,
+				F1B281FC1A34E0C3006C42A3 /* WeekStatsPerDay.swift in Sources */,
 				F182016919EB379100E5ACB4 /* HKHealthStoreExtension.swift in Sources */,
 				F1B281FA1A34E08C006C42A3 /* FDDayStatsPerHour.swift in Sources */,
 				F1A19A661A3FDF8500237EBC /* FDStatisticDetailsViewController.swift in Sources */,

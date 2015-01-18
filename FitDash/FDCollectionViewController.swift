@@ -45,7 +45,7 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
 		if objType == "day" {
 			(healthData as FDDayStatsPerHour).startQueries()
 		} else if objType == "week" {
-			(healthData as FDWeekStatsPerDay).startQueries()
+			(healthData as WeekStatsPerDay).startQueries()
 		}
 	}
 	
@@ -59,24 +59,24 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
 			var chartDetails = segue.destinationViewController as FDBarChartViewController
 			chartDetails.tupleData = ([],[])
 			
-			if healthData is FDWeekStatsPerDay {
+			if healthData is WeekStatsPerDay {
 				if selected == "Steps" {
-					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInStepsPerDay()
+					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInStepsPerDay()
 					chartDetails.dataTitle = "Week In Steps"
 				} else if selected == "Distance" {
-					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInDistancePerDay()
+					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInDistancePerDay()
 					chartDetails.dataTitle = "Week in Distance"
 				} else if selected == "Flights Climbed" {
-					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInFlightsClimbedPerDay()
+					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInFlightsClimbedPerDay()
 					chartDetails.dataTitle = "Week in Flights Climbed"
 				} else if selected == "Sleep" {
-					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInSleepPerDay()
+					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInSleepPerDay()
 					chartDetails.dataTitle = "Week in Sleep"
 				} else if selected == "Active Calories" {
-					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInActiveCaloriesPerDay()
+					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInActiveCaloriesPerDay()
 					chartDetails.dataTitle = "Week in Active Calories"
 				} else if selected == "Dietary Calories" {
-					chartDetails.tupleData = (self.healthData as FDWeekStatsPerDay).getWeekInDietaryCaloriesPerDay()
+					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInDietaryCaloriesPerDay()
 					chartDetails.dataTitle = "Week in Dietary Calories"
 				}
 			} else if healthData is FDDayStatsPerHour {

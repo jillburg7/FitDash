@@ -125,7 +125,7 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 					collectionview.healthData = FDDayStatsPerHour(store: healthStore!)
 					collectionview.setup("day")
 				} else if self.items[indexPath.row] == "This Week's Daily Statistics" {
-					collectionview.healthData = FDWeekStatsPerDay(store: healthStore!)
+					collectionview.healthData = WeekStatsPerDay(store: healthStore!)
 					collectionview.setup("week")
 				}
 				/*

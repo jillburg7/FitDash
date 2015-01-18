@@ -1,5 +1,5 @@
 //
-//  FDWeekStatsPerDay.swift
+//  WeekStatsPerDay.swift
 //  FitDash
 //
 //  Created by Jillian Burgess on 12/7/14.
@@ -10,7 +10,7 @@ import Foundation
 import HealthKit
 
 //daily statistics over a week
-class FDWeekStatsPerDay: FDHealthData {
+class WeekStatsPerDay: FDHealthData {
 	
 	// MARK: - class properties
 	var startDate: NSDate {
@@ -105,7 +105,7 @@ class FDWeekStatsPerDay: FDHealthData {
 		
 		let startDateSort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
 		
-		let query = HKSampleQuery(sampleType: quantityType, predicate: predicate, limit: 0, sortDescriptors: nil) {
+		let query = HKSampleQuery(sampleType: quantityType, predicate: predicate, limit: 0, sortDescriptors: [startDateSort]) {
 			(sampleQuery, results, error) -> Void in
 			
 			if let workoutSamples = results as?  [HKWorkout] {
