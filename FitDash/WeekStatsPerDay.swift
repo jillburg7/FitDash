@@ -10,7 +10,7 @@ import Foundation
 import HealthKit
 
 //daily statistics over a week
-class WeekStatsPerDay: FDHealthData {
+class WeekStatsPerDay: HealthData {
 	
 	// MARK: - class properties
 	var startDate: NSDate {

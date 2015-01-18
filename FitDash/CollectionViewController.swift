@@ -1,5 +1,5 @@
 //
-//  FDCollectionViewController.swift
+//  CollectionViewController.swift
 //  FitDash
 //
 //  Created by Jillian Burgess on 11/28/14.
@@ -9,10 +9,10 @@
 import UIKit
 
 
-class FDCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class CollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
 	// MARK: Class properties
-	var healthData: FDHealthData?
+	var healthData: HealthData?
 	var selected = ""
 	
 	var collectionItems = ["Steps", "Distance", "Flights Climbed", "Sleep", "Active Calories", "Dietary Calories"]
@@ -27,7 +27,7 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
          self.clearsSelectionOnViewWillAppear = true
 
         // Register cell classes
-//        self.collectionView!.registerClass(FDCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+//        self.collectionView!.registerClass(CollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
     }
@@ -43,7 +43,7 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
 	func setup(objType: String) {
 		// TODO: add other Model classes
 		if objType == "day" {
-			(healthData as FDDayStatsPerHour).startQueries()
+			(healthData as DayStatsPerHour).startQueries()
 		} else if objType == "week" {
 			(healthData as WeekStatsPerDay).startQueries()
 		}
@@ -56,7 +56,7 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
 		if segue.identifier == "barChartView" {
-			var chartDetails = segue.destinationViewController as FDBarChartViewController
+			var chartDetails = segue.destinationViewController as BarChartViewController
 			chartDetails.tupleData = ([],[])
 			
 			if healthData is WeekStatsPerDay {
@@ -79,25 +79,25 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
 					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInDietaryCaloriesPerDay()
 					chartDetails.dataTitle = "Week in Dietary Calories"
 				}
-			} else if healthData is FDDayStatsPerHour {
+			} else if healthData is DayStatsPerHour {
 				if selected == "Steps" {
-					chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInStepsPerHour()
+					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInStepsPerHour()
 					chartDetails.dataTitle = "Day In Steps"
 				} else if selected == "Distance" {
-					chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInDistancePerHour()
+					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInDistancePerHour()
 					chartDetails.dataTitle = "Day in Distance"
 				} else if selected == "Flights Climbed" {
-					chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInFlightsClimbedPerHour()
+					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInFlightsClimbedPerHour()
 					chartDetails.dataTitle = "Day in Flights Climbed"
 				} else if selected == "Sleep" {
 					chartDetails.tupleData = ([NSDate()],[0.0])
-					//				chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInSleepPerHour()
+					//				chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInSleepPerHour()
 					chartDetails.dataTitle = "Day in Sleep"
 				} else if selected == "Active Calories" {
-					chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInActiveCaloriesPerHour()
+					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInActiveCaloriesPerHour()
 					chartDetails.dataTitle = "Day in Active Calories"
 				} else if selected == "Dietary Calories" {
-					chartDetails.tupleData = (self.healthData as FDDayStatsPerHour).getDayInDietaryCaloriesPerHour()
+					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInDietaryCaloriesPerHour()
 					chartDetails.dataTitle = "Day in Dietary Calories"
 				}
 			}
@@ -119,7 +119,7 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-		let cell = self.collectionView!.dequeueReusableCellWithReuseIdentifier("FDCollectionViewCell", forIndexPath: indexPath) as FDCollectionViewCell
+		let cell = self.collectionView!.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as CollectionViewCell
     
         // Configure the cell
 		cell.backgroundColor = navyBlue
@@ -139,7 +139,7 @@ class FDCollectionViewController: UICollectionViewController, UICollectionViewDe
 		//1
 		switch kind {
 		case UICollectionElementKindSectionHeader:
-			let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "FDCollectionHeaderView", forIndexPath: indexPath) as FDCollectionHeaderView
+			let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "CollectionHeaderView", forIndexPath: indexPath) as CollectionHeaderView
 			headerView.label.text = "header text"
 			return headerView
 		default:

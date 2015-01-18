@@ -1,5 +1,5 @@
 //
-//  FDBarChartViewController.swift
+//  BarChartViewController.swift
 //  FitDash
 //
 //  Created by Jillian Burgess on 11/6/14.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, JBBarChartViewDelegate {
+class BarChartViewController: BaseViewController, JBBarChartViewDataSource, JBBarChartViewDelegate {
 	
 	@IBOutlet var chartTitle: UILabel!
 	@IBOutlet var minDate: UILabel!
@@ -43,7 +43,7 @@ class FDBarChartViewController: FDBaseViewController, JBBarChartViewDataSource, 
 		self.barChart.backgroundColor = lightTurquoise
 		self.barChart.minimumValue = 0
 		
-		var footerView = FDBarChartFooterView(frame: CGRectMake(FDBarChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(FDBarChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (FDBarChartViewControllerChartPadding * 2), FDBarChartViewControllerChartFooterHeight))
+		var footerView = BarChartFooterView(frame: CGRectMake(FDBarChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(FDBarChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (FDBarChartViewControllerChartPadding * 2), FDBarChartViewControllerChartFooterHeight))
 		
 		footerView.padding = FDBarChartViewControllerChartFooterPadding
 		df.dateStyle = .ShortStyle

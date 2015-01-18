@@ -1,5 +1,5 @@
 //
-//  FDBaseViewController.swift
+//  BaseViewController.swift
 //  FitDash
 //
 //  Created by Jillian Burgess on 11/2/14.
@@ -9,7 +9,7 @@
 import UIKit
 import HealthKit
 
-class FDBaseViewController: UIViewController {
+class BaseViewController: UIViewController {
 	
 	// MARK: properties
 	

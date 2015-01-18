@@ -1,5 +1,5 @@
 //
-//  FDDayStatsPerHour.swift
+//  DayStatsPerHour.swift
 //  FitDash
 //
 //  Created by Jillian Burgess on 12/7/14.
@@ -10,7 +10,7 @@ import Foundation
 import HealthKit
 
 //hourly statistics
-class FDDayStatsPerHour: FDHealthData {
+class DayStatsPerHour: HealthData {
 	
 	// MARK: - class properties
 	var startTime: NSDate {

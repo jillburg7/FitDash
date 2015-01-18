@@ -1,5 +1,5 @@
 //
-//  FDHealthData.swift
+//  HealthData.swift
 //  
 //
 //  Created by Jillian Burgess on 12/6/14.
@@ -9,7 +9,7 @@
 import Foundation
 import HealthKit
 
-class FDHealthData {
+class HealthData {
 	
 	var healthStore: HKHealthStore?
 	let df = NSDateFormatter()

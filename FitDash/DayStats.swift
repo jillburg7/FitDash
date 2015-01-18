@@ -1,5 +1,5 @@
 //
-//  FDDayStats.swift
+//  DayStats.swift
 //  FitDash
 //
 //  Created by Jillian Burgess on 12/7/14.
@@ -10,7 +10,7 @@ import Foundation
 import HealthKit
 
 //day statistics
-class FDDayStats: FDHealthData {
+class DayStats: HealthData {
 	
 	// MARK: - class properties
 	

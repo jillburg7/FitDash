@@ -1,5 +1,5 @@
 //
-//  FDCollectionViewCell.swift
+//  CollectionViewCell.swift
 //  FitDash
 //
 //  Created by Jillian Burgess on 11/30/14.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FDCollectionViewCell: UICollectionViewCell {
+class CollectionViewCell: UICollectionViewCell {
     
 	@IBOutlet weak var label: UILabel!
 	

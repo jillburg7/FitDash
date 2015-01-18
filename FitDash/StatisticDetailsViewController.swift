@@ -1,5 +1,5 @@
 //
-//  FDStatisticDetailsViewController.swift
+//  StatisticDetailsViewController.swift
 //  FitDash
 //
 //  Created by Jillian Burgess on 12/15/14.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FDStatisticDetailsViewController: UITableViewController {
+class StatisticDetailsViewController: UITableViewController {
 	
 	var details = []
 

@@ -1,5 +1,5 @@
 //
-//  FDCollectionHeaderView.swift
+//  CollectionHeaderView.swift
 //  FitDash
 //
 //  Created by Jillian Burgess on 11/30/14.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FDCollectionHeaderView: UICollectionReusableView {
+class CollectionHeaderView: UICollectionReusableView {
         
 	@IBOutlet weak var label: UILabel!
 }

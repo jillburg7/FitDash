@@ -9,7 +9,7 @@
 import UIKit
 import HealthKit
 
-class FDBEMSimpleGraphViewController: FDBaseViewController, BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate {
+class BEMSimpleGraphViewController: BaseViewController, BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate {
 
 	@IBOutlet var graphView: BEMSimpleLineGraphView!
 	@IBOutlet var graphTitle: UILabel!

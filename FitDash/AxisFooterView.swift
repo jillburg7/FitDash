@@ -1,69 +1,71 @@
 //
-//  FDBarChartFooterView.swift
+//  FDAxisLabelView.swift
 //  FitDash
 //
-//  Created by Jillian Burgess on 12/1/14.
+//  Created by Jillian Burgess on 11/16/14.
 //  Copyright (c) 2014 Jillian Burgess. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import CoreGraphics
 
-let AxisLabelFooterPadding: CGFloat = 4.0
+let AxisLabelSeparatorWidth:CGFloat = 0.4
+let AxisLabelSeparatorHeight:CGFloat = 3.0
+let AxisLabelSectionPadding:CGFloat = 1.0
 
-class FDBarChartFooterView: UIView {
+class AxisFooterView: UIView {
 	
 	var _topSeparatorView: UIView!
 	var leftLabel: UILabel!
 	var rightLabel: UILabel!
-	var padding: CGFloat!
+	
 	var sectionCount = 5
 	var separatorColor = UIColor.blackColor()
 	
-	override init(frame: CGRect) {
-		super.init(frame: frame)
+	override init(frame aRect: CGRect) {
+		super.init(frame: aRect)
 		self.backgroundColor = UIColor.clearColor()
-		
-		padding = AxisLabelFooterPadding
+		separatorColor = UIColor.blackColor()
 		
 		_topSeparatorView = UIView()
 		_topSeparatorView.backgroundColor = red
 		self.addSubview(_topSeparatorView)
-		separatorColor = UIColor.blackColor()
 		
 		leftLabel = UILabel()
-		leftLabel.adjustsFontSizeToFitWidth = true
-		leftLabel.font = UIFont(name: "HelveticaNeue", size: 12.0)
 		leftLabel.textAlignment = .Left
-//		leftLabel.shadowColor = UIColor.blackColor()
-//		leftLabel.shadowOffset = CGSizeMake(0, 1)
+		leftLabel.adjustsFontSizeToFitWidth = true
+		leftLabel.font = UIFont(name: "HelveticaNeue-Light", size: 12.0)
 		leftLabel.textColor = navyBlue
 		leftLabel.backgroundColor = UIColor.clearColor()
 		self.addSubview(leftLabel)
 		
 		rightLabel = UILabel()
+		rightLabel.textAlignment = .Right
 		rightLabel.adjustsFontSizeToFitWidth = true
 		rightLabel.font = UIFont(name: "HelveticaNeue-Light", size: 12.0)
-		rightLabel.textAlignment = .Right
-//		rightLabel.shadowColor = UIColor.blackColor()
-//		rightLabel.shadowOffset = CGSizeMake(0, 1)
 		rightLabel.textColor = navyBlue
 		rightLabel.backgroundColor = UIColor.clearColor()
 		self.addSubview(rightLabel)
-
 	}
 
 	required init(coder aDecoder: NSCoder) {
 	    fatalError("init(coder:) has not been implemented")
 	}
 	
-	// Only override drawRect: if you perform custom drawing.
-	// An empty implementation adversely affects performance during animation.
-	override func drawRect(rect: CGRect) {
+	func setLeftLabelText(left: String) {
+		leftLabel.text = left
+	}
+	
+	func setRightLabelText(right: String) {
+		rightLabel.text = right
+	}
+	
+    // Only override drawRect: if you perform custom drawing.
+    // An empty implementation adversely affects performance during animation.
+    override func drawRect(rect: CGRect) {
 		super.drawRect(rect)
 		
-		// Drawing code
+        // Drawing code
 		var context = UIGraphicsGetCurrentContext()
 		CGContextSetStrokeColorWithColor(context, separatorColor.CGColor)
 		CGContextSetLineWidth(context, 0.5)
@@ -72,7 +74,6 @@ class FDBarChartFooterView: UIView {
 		var xOffset:CGFloat = 0.0
 		var yOffset = AxisLabelSeparatorWidth
 		var stepLength = ceil(self.bounds.size.width / CGFloat(sectionCount - 1))
-	
 		
 		for var i=0; i < sectionCount; i++ {
 			CGContextSaveGState(context)
@@ -91,21 +92,21 @@ class FDBarChartFooterView: UIView {
 			CGContextStrokePath(context)
 			CGContextRestoreGState(context);
 		}
-	}
-	
+    }
+
 	override func layoutSubviews() {
 		super.layoutSubviews()
-
+		
 		_topSeparatorView.frame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, AxisLabelSeparatorWidth)
 		
-		var xOffset = self.padding
-		var yOffset: CGFloat = 0.0
-		var width = ceil(self.bounds.size.width * 0.5) - self.padding
+		var xOffset:CGFloat = 0.0
+		var yOffset = AxisLabelSectionPadding
+		var width = ceil(self.bounds.size.width * 0.5)
 		
-		self.leftLabel.frame = CGRectMake(xOffset, yOffset, width, self.bounds.size.height)
-		self.rightLabel.frame = CGRectMake(CGRectGetMaxX(leftLabel.frame), yOffset, width, self.bounds.size.height)
+		leftLabel.frame = CGRectMake(xOffset, yOffset, width, self.bounds.size.height)
+		rightLabel.frame = CGRectMake(CGRectGetMaxX(leftLabel.frame), yOffset, width, self.bounds.size.height)
+
 	}
-	
 	
 	func setSectionCount(sections: Int) {
 		sectionCount = sections

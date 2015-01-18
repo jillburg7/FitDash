@@ -9,7 +9,7 @@
 import UIKit
 import HealthKit
 
-class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSource, JBLineChartViewDelegate {
+class JawboneChartViewController: BaseViewController, JBLineChartViewDataSource, JBLineChartViewDelegate {
 	
 	
 	@IBOutlet var chartTitle: UILabel!
@@ -40,7 +40,7 @@ class FDJawboneChartViewController: FDBaseViewController, JBLineChartViewDataSou
 		super.viewDidAppear(true)
 		displayTodaysStats()
 		self.lineChart.backgroundColor = turquoise
-		var footerView = FDAxisFooterView(frame: CGRectMake(FDLineChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(FDLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (FDLineChartViewControllerChartPadding * 3), FDLineChartViewControllerChartFooterHeight))
+		var footerView = AxisFooterView(frame: CGRectMake(FDLineChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(FDLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (FDLineChartViewControllerChartPadding * 3), FDLineChartViewControllerChartFooterHeight))
 		
 //		println(df.shortWeekdaySymbols)
 		

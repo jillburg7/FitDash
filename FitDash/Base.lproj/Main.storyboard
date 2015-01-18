@@ -10,7 +10,7 @@
         <!--FitDash-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="FDBEMSimpleGraphViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="BEMSimpleGraphViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -163,7 +163,7 @@
         <!--Jawbone-->
         <scene sceneID="8ys-TF-7dS">
             <objects>
-                <viewController id="x57-jP-bZU" customClass="FDJawboneChartViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="x57-jP-bZU" customClass="JawboneChartViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hxV-J4-hCd"/>
                         <viewControllerLayoutGuide type="bottom" id="Ywf-E6-vHh"/>
@@ -300,7 +300,7 @@
         <!--Statistic Details View Controller-->
         <scene sceneID="T8a-ig-tMh">
             <objects>
-                <viewController id="SgI-dj-T2R" customClass="FDStatisticDetailsViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="SgI-dj-T2R" customClass="StatisticDetailsViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6CB-yH-X9R"/>
                         <viewControllerLayoutGuide type="bottom" id="szf-OO-py3"/>
@@ -352,7 +352,7 @@
         <!--tableView-->
         <scene sceneID="xsJ-H2-Tuf">
             <objects>
-                <viewController title="tableView" id="O8K-pC-uxH" customClass="FDTableViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="tableView" id="O8K-pC-uxH" customClass="TableViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ce5-dN-eSb"/>
                         <viewControllerLayoutGuide type="bottom" id="kU9-33-Wnv"/>
@@ -467,7 +467,7 @@
         <!--Collection View Controller-->
         <scene sceneID="8YD-h5-7dt">
             <objects>
-                <collectionViewController id="9Y2-wP-cT4" customClass="FDCollectionViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="9Y2-wP-cT4" customClass="CollectionViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="3hr-bI-afL">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -479,7 +479,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FDCollectionViewCell" id="Idp-Zf-gAG" customClass="FDCollectionViewCell" customModule="FitDash" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionViewCell" id="Idp-Zf-gAG" customClass="CollectionViewCell" customModule="FitDash" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -506,7 +506,7 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FDCollectionHeaderView" id="igA-gz-fvq" customClass="FDCollectionHeaderView" customModule="FitDash" customModuleProvider="target">
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionHeaderView" id="igA-gz-fvq" customClass="CollectionHeaderView" customModule="FitDash" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="64" width="600" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
@@ -538,7 +538,7 @@
         <!--BarChart-->
         <scene sceneID="947-Dy-Edn">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="guK-SB-LhG" customClass="FDBarChartViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="guK-SB-LhG" customClass="BarChartViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="At7-fD-tAF"/>
                         <viewControllerLayoutGuide type="bottom" id="edM-wY-4Ao"/>
@@ -731,6 +731,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="YRM-Sc-C70"/>
+        <segue reference="JsK-Z4-nAv"/>
     </inferredMetricsTieBreakers>
 </document>

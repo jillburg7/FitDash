@@ -1,5 +1,5 @@
 //
-//  FDTableViewController.swift
+//  TableViewController.swift
 //  FitDash
 //
 //  Created by Jillian Burgess on 11/1/14.
@@ -12,7 +12,7 @@ import HealthKit
 var weeklyOverview: (name: String, dates: [NSDate], values: [Double]) = ("", [],[])
 var dailyOverview: (name: String, dates: [NSDate], values: [Double]) = ("", [],[])
 
-class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
 	@IBOutlet var loader: UIActivityIndicatorView!
 	@IBOutlet var readyLabel: UILabel!
@@ -117,12 +117,12 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
 		if segue.identifier != nil {
 			if segue.identifier == "collectionView" {
-				var collectionview = segue.destinationViewController as FDCollectionViewController
+				var collectionview = segue.destinationViewController as CollectionViewController
 				let indexPath = self.tableView.indexPathForSelectedRow()!
 				collectionview.title = self.items[indexPath.row]
 				
 				if self.items[indexPath.row] == "Today's Hourly Statistics" {
-					collectionview.healthData = FDDayStatsPerHour(store: healthStore!)
+					collectionview.healthData = DayStatsPerHour(store: healthStore!)
 					collectionview.setup("day")
 				} else if self.items[indexPath.row] == "This Week's Daily Statistics" {
 					collectionview.healthData = WeekStatsPerDay(store: healthStore!)
@@ -135,19 +135,19 @@ class FDTableViewController: UIViewController, UITableViewDelegate, UITableViewD
 				*/
 				
 			} else {
-				var chartDetails = segue.destinationViewController as FDBaseViewController
+				var chartDetails = segue.destinationViewController as BaseViewController
 				let indexPath = self.tableView.indexPathForSelectedRow()!
 				let destinationTitle = self.items[indexPath.row]
 				chartDetails.tupleData = ([],[])
 				
 				if segue.identifier == "bemGraphView" {
-					chartDetails = segue.destinationViewController as FDBEMSimpleGraphViewController
+					chartDetails = segue.destinationViewController as BEMSimpleGraphViewController
 				} else if segue.identifier == "jawboneLineChart" {
-					chartDetails = segue.destinationViewController as FDJawboneChartViewController
+					chartDetails = segue.destinationViewController as JawboneChartViewController
 				}
 				/*
 				else if segue.identifier == "barChartView" {
-					chartDetails = segue.destinationViewController as FDBarChartViewController
+					chartDetails = segue.destinationViewController as BarChartViewController
 				}
 				*/
 				if self.items[indexPath.row] == "DailySteps" {
