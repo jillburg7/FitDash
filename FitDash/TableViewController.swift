@@ -18,8 +18,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 	@IBOutlet var readyLabel: UILabel!
 	@IBOutlet var tableView: UITableView!
 	
-	var items = ["BEMLineGraph", "JawboneChart", "Today's Hourly Statistics", "This Week's Daily Statistics"] //, "Yesterday's Hourly Statistics"
-	var segueID = ["bemGraphView", "jawboneLineChart", "collectionView", "collectionView"]  //, "collectionView"]
+	var items = ["BEMLineGraph", "JawboneChart", "Today's Hourly Statistics", "This Week's Daily Statistics", "workouts"] //, "Yesterday's Hourly Statistics"
+	var segueID = ["bemGraphView", "jawboneLineChart", "collectionView", "collectionView", "workoutSegue"]  //, "collectionView"]
+	
+	
+	let healthManager:HealthManager = HealthManager()
+	
 	
 	var healthStore: HKHealthStore?
 	var stepSamples = [HKQuantitySample]()
@@ -116,7 +120,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
  
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
 		if segue.identifier != nil {
+			
 			if segue.identifier == "collectionView" {
+				
 				var collectionview = segue.destinationViewController as CollectionViewController
 				let indexPath = self.tableView.indexPathForSelectedRow()!
 				collectionview.title = self.items[indexPath.row]
@@ -134,6 +140,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 				}
 				*/
 				
+			} else if segue.identifier == "workoutSegue" {
+				let workoutViewController = segue.destinationViewController as WorkoutsTableViewController
+				workoutViewController.healthManager = healthManager
 			} else {
 				var chartDetails = segue.destinationViewController as BaseViewController
 				let indexPath = self.tableView.indexPathForSelectedRow()!
@@ -141,8 +150,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 				chartDetails.tupleData = ([],[])
 				
 				if segue.identifier == "bemGraphView" {
+					println("TODO: BEMSimpleGraphViewController")
 					chartDetails = segue.destinationViewController as BEMSimpleGraphViewController
 				} else if segue.identifier == "jawboneLineChart" {
+					println("TODO: JawboneChartViewController")
 					chartDetails = segue.destinationViewController as JawboneChartViewController
 				}
 				/*
@@ -152,11 +163,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 				*/
 				if self.items[indexPath.row] == "DailySteps" {
 					dataDescription = dailyOverview.name
-					chartDetails.tupleData = ([NSDate()],[0.0])
+					
+					chartDetails.tupleData = ([NSDate(), NSDate()], [0.0, 0.0])
 //					chartDetails.tupleData = (dailyOverview.dates, dailyOverview.values)
 				} else {
 					dataDescription = weeklyOverview.name
-					chartDetails.tupleData = ([NSDate()],[0.0])
+					chartDetails.tupleData = ([NSDate(), NSDate()], [0.0, 0.0])
 //					chartDetails.tupleData = (weeklyOverview.dates, weeklyOverview.values)
 				}
 				

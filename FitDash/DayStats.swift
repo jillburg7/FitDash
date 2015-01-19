@@ -69,21 +69,21 @@ class DayStats: HealthData {
 	// MARK: - class functions
 	
 	func queryDayInSteps() {
-		
+		println("TODO: query day in steps")
 	}
 	func queryDayInDistance() {
-	
+		println("TODO: query day in distance")
 	}
 	func queryDayInFlightsClimbed() {
-	
+		println("TODO: query day in flights climb")
 	}
 	func queryDayInSleep() {
-	
+		println("TODO: query day in sleep")
 	}
 	func queryDayInActiveCalories() {
-	
+		println("TODO: query day in active Calories")
 	}
 	func queryDayInDietaryCalories() {
-	
+		println("TODO: query day in Dietary Calories")
 	}
 }

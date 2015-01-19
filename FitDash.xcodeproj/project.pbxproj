@@ -11,6 +11,7 @@
 		F107F9731A05CCA000E3801C /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F107F9721A05CCA000E3801C /* TableViewController.swift */; };
 		F10C218A1A071E1A000B7D8B /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10C21891A071E1A000B7D8B /* BaseViewController.swift */; };
 		F11D25161A2D0CE100945526 /* BarChartFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11D25151A2D0CE100945526 /* BarChartFooterView.swift */; };
+		F12190BE1A6CA9870080E90A /* WorkoutsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12190BD1A6CA9870080E90A /* WorkoutsTableViewController.swift */; };
 		F136CA8B1A2B987B0071EA51 /* CollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F136CA8A1A2B987B0071EA51 /* CollectionHeaderView.swift */; };
 		F136CA8E1A2B9EAA0071EA51 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F136CA8D1A2B9EAA0071EA51 /* CollectionViewCell.swift */; };
 		F136CA901A2BAAC20071EA51 /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F136CA8F1A2BAAC20071EA51 /* ColorConstants.swift */; };
@@ -51,6 +52,7 @@
 		F107F9721A05CCA000E3801C /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		F10C21891A071E1A000B7D8B /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		F11D25151A2D0CE100945526 /* BarChartFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartFooterView.swift; sourceTree = "<group>"; };
+		F12190BD1A6CA9870080E90A /* WorkoutsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutsTableViewController.swift; sourceTree = "<group>"; };
 		F136CA8A1A2B987B0071EA51 /* CollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionHeaderView.swift; sourceTree = "<group>"; };
 		F136CA8D1A2B9EAA0071EA51 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		F136CA8F1A2BAAC20071EA51 /* ColorConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorConstants.swift; sourceTree = "<group>"; };
@@ -167,15 +169,16 @@
 		F15897261A48846C00E40C18 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F15897271A48849700E40C18 /* Chart VIew Controllers */,
+				F15897271A48849700E40C18 /* Chart View Controllers */,
 				F1562DB21A29645A003F5B48 /* CollectionViewController.swift */,
 				F1A19A651A3FDF8500237EBC /* StatisticDetailsViewController.swift */,
 				F107F9721A05CCA000E3801C /* TableViewController.swift */,
+				F12190BD1A6CA9870080E90A /* WorkoutsTableViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
 		};
-		F15897271A48849700E40C18 /* Chart VIew Controllers */ = {
+		F15897271A48849700E40C18 /* Chart View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				F1C2137F1A0C0A0C0050E00C /* BarChartViewController.swift */,
@@ -183,7 +186,7 @@
 				F182014519EAEEB500E5ACB4 /* BEMSimpleGraphViewController.swift */,
 				F1DD117F1A058EC500602C53 /* JawboneChartViewController.swift */,
 			);
-			name = "Chart VIew Controllers";
+			name = "Chart View Controllers";
 			sourceTree = "<group>";
 		};
 		F182013519EAEEB500E5ACB4 = {
@@ -407,6 +410,7 @@
 				F136CA8B1A2B987B0071EA51 /* CollectionHeaderView.swift in Sources */,
 				F1473F491A33F85F00F1E6E1 /* HealthData.swift in Sources */,
 				F138D0C31A195B4B00F8256E /* AxisFooterView.swift in Sources */,
+				F12190BE1A6CA9870080E90A /* WorkoutsTableViewController.swift in Sources */,
 				F11D25161A2D0CE100945526 /* BarChartFooterView.swift in Sources */,
 				F136CA8E1A2B9EAA0071EA51 /* CollectionViewCell.swift in Sources */,
 				F1DD11801A058EC500602C53 /* JawboneChartViewController.swift in Sources */,

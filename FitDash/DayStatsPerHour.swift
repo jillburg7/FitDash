@@ -110,8 +110,7 @@ class DayStatsPerHour: HealthData {
 				}
 				println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 				println()
-			}
-			else if error != nil {
+			} else if error != nil {
 				//// Perform proper error handling here...
 				println("*** An error occurred while querying workouts: \(error.localizedDescription) ***")
 				abort()
