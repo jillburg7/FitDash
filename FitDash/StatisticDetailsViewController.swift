@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import HealthKit
 
 class StatisticDetailsViewController: UITableViewController {
 	
 	var details = []
+	var distanceUnit = DistanceUnit.Miles
+
 
     override func viewDidLoad() {
         super.viewDidLoad()

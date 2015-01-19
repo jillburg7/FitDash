@@ -80,9 +80,9 @@ class AxisFooterView: UIView {
 			CGContextMoveToPoint(context, xOffset + AxisLabelSeparatorWidth * 0.5, yOffset)
 			CGContextAddLineToPoint(context, xOffset + AxisLabelSeparatorWidth * 0.5, yOffset + AxisLabelSeparatorHeight)
 			CGContextStrokePath(context);
-			xOffset += stepLength;
+			xOffset += stepLength
 			
-			CGContextRestoreGState(context);
+			CGContextRestoreGState(context)
 		}
 		
 		if sectionCount > 1 {
@@ -90,7 +90,7 @@ class AxisFooterView: UIView {
 			CGContextMoveToPoint(context, self.bounds.size.width - AxisLabelSeparatorWidth * 0.5, yOffset)
 			CGContextAddLineToPoint(context, self.bounds.size.width - AxisLabelSeparatorWidth * 0.5, yOffset + AxisLabelSeparatorHeight)
 			CGContextStrokePath(context)
-			CGContextRestoreGState(context);
+			CGContextRestoreGState(context)
 		}
     }
 

@@ -33,6 +33,7 @@
 		F1C213801A0C0A0C0050E00C /* BarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C2137F1A0C0A0C0050E00C /* BarChartViewController.swift */; };
 		F1CCA3411A6B6B2C001A4866 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CCA3401A6B6B2C001A4866 /* HealthManager.swift */; };
 		F1DD11801A058EC500602C53 /* JawboneChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DD117F1A058EC500602C53 /* JawboneChartViewController.swift */; };
+		F1E8339A1A6D797000D54287 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E833991A6D797000D54287 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		F1C2137F1A0C0A0C0050E00C /* BarChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartViewController.swift; sourceTree = "<group>"; };
 		F1CCA3401A6B6B2C001A4866 /* HealthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthManager.swift; sourceTree = "<group>"; };
 		F1DD117F1A058EC500602C53 /* JawboneChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JawboneChartViewController.swift; sourceTree = "<group>"; };
+		F1E833991A6D797000D54287 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +174,7 @@
 				F15897271A48849700E40C18 /* Chart View Controllers */,
 				F1562DB21A29645A003F5B48 /* CollectionViewController.swift */,
 				F1A19A651A3FDF8500237EBC /* StatisticDetailsViewController.swift */,
+				F1E833991A6D797000D54287 /* ProfileViewController.swift */,
 				F107F9721A05CCA000E3801C /* TableViewController.swift */,
 				F12190BD1A6CA9870080E90A /* WorkoutsTableViewController.swift */,
 			);
@@ -421,6 +424,7 @@
 				F1B281FC1A34E0C3006C42A3 /* WeekStatsPerDay.swift in Sources */,
 				F182016919EB379100E5ACB4 /* HKHealthStoreExtension.swift in Sources */,
 				F1B281FA1A34E08C006C42A3 /* DayStatsPerHour.swift in Sources */,
+				F1E8339A1A6D797000D54287 /* ProfileViewController.swift in Sources */,
 				F1A19A661A3FDF8500237EBC /* StatisticDetailsViewController.swift in Sources */,
 				F10C218A1A071E1A000B7D8B /* BaseViewController.swift in Sources */,
 			);

@@ -18,8 +18,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 	@IBOutlet var readyLabel: UILabel!
 	@IBOutlet var tableView: UITableView!
 	
-	var items = ["BEMLineGraph", "JawboneChart", "Today's Hourly Statistics", "This Week's Daily Statistics", "workouts"] //, "Yesterday's Hourly Statistics"
-	var segueID = ["bemGraphView", "jawboneLineChart", "collectionView", "collectionView", "workoutSegue"]  //, "collectionView"]
+	var items = ["BEMLineGraph", "JawboneChart", "Today's Hourly Statistics", "This Week's Daily Statistics", "workouts", "Profile"] //, "Yesterday's Hourly Statistics"
+	var segueID = ["bemGraphView", "jawboneLineChart", "collectionView", "collectionView", "workoutSegue", "profileSegue"]  //, "collectionView"]
 	
 	
 	let healthManager:HealthManager = HealthManager()
@@ -38,6 +38,20 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 	var ready = false
 	var dataDescription = ""
 	
+	func authorizeHealthKit() {
+		healthManager.authorizeHealthKit {
+			(authorized,  error) -> Void in
+			if authorized {
+				println("HealthKit authorization received.")
+			} else {
+				println("HealthKit authorization denied!")
+				if error != nil {
+					println("\(error)")
+				}
+			}
+		}
+	}
+	
 	// MARK: init
 	
 	required init(coder aDecoder: NSCoder) {
@@ -55,6 +69,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated)
 		
+		/*
 		// Set up an HKHealthStore, asking the user for read/write permissions. This view controller is the
 		// first view controller that's shown to the user, so all of the desired HealthKit permissions are
 		// asked for now. Should consider requesting permissions the first time a user wants to interact with
@@ -62,6 +77,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 		if !HKHealthStore.isHealthDataAvailable() {
 			return
 		}
+		
 		
 		var writeDataTypes: NSSet = self.healthStore!.dataTypesToWrite()
 		var readDataTypes: NSSet = self.healthStore!.dataTypesToRead()
@@ -87,8 +103,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 				}
 			})
 		}
-		
 		self.healthStore?.requestAuthorizationToShareTypes(writeDataTypes, readTypes: readDataTypes, completion: completion)
+		*/
+		
+		authorizeHealthKit()
 		loader.hidesWhenStopped = true
 	}
 	
@@ -140,6 +158,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 				}
 				*/
 				
+			} else if segue.identifier == "profileSegue" {
+				let workoutViewController = segue.destinationViewController as ProfileViewController
+				workoutViewController.healthManager = healthManager
 			} else if segue.identifier == "workoutSegue" {
 				let workoutViewController = segue.destinationViewController as WorkoutsTableViewController
 				workoutViewController.healthManager = healthManager

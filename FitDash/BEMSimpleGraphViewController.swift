@@ -36,7 +36,7 @@ class BEMSimpleGraphViewController: BaseViewController, BEMSimpleLineGraphDataSo
 		self.graphView.colorYaxisLabel = white
 		self.graphView.colorTouchInputLine = white
 		self.graphView.alphaTouchInputLine = 1.0
-		//		self.graphView.widthLine = 3.0;
+		//		self.graphView.widthLine = 3.0
 		self.graphView.enableTouchReport = true
 		self.graphView.enablePopUpReport = true
 		self.graphView.enableReferenceAxisLines = true

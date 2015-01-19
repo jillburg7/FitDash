@@ -78,10 +78,10 @@ class BarChartFooterView: UIView {
 			CGContextSaveGState(context)
 			CGContextMoveToPoint(context, xOffset + AxisLabelSeparatorWidth * 0.5, yOffset)
 			CGContextAddLineToPoint(context, xOffset + AxisLabelSeparatorWidth * 0.5, yOffset + AxisLabelSeparatorHeight)
-			CGContextStrokePath(context);
-			xOffset += stepLength;
+			CGContextStrokePath(context)
+			xOffset += stepLength
 			
-			CGContextRestoreGState(context);
+			CGContextRestoreGState(context)
 		}
 		
 		if sectionCount > 1 {
@@ -89,7 +89,7 @@ class BarChartFooterView: UIView {
 			CGContextMoveToPoint(context, self.bounds.size.width - AxisLabelSeparatorWidth * 0.5, yOffset)
 			CGContextAddLineToPoint(context, self.bounds.size.width - AxisLabelSeparatorWidth * 0.5, yOffset + AxisLabelSeparatorHeight)
 			CGContextStrokePath(context)
-			CGContextRestoreGState(context);
+			CGContextRestoreGState(context)
 		}
 	}
 	

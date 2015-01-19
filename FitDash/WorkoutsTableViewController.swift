@@ -100,7 +100,7 @@ public class WorkoutsTableViewController: UITableViewController {
 		// 3. Detail text: Energy Burned
 		let energyBurned = workout.totalEnergyBurned.doubleValueForUnit(HKUnit.jouleUnit())
 		detailText += " Energy: " + energyFormatter.stringFromJoules(energyBurned)
-		cell.detailTextLabel?.text = detailText;
+		cell.detailTextLabel?.text = detailText
 		
 		return cell
 	}
