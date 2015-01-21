@@ -94,7 +94,7 @@ class WeekStatsPerDay: HealthData {
 		queryWeekInSleepPerDay()
 		queryWeekInActiveCaloriesPerDay()
 		queryWeekInDietaryCaloriesPerDay()
-		queryDayInWorkouts()
+//		queryDayInWorkouts()
 	}
 	
 	// MARK: - class functions

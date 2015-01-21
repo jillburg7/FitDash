@@ -17,11 +17,16 @@ class BarChartViewController: BaseViewController, JBBarChartViewDataSource, JBBa
 	@IBOutlet var maxValue: UILabel!
 	
 	@IBOutlet var barChart: JBBarChartView!
+	var footer: BarChartFooterView?
 	
 	let FDBarChartViewControllerChartPadding: CGFloat = 10.0
 	let FDBarChartViewControllerChartFooterPadding: CGFloat = 5.0
 	let FDBarChartViewControllerChartFooterHeight: CGFloat = 25.0
 	
+	
+	@IBAction override func refresh(sender: AnyObject) {
+		self.barChart.reloadData()
+	}
 	// MARK: - Overrides
 	
 	override func viewDidLoad() {
@@ -39,27 +44,37 @@ class BarChartViewController: BaseViewController, JBBarChartViewDataSource, JBBa
 	}
 	
 	override func viewDidAppear(animated: Bool) {
-		super.viewDidAppear(true)
+		super.viewDidAppear(animated)
 		self.barChart.backgroundColor = lightTurquoise
 		self.barChart.minimumValue = 0
 		
-		var footerView = BarChartFooterView(frame: CGRectMake(FDBarChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(FDBarChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (FDBarChartViewControllerChartPadding * 2), FDBarChartViewControllerChartFooterHeight))
+		footer = BarChartFooterView(frame: CGRectMake(FDBarChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(FDBarChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (FDBarChartViewControllerChartPadding * 2), FDBarChartViewControllerChartFooterHeight))
 		
-		footerView.padding = FDBarChartViewControllerChartFooterPadding
+		footer!.padding = FDBarChartViewControllerChartFooterPadding
 		df.dateStyle = .ShortStyle
 		df.timeStyle = .ShortStyle
-		footerView.leftLabel.text = "\(df.stringFromDate(dates.first!))"
-		//footerView.leftLabel.textColor = white
-		footerView.rightLabel.text = "\(df.stringFromDate(dates.last!))"
 		
-		footerView.sectionCount = values.count - 2
-		footerView.setFooterSeparatorColor(navyBlue)
-		//footerView.rightLabel.textColor = white
-		self.barChart.footerView = footerView
+		footer!.sectionCount = values.count - 2
+		footer!.setFooterSeparatorColor(navyBlue)
+		
+		self.barChart.footerView = footer!
 		self.view.addSubview(self.barChart)
-		
+//		updateFooterTextLabels(footer!)
 		self.barChart.reloadData()
 	}
+	
+	
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		self.barChart.reloadData()
+	}
+	
+	
+	func updateFooterTextLabels(footer: BarChartFooterView) {
+		footer.leftLabel.text = "\(df.stringFromDate(tupleData.0.first!))"
+		footer.rightLabel.text = "\(df.stringFromDate(tupleData.0.last!))"
+	}
+	
 	
 	// MARK: - JBBarChartViewDataSource
 	

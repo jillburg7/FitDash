@@ -40,6 +40,11 @@ class ProfileViewController: UITableViewController {
 	let durationFormatter = NSDateComponentsFormatter()
 	let energyFormatter = NSEnergyFormatter()
 	let distanceFormatter = NSLengthFormatter()
+
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		updateHealthInfo()
+	}
 	
 	func updateHealthInfo() {
 		updateProfileInfo()

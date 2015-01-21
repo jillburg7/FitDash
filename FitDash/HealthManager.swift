@@ -130,6 +130,43 @@ class HealthManager {
 	}
 	
 	
+	func queryWeekInSamplesPerDay(sampleType:HKQuantityType, startDate:NSDate, endDate:NSDate, completion: ((AnyObject!, NSError!) -> Void)!) {
+		// 1. Build the Predicate
+				let calendar = NSCalendar.currentCalendar()
+		let interval = NSDateComponents()
+		interval.day = 1
+		
+		// Set the anchor date to Monday at 12:00 a.m.
+		var anchorComponents = calendar.components(.CalendarUnitDay | .CalendarUnitMonth | .CalendarUnitYear | .CalendarUnitWeekday, fromDate: NSDate())
+		anchorComponents.hour = 0
+		let anchorDate = calendar.dateFromComponents(anchorComponents)!
+		let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
+		let statsOps: HKStatisticsOptions = HKStatisticsOptions.CumulativeSum
+
+		// Create the query
+		let query = HKStatisticsCollectionQuery(quantityType: sampleType, quantitySamplePredicate: predicate, options: statsOps, anchorDate: anchorDate, intervalComponents: interval)
+
+		// Set the results handler
+		query.initialResultsHandler = {
+			query, results, error in
+			
+			if let queryError = error {
+				println( "There was an error while reading the samples: \(queryError.localizedDescription)")
+			}
+			
+			// Plot the daily step counts over the past 7 days
+			results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
+				statistics, stop in
+				
+				// Execute the completion closure
+				if completion != nil {
+					completion(statistics,nil)
+				}
+			}
+		}
+		healthKitStore.executeQuery(query)
+	}
+	
 	func saveBMISample(bmi:Double, date:NSDate) {
 		// 1. Create a BMI Sample
 		let bmiType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierBodyMassIndex)
@@ -145,7 +182,6 @@ class HealthManager {
 			}
 		})
 	}
-	
 	
 	func saveRunningWorkout(startDate:NSDate, endDate:NSDate, distance:Double, distanceUnit:HKUnit, kiloCalories:Double, completion: ((Bool, NSError!) -> Void)!) {
 			
@@ -177,15 +213,14 @@ class HealthManager {
 			})
 	}
 	
-	
 	func readRunningWorkouts(completion: (([AnyObject]!, NSError!) -> Void)!) {
 		// 1. Predicate to read only running workouts
 		let predicate =  HKQuery.predicateForWorkoutsWithWorkoutActivityType(HKWorkoutActivityType.Running)
 		// 2. Order the workouts by date
 		let sortDescriptor = NSSortDescriptor(key:HKSampleSortIdentifierStartDate, ascending: false)
 		// 3. Create the query
-		let sampleQuery = HKSampleQuery(sampleType: HKWorkoutType.workoutType(), predicate: predicate, limit: 0, sortDescriptors: [sortDescriptor])
-			{ (sampleQuery, results, error ) -> Void in
+		let sampleQuery = HKSampleQuery(sampleType: HKWorkoutType.workoutType(), predicate: predicate, limit: 0, sortDescriptors: [sortDescriptor]) {
+			(sampleQuery, results, error ) -> Void in
 				
 				if let queryError = error {
 					println( "There was an error while reading the samples: \(queryError.localizedDescription)")
@@ -195,4 +230,6 @@ class HealthManager {
 		// 4. Execute the query
 		healthKitStore.executeQuery(sampleQuery)
 	}
+	
+	
 }

@@ -16,7 +16,8 @@ class BaseViewController: UIViewController {
 	
 	var healthStore: HKHealthStore?
 	
-	var tupleData: ([NSDate], [Double]) = ([],[])
+//	    var tupleData: ([NSDate], [Double]) = ([],[])
+	var tupleData = ([NSDate](), [Double]())
 	
 	var steps = 0.0
 	var distance = 0.0

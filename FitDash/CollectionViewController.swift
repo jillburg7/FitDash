@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import HealthKit
 
 class CollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
@@ -16,36 +16,51 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	var selected = ""
 	
 	var collectionItems = ["Steps", "Distance", "Flights Climbed", "Sleep", "Active Calories", "Dietary Calories"]
-	var segueID = ["barChartView", "barChartView", "barChartView", "barChartView", "barChartView", "barChartView"] //bemGraphView
+	var segueID = ["barChartView", "barChartView", "barChartView", "barChartView", "barChartView", "barChartView"]
+	
+	var healthManager:HealthManager?
+	
+	var steps = ([NSDate](), [Double]())
+	//	var steps = ([NSDate](), [HKQuantity]())
+	var distance = ([NSDate](), [Double]())
+	var flightsClimbed = ([NSDate](), [Double]())
+	var sleep = ([NSDate](), [Double]())
+	var activeCal = ([NSDate](), [Double]())
+	var dietaryCal = ([NSDate](), [Double]())
 	
 	// MARK: - Overrides
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
          self.clearsSelectionOnViewWillAppear = true
-
-        // Register cell classes
-//        self.collectionView!.registerClass(CollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
     }
+	
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+	}
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+	
 
 	// MARK: - Setup Statistic Collection Queries
 	
 	// initializes model data depending on the string was passed in denoting the class to use for function calls
 	func setup(objType: String) {
-		// TODO: add other Model classes
+		var endDate = NSDate(), startDate = NSDate()
 		if objType == "day" {
-			(healthData as DayStatsPerHour).startQueries()
-		} else if objType == "week" {
-			(healthData as WeekStatsPerDay).startQueries()
+//			(healthData as DayStatsPerHour).startQueries()
+			startDate = NSCalendar.currentCalendar().dateBySettingHour(0, minute: 0, second: 0, ofDate: endDate, options: nil)!
+		} else {
+			startDate = NSCalendar.currentCalendar().dateByAddingUnit(.DayCalendarUnit, value: -7, toDate: endDate, options: nil)!
+			updateStepCount(startDate, endDate: endDate)
+			updateDistance(startDate, endDate: endDate)
+			updateFlightsClimbed(startDate, endDate: endDate)
+			updateActiveCalories(startDate, endDate: endDate)
+			updateDietaryCalories(startDate, endDate: endDate)
+//			updateSleep(startDate, endDate: endDate)
 		}
 	}
 	
@@ -59,27 +74,29 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 			var chartDetails = segue.destinationViewController as BarChartViewController
 			chartDetails.tupleData = ([],[])
 			
-			if healthData is WeekStatsPerDay {
+//			if healthData is WeekStatsPerDay {
 				if selected == "Steps" {
-					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInStepsPerDay()
+					chartDetails.tupleData = self.steps
 					chartDetails.dataTitle = "Week In Steps"
 				} else if selected == "Distance" {
-					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInDistancePerDay()
+					chartDetails.tupleData = self.distance
 					chartDetails.dataTitle = "Week in Distance"
 				} else if selected == "Flights Climbed" {
-					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInFlightsClimbedPerDay()
+					chartDetails.tupleData = self.flightsClimbed
 					chartDetails.dataTitle = "Week in Flights Climbed"
 				} else if selected == "Sleep" {
-					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInSleepPerDay()
+//					chartDetails.tupleData = self.sleep
+//					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInSleepPerDay()
 					chartDetails.dataTitle = "Week in Sleep"
 				} else if selected == "Active Calories" {
-					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInActiveCaloriesPerDay()
+					chartDetails.tupleData = self.activeCal
 					chartDetails.dataTitle = "Week in Active Calories"
 				} else if selected == "Dietary Calories" {
-					chartDetails.tupleData = (self.healthData as WeekStatsPerDay).getWeekInDietaryCaloriesPerDay()
+					chartDetails.tupleData = self.dietaryCal
 					chartDetails.dataTitle = "Week in Dietary Calories"
 				}
-			} else if healthData is DayStatsPerHour {
+//			} else if healthData is DayStatsPerHour {
+			/*
 				if selected == "Steps" {
 					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInStepsPerHour()
 					chartDetails.dataTitle = "Day In Steps"
@@ -100,12 +117,171 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInDietaryCaloriesPerHour()
 					chartDetails.dataTitle = "Day in Dietary Calories"
 				}
-			}
+			*/
+//			}
 			
 			chartDetails.title = selected
 		}
-    }
-
+	}
+	
+	func updateStepCount(startDate:NSDate, endDate:NSDate) {
+		// Construct an HKQuantityType for Step Count
+		let quantityType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
+		
+		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+			(results, error) in
+			
+			if error != nil {
+				println("Error reading steps from HealthKit Store: \(error.localizedDescription)")
+				return
+			}
+			
+			// Keep data and update in main thread
+			dispatch_async(dispatch_get_main_queue(), {
+				() -> Void in
+				var statisticObj = results as? HKStatistics
+				self.steps.0.append(statisticObj!.startDate)
+				if let quantity = statisticObj!.sumQuantity() {
+					self.steps.1.append(quantity.doubleValueForUnit(HKUnit.countUnit()))
+				} else if statisticObj!.sumQuantity() == nil {
+					self.steps.1.append(0.0)
+				}
+			})
+		})
+	}
+	
+	func updateDistance(startDate:NSDate, endDate:NSDate) {
+		// Construct an HKQuantityType for Distance Walking Running
+		let quantityType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)
+		
+		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+			(results, error) in
+			
+			if error != nil {
+				println("Error reading steps from HealthKit Store: \(error.localizedDescription)")
+				return
+			}
+			
+			// Keep data and update in main thread
+			dispatch_async(dispatch_get_main_queue(), {
+				() -> Void in
+				var statisticObj = results as? HKStatistics
+				self.distance.0.append(statisticObj!.startDate)
+				if let quantity = statisticObj!.sumQuantity() {
+					self.distance.1.append(quantity.doubleValueForUnit(HKUnit.mileUnit()))
+				} else if statisticObj!.sumQuantity() == nil {
+					self.distance.1.append(0.0)
+				}
+			})
+		})
+	}
+	
+	func updateFlightsClimbed(startDate:NSDate, endDate:NSDate) {
+		// Construct an HKQuantityType for Flights Climbed
+		let quantityType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierFlightsClimbed)
+		
+		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+			(results, error) in
+			
+			if error != nil {
+				println("Error reading steps from HealthKit Store: \(error.localizedDescription)")
+				return
+			}
+			
+			// Keep data and update in main thread
+			dispatch_async(dispatch_get_main_queue(), {
+				() -> Void in
+				var statisticObj = results as? HKStatistics
+				self.flightsClimbed.0.append(statisticObj!.startDate)
+				if let quantity = statisticObj!.sumQuantity() {
+					self.flightsClimbed.1.append(quantity.doubleValueForUnit(HKUnit.countUnit()))
+				} else if statisticObj!.sumQuantity() == nil {
+					self.flightsClimbed.1.append(0.0)
+				}
+			})
+		})
+	}
+	
+	func updateActiveCalories(startDate:NSDate, endDate:NSDate) {
+		// Construct an HKQuantityType for Active Calories
+		let quantityType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned)
+		
+		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+			(results, error) in
+			
+			if error != nil {
+				println("Error reading steps from HealthKit Store: \(error.localizedDescription)")
+				return
+			}
+			
+			// Keep data and update in main thread
+			dispatch_async(dispatch_get_main_queue(), {
+				() -> Void in
+				var statisticObj = results as? HKStatistics
+				self.activeCal.0.append(statisticObj!.startDate)
+				if let quantity = statisticObj!.sumQuantity() {
+					self.activeCal.1.append(quantity.doubleValueForUnit(HKUnit.calorieUnit()))
+				} else if statisticObj!.sumQuantity() == nil {
+					self.activeCal.1.append(0.0)
+				}
+			})
+		})
+	}
+	
+	func updateDietaryCalories(startDate:NSDate, endDate:NSDate) {
+		// Construct an HKQuantityType for Dietary Calories
+		let quantityType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDietaryEnergyConsumed)
+		
+		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+			(results, error) in
+			
+			if error != nil {
+				println("Error reading steps from HealthKit Store: \(error.localizedDescription)")
+				return
+			}
+			
+			// Keep data and update in main thread
+			dispatch_async(dispatch_get_main_queue(), {
+				() -> Void in
+				var statisticObj = results as? HKStatistics
+				self.dietaryCal.0.append(statisticObj!.startDate)
+				if let quantity = statisticObj!.sumQuantity() {
+					self.dietaryCal.1.append(quantity.doubleValueForUnit(HKUnit.calorieUnit()))
+				} else if statisticObj!.sumQuantity() == nil {
+					self.dietaryCal.1.append(0.0)
+				}
+			})
+		})
+	}
+	
+	func updateSleep(startDate:NSDate, endDate:NSDate) {
+		// 1. Construct an HKQuantityType for Flights Climbed
+		/*
+		let quantityType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierFlightsClimbed)
+		
+		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+		(results, error) in
+		
+		if error != nil {
+		println("Error reading steps from HealthKit Store: \(error.localizedDescription)")
+		return
+		}
+		
+		//Keep steps and refresh tableview in main thread
+		dispatch_async(dispatch_get_main_queue(), {
+		() -> Void in
+		var statisticObj = results as? HKStatistics
+		// Keep the daily step counts over the past 7 days
+		if let quantity = statisticObj!.sumQuantity() {
+		self.flightsClimbed.0.append(statisticObj!.startDate)
+		self.flightsClimbed.1.append(quantity.doubleValueForUnit(HKUnit.countUnit()))
+		}
+		})
+		})
+		*/
+	}
+	
+	
     // MARK: UICollectionViewDataSource
 
 	// Return the number of sections
@@ -134,7 +310,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	}
 	*/
 	
-	/*
+	
 	override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
 		//1
 		switch kind {
@@ -146,7 +322,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 			assert(false, "Unexpected element kind")
 		}
 	}
-	*/
+	
 
     // MARK: UICollectionViewDelegate
 

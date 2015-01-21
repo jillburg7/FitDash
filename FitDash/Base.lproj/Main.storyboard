@@ -287,7 +287,6 @@
         <!--Statistic Details View Controller-->
         <scene sceneID="T8a-ig-tMh">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Sby-h1-kbO" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="SgI-dj-T2R" customClass="StatisticDetailsViewController" customModule="FitDash" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6CB-yH-X9R"/>
@@ -333,6 +332,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sby-h1-kbO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1309" y="277"/>
         </scene>
@@ -993,6 +993,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="YRM-Sc-C70"/>
+        <segue reference="JsK-Z4-nAv"/>
     </inferredMetricsTieBreakers>
 </document>
