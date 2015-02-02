@@ -12,13 +12,17 @@ import HealthKit
 class CollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
 	// MARK: Class properties
-	var healthData: HealthData?
 	var selected = ""
+	var timePeriod: String?
 	
 	var collectionItems = ["Steps", "Distance", "Flights Climbed", "Sleep", "Active Calories", "Dietary Calories"]
 	var segueID = ["barChartView", "barChartView", "barChartView", "barChartView", "barChartView", "barChartView"]
 	
 	var healthManager:HealthManager?
+	
+	var endDate = NSDate()
+	let calendar = NSCalendar.currentCalendar()
+	var queryParams: (startDate:NSDate?, predicate:NSPredicate?, anchorDate:NSDate?, interval:NSDateComponents?)
 	
 	var steps = ([NSDate](), [Double]())
 	//	var steps = ([NSDate](), [HKQuantity]())
@@ -49,19 +53,36 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	
 	// initializes model data depending on the string was passed in denoting the class to use for function calls
 	func setup(objType: String) {
-		var endDate = NSDate(), startDate = NSDate()
+		var components: (NSDateComponents, NSDate)
 		if objType == "day" {
-//			(healthData as DayStatsPerHour).startQueries()
-			startDate = NSCalendar.currentCalendar().dateBySettingHour(0, minute: 0, second: 0, ofDate: endDate, options: nil)!
+			timePeriod = "hourly"
+			queryParams.startDate = NSCalendar.currentCalendar().dateBySettingHour(0, minute: 0, second: 0, ofDate: endDate, options: nil)!
+			components = setQueryDateComponents(1, intervalDay: 0,anchorHour: 0)
 		} else {
-			startDate = NSCalendar.currentCalendar().dateByAddingUnit(.DayCalendarUnit, value: -7, toDate: endDate, options: nil)!
-			updateStepCount(startDate, endDate: endDate)
-			updateDistance(startDate, endDate: endDate)
-			updateFlightsClimbed(startDate, endDate: endDate)
-			updateActiveCalories(startDate, endDate: endDate)
-			updateDietaryCalories(startDate, endDate: endDate)
-//			updateSleep(startDate, endDate: endDate)
+			timePeriod = "weekly"
+			queryParams.startDate = NSCalendar.currentCalendar().dateByAddingUnit(.DayCalendarUnit, value: -7, toDate: endDate, options: nil)!
+			components = setQueryDateComponents(0, intervalDay: 1, anchorHour: 0)
 		}
+		queryParams.interval = components.0
+		queryParams.anchorDate = components.1
+		queryParams.predicate =  HKQuery.predicateForSamplesWithStartDate(queryParams.startDate, endDate: endDate, options: .None)
+		updateStepQuery()
+		updateDistance()
+		updateFlightsClimbed()
+		updateActiveCalories()
+		updateDietaryCalories()
+		updateSleep()
+	}
+	
+	private func setQueryDateComponents(intervalHour:Int, intervalDay:Int, anchorHour:Int) -> (NSDateComponents, NSDate) {
+		let interval = NSDateComponents()
+		interval.hour = intervalHour //1
+		interval.day = intervalDay //1
+		
+		var anchorComponents = calendar.components(.CalendarUnitDay | .CalendarUnitMonth | .CalendarUnitYear | .CalendarUnitWeekday, fromDate: endDate)
+		anchorComponents.hour = anchorHour //0
+		let anchorDate = calendar.dateFromComponents(anchorComponents)!
+		return (interval, anchorDate)
 	}
 	
     // MARK: - Navigation
@@ -74,7 +95,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 			var chartDetails = segue.destinationViewController as BarChartViewController
 			chartDetails.tupleData = ([],[])
 			
-//			if healthData is WeekStatsPerDay {
+			if timePeriod == "weekly" {
 				if selected == "Steps" {
 					chartDetails.tupleData = self.steps
 					chartDetails.dataTitle = "Week In Steps"
@@ -95,40 +116,39 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 					chartDetails.tupleData = self.dietaryCal
 					chartDetails.dataTitle = "Week in Dietary Calories"
 				}
-//			} else if healthData is DayStatsPerHour {
-			/*
+			} else if timePeriod == "hourly" {
 				if selected == "Steps" {
-					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInStepsPerHour()
+					chartDetails.tupleData = self.steps
 					chartDetails.dataTitle = "Day In Steps"
 				} else if selected == "Distance" {
-					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInDistancePerHour()
+					chartDetails.tupleData = self.distance
 					chartDetails.dataTitle = "Day in Distance"
 				} else if selected == "Flights Climbed" {
-					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInFlightsClimbedPerHour()
+				chartDetails.tupleData = self.flightsClimbed
 					chartDetails.dataTitle = "Day in Flights Climbed"
 				} else if selected == "Sleep" {
-					chartDetails.tupleData = ([NSDate()],[0.0])
+				//					chartDetails.tupleData = self.sleep
 					//				chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInSleepPerHour()
 					chartDetails.dataTitle = "Day in Sleep"
 				} else if selected == "Active Calories" {
-					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInActiveCaloriesPerHour()
+					chartDetails.tupleData = self.activeCal
 					chartDetails.dataTitle = "Day in Active Calories"
 				} else if selected == "Dietary Calories" {
-					chartDetails.tupleData = (self.healthData as DayStatsPerHour).getDayInDietaryCaloriesPerHour()
+					chartDetails.tupleData = self.dietaryCal
 					chartDetails.dataTitle = "Day in Dietary Calories"
 				}
-			*/
-//			}
-			
+			}
 			chartDetails.title = selected
 		}
 	}
 	
-	func updateStepCount(startDate:NSDate, endDate:NSDate) {
-		// Construct an HKQuantityType for Step Count
+	
+	// MARK: - Query Setup & breakdown
+	
+	func updateStepQuery() {
 		let quantityType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
-		
-		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+	
+		self.healthManager?.queryWeekInSamples(quantityType, startDate: self.queryParams.startDate, predicate: self.queryParams.predicate, anchorDate: self.queryParams.anchorDate, interval: self.queryParams.interval, completion: {
 			(results, error) in
 			
 			if error != nil {
@@ -150,11 +170,11 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 		})
 	}
 	
-	func updateDistance(startDate:NSDate, endDate:NSDate) {
+	func updateDistance() {
 		// Construct an HKQuantityType for Distance Walking Running
 		let quantityType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)
 		
-		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+		self.healthManager?.queryWeekInSamples(quantityType, startDate: self.queryParams.startDate, predicate: self.queryParams.predicate, anchorDate: self.queryParams.anchorDate, interval: self.queryParams.interval, completion: {
 			(results, error) in
 			
 			if error != nil {
@@ -175,12 +195,12 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 			})
 		})
 	}
-	
-	func updateFlightsClimbed(startDate:NSDate, endDate:NSDate) {
+
+	func updateFlightsClimbed() {
 		// Construct an HKQuantityType for Flights Climbed
 		let quantityType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierFlightsClimbed)
 		
-		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+		self.healthManager?.queryWeekInSamples(quantityType, startDate: self.queryParams.startDate, predicate: self.queryParams.predicate, anchorDate: self.queryParams.anchorDate, interval: self.queryParams.interval, completion: {
 			(results, error) in
 			
 			if error != nil {
@@ -202,11 +222,11 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 		})
 	}
 	
-	func updateActiveCalories(startDate:NSDate, endDate:NSDate) {
+	func updateActiveCalories() {
 		// Construct an HKQuantityType for Active Calories
 		let quantityType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned)
 		
-		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+		self.healthManager?.queryWeekInSamples(quantityType, startDate: self.queryParams.startDate, predicate: self.queryParams.predicate, anchorDate: self.queryParams.anchorDate, interval: self.queryParams.interval, completion: {
 			(results, error) in
 			
 			if error != nil {
@@ -228,11 +248,11 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 		})
 	}
 	
-	func updateDietaryCalories(startDate:NSDate, endDate:NSDate) {
+	func updateDietaryCalories() {
 		// Construct an HKQuantityType for Dietary Calories
 		let quantityType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDietaryEnergyConsumed)
 		
-		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+		self.healthManager?.queryWeekInSamples(quantityType, startDate: self.queryParams.startDate, predicate: self.queryParams.predicate, anchorDate: self.queryParams.anchorDate, interval: self.queryParams.interval, completion: {
 			(results, error) in
 			
 			if error != nil {
@@ -254,12 +274,12 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 		})
 	}
 	
-	func updateSleep(startDate:NSDate, endDate:NSDate) {
+	func updateSleep() {
 		// 1. Construct an HKQuantityType for Flights Climbed
 		/*
 		let quantityType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierFlightsClimbed)
 		
-		self.healthManager?.queryWeekInSamplesPerDay(quantityType, startDate: startDate, endDate: endDate, completion: {
+		self.healthManager?.queryWeekInSamples(quantityType, startDate: self.queryParams.startDate, predicate: self.queryParams.predicate, anchorDate: self.queryParams.anchorDate, interval: self.queryParams.interval, completion: {
 		(results, error) in
 		
 		if error != nil {

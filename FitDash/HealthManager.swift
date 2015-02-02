@@ -130,22 +130,12 @@ class HealthManager {
 	}
 	
 	
-	func queryWeekInSamplesPerDay(sampleType:HKQuantityType, startDate:NSDate, endDate:NSDate, completion: ((AnyObject!, NSError!) -> Void)!) {
+	func queryWeekInSamples(sampleType:HKQuantityType, startDate:NSDate?, predicate:NSPredicate?, anchorDate:NSDate?, interval:NSDateComponents?, completion: ((AnyObject!, NSError!) -> Void)!) {
 		// 1. Build the Predicate
-				let calendar = NSCalendar.currentCalendar()
-		let interval = NSDateComponents()
-		interval.day = 1
 		
-		// Set the anchor date to Monday at 12:00 a.m.
-		var anchorComponents = calendar.components(.CalendarUnitDay | .CalendarUnitMonth | .CalendarUnitYear | .CalendarUnitWeekday, fromDate: NSDate())
-		anchorComponents.hour = 0
-		let anchorDate = calendar.dateFromComponents(anchorComponents)!
-		let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
-		let statsOps: HKStatisticsOptions = HKStatisticsOptions.CumulativeSum
-
 		// Create the query
-		let query = HKStatisticsCollectionQuery(quantityType: sampleType, quantitySamplePredicate: predicate, options: statsOps, anchorDate: anchorDate, intervalComponents: interval)
-
+		let query = HKStatisticsCollectionQuery(quantityType: sampleType, quantitySamplePredicate: predicate, options: .CumulativeSum, anchorDate: anchorDate, intervalComponents: interval)
+		
 		// Set the results handler
 		query.initialResultsHandler = {
 			query, results, error in
@@ -155,7 +145,7 @@ class HealthManager {
 			}
 			
 			// Plot the daily step counts over the past 7 days
-			results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
+			results.enumerateStatisticsFromDate(startDate, toDate: NSDate()) {
 				statistics, stop in
 				
 				// Execute the completion closure
@@ -166,6 +156,7 @@ class HealthManager {
 		}
 		healthKitStore.executeQuery(query)
 	}
+
 	
 	func saveBMISample(bmi:Double, date:NSDate) {
 		// 1. Create a BMI Sample
