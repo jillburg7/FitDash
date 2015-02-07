@@ -528,13 +528,22 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TranslucentCellView" translatesAutoresizingMaskIntoConstraints="NO" id="HmN-rl-FKd">
+                                            <rect key="frame" x="0.0" y="0.0" width="194" height="194"/>
+                                        </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <color key="backgroundColor" red="0.17254901959999999" green="0.24313725489999999" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="HmN-rl-FKd" secondAttribute="centerX" id="7VL-2y-F8j"/>
+                                    <constraint firstAttribute="bottom" secondItem="HmN-rl-FKd" secondAttribute="bottom" id="8JG-wq-JTb"/>
+                                    <constraint firstItem="HmN-rl-FKd" firstAttribute="top" secondItem="Idp-Zf-gAG" secondAttribute="top" id="9rY-oO-R3r"/>
                                     <constraint firstAttribute="centerY" secondItem="IQC-jo-Us9" secondAttribute="centerY" constant="-3.5" id="U34-bc-rJH"/>
+                                    <constraint firstItem="HmN-rl-FKd" firstAttribute="leading" secondItem="Idp-Zf-gAG" secondAttribute="leading" id="Zn7-Ap-BtR"/>
                                     <constraint firstAttribute="centerX" secondItem="IQC-jo-Us9" secondAttribute="centerX" constant="-3" id="eMV-TN-hgz"/>
+                                    <constraint firstAttribute="centerY" secondItem="HmN-rl-FKd" secondAttribute="centerY" id="gls-L8-Zry"/>
+                                    <constraint firstAttribute="trailing" secondItem="HmN-rl-FKd" secondAttribute="trailing" id="jF6-18-chV"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="label" destination="IQC-jo-Us9" id="BB5-rW-rHj"/>
@@ -546,19 +555,42 @@
                             <rect key="frame" x="0.0" y="64" width="600" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WUL-gf-2tI">
-                                    <rect key="frame" x="280" y="16" width="40" height="20"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="currentDate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WUL-gf-2tI">
+                                    <rect key="frame" x="257" y="15" width="86" height="20"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hRj-hf-TGz">
+                                    <rect key="frame" x="52" y="10" width="16" height="30"/>
+                                    <state key="normal" image="back-32">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="previous:" destination="igA-gz-fvq" eventType="touchUpInside" id="owR-I2-QzO"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbf-4V-rsA">
+                                    <rect key="frame" x="534" y="10" width="16" height="30"/>
+                                    <state key="normal" image="forward-32">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="next:" destination="igA-gz-fvq" eventType="touchUpInside" id="z5f-54-gEF"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <constraints>
+                                <constraint firstItem="dbf-4V-rsA" firstAttribute="centerY" secondItem="WUL-gf-2tI" secondAttribute="centerY" id="870-H5-IpX"/>
+                                <constraint firstItem="dbf-4V-rsA" firstAttribute="top" secondItem="hRj-hf-TGz" secondAttribute="top" id="Dj2-kJ-jDb"/>
                                 <constraint firstAttribute="centerX" secondItem="WUL-gf-2tI" secondAttribute="centerX" id="Hbc-Vb-qET"/>
                                 <constraint firstAttribute="centerY" secondItem="WUL-gf-2tI" secondAttribute="centerY" id="ccX-eA-3It"/>
+                                <constraint firstAttribute="trailingMargin" secondItem="dbf-4V-rsA" secondAttribute="trailing" constant="42" id="kAi-z5-Dcs"/>
+                                <constraint firstAttribute="centerX" secondItem="WUL-gf-2tI" secondAttribute="centerX" id="swh-sk-yvh"/>
+                                <constraint firstItem="hRj-hf-TGz" firstAttribute="leading" secondItem="igA-gz-fvq" secondAttribute="leadingMargin" constant="44" id="u6g-eg-kJM"/>
                             </constraints>
                             <connections>
-                                <outlet property="label" destination="WUL-gf-2tI" id="bBf-qc-jwO"/>
+                                <outlet property="currentDate" destination="WUL-gf-2tI" id="q6h-lM-saP"/>
                             </connections>
                         </collectionReusableView>
                         <connections>
@@ -1021,6 +1053,11 @@
             <point key="canvasLocation" x="-1008" y="228"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="TranslucentCellView" width="192" height="192"/>
+        <image name="back-32" width="16" height="30"/>
+        <image name="forward-32" width="16" height="30"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="4g9-uV-QIP"/>
     </inferredMetricsTieBreakers>

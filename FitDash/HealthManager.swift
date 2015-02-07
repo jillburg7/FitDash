@@ -130,9 +130,7 @@ class HealthManager {
 	}
 	
 	
-	func queryWeekInSamples(sampleType:HKQuantityType, startDate:NSDate?, predicate:NSPredicate?, anchorDate:NSDate?, interval:NSDateComponents?, completion: ((AnyObject!, NSError!) -> Void)!) {
-		// 1. Build the Predicate
-		
+	func querySamplesWithCumulativeSum(sampleType:HKQuantityType, startDate:NSDate?, predicate:NSPredicate?, anchorDate:NSDate?, interval:NSDateComponents?, completion: ((AnyObject!, NSError!) -> Void)!) {
 		// Create the query
 		let query = HKStatisticsCollectionQuery(quantityType: sampleType, quantitySamplePredicate: predicate, options: .CumulativeSum, anchorDate: anchorDate, intervalComponents: interval)
 		
@@ -152,6 +150,28 @@ class HealthManager {
 				if completion != nil {
 					completion(statistics,nil)
 				}
+			}
+		}
+		healthKitStore.executeQuery(query)
+	}
+	
+	func queryCategorySamples(sampleType:HKCategoryType, predicate:NSPredicate, limit:Int, completion: ((AnyObject!, NSError!) -> Void)!) {
+		// Create the query
+		let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: limit, sortDescriptors: nil) {
+			(query, results, error) in
+			
+			if results == nil {
+				println("There was an error running the query: \(error)")
+			}
+			
+			dispatch_async(dispatch_get_main_queue()) {
+				for sample in results.generate() {
+					let value = sample as? HKCategorySample
+					if completion != nil {
+						completion(value,nil)
+					}
+				}
+
 			}
 		}
 		healthKitStore.executeQuery(query)

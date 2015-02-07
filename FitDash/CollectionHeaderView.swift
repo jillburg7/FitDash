@@ -10,5 +10,14 @@ import UIKit
 
 class CollectionHeaderView: UICollectionReusableView {
         
-	@IBOutlet weak var label: UILabel!
+	@IBAction func previous(sender: UIButton) {
+		// TODO: Previous button press action
+		println("Pressed previous")
+	}
+	@IBAction func next(sender: UIButton) {
+		// TODO: Next button press action
+		println("Pressed next")
+	}
+	@IBOutlet weak var currentDate: UILabel!
+	
 }

@@ -23,3 +23,6 @@ let yellow = UIColor(red: 244.0/255.0, green: 208.0/255.0, blue: 63.0/255.0, alp
 let lime = UIColor(red: 135.0/255.0, green: 211.0/255.0, blue: 124.0/255.0, alpha: 1.0)
 let green = UIColor(red: 46.0/255.0, green: 204.0/255.0, blue: 113.0/255.0, alpha: 1.0)
 let turquoise = UIColor(red: 3.0/255.0, green: 201.0/255.0, blue: 169.0/255.0, alpha: 0.5)
+
+//	MARK: Colors Array
+let colors: [UIColor] = [red, orange, yellow, lime, green, turquoise, navyBlue]
