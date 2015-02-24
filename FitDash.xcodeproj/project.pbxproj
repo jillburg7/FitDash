@@ -17,6 +17,7 @@
 		F136CA901A2BAAC20071EA51 /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F136CA8F1A2BAAC20071EA51 /* ColorConstants.swift */; };
 		F138D0C31A195B4B00F8256E /* AxisFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F138D0C21A195B4B00F8256E /* AxisFooterView.swift */; };
 		F1562DB31A29645A003F5B48 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1562DB21A29645A003F5B48 /* CollectionViewController.swift */; };
+		F1793E4A1A992AA40055930C /* CollectionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1793E491A992AA40055930C /* CollectionFooterView.swift */; };
 		F182014419EAEEB500E5ACB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182014319EAEEB500E5ACB4 /* AppDelegate.swift */; };
 		F182014619EAEEB500E5ACB4 /* BEMSimpleGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182014519EAEEB500E5ACB4 /* BEMSimpleGraphViewController.swift */; };
 		F182014919EAEEB500E5ACB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F182014719EAEEB500E5ACB4 /* Main.storyboard */; };
@@ -54,6 +55,7 @@
 		F136CA8F1A2BAAC20071EA51 /* ColorConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorConstants.swift; sourceTree = "<group>"; };
 		F138D0C21A195B4B00F8256E /* AxisFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxisFooterView.swift; sourceTree = "<group>"; };
 		F1562DB21A29645A003F5B48 /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
+		F1793E491A992AA40055930C /* CollectionFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionFooterView.swift; sourceTree = "<group>"; };
 		F17ECB7219EB6DD9008E9FC9 /* FitDash-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FitDash-Bridging-Header.h"; sourceTree = "<group>"; };
 		F182013E19EAEEB500E5ACB4 /* FitDash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitDash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F182014219EAEEB500E5ACB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				F136CA8A1A2B987B0071EA51 /* CollectionHeaderView.swift */,
+				F1793E491A992AA40055930C /* CollectionFooterView.swift */,
 				F136CA8D1A2B9EAA0071EA51 /* CollectionViewCell.swift */,
 			);
 			name = CollectionView;
@@ -187,9 +190,9 @@
 				F182016419EAEF3C00E5ACB4 /* HealthKit.framework */,
 				F182014019EAEEB500E5ACB4 /* FitDash */,
 				F182015619EAEEB500E5ACB4 /* FitDashTests */,
-				F182013F19EAEEB500E5ACB4 /* Products */,
-				02EA3E8FF2A66718705D850F /* Pods */,
 				3385C8B8D05D81FA7D2DBC61 /* Frameworks */,
+				02EA3E8FF2A66718705D850F /* Pods */,
+				F182013F19EAEEB500E5ACB4 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -205,12 +208,12 @@
 		F182014019EAEEB500E5ACB4 /* FitDash */ = {
 			isa = PBXGroup;
 			children = (
+				F182014119EAEEB500E5ACB4 /* Supporting Files */,
 				F182014A19EAEEB500E5ACB4 /* Images.xcassets */,
-				F1473F4B1A33FC5E00F1E6E1 /* App */,
-				F1473F4A1A33FC4D00F1E6E1 /* Constants */,
 				F182014C19EAEEB500E5ACB4 /* LaunchScreen.xib */,
 				F182014719EAEEB500E5ACB4 /* Main.storyboard */,
-				F182014119EAEEB500E5ACB4 /* Supporting Files */,
+				F1473F4B1A33FC5E00F1E6E1 /* App */,
+				F1473F4A1A33FC4D00F1E6E1 /* Constants */,
 				F15897261A48846C00E40C18 /* View Controllers */,
 				F15897251A48845700E40C18 /* Views */,
 			);
@@ -385,6 +388,7 @@
 			files = (
 				F1C213801A0C0A0C0050E00C /* BarChartViewController.swift in Sources */,
 				F1562DB31A29645A003F5B48 /* CollectionViewController.swift in Sources */,
+				F1793E4A1A992AA40055930C /* CollectionFooterView.swift in Sources */,
 				F107F9731A05CCA000E3801C /* TableViewController.swift in Sources */,
 				F136CA901A2BAAC20071EA51 /* ColorConstants.swift in Sources */,
 				F136CA8B1A2B987B0071EA51 /* CollectionHeaderView.swift in Sources */,

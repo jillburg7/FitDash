@@ -71,7 +71,6 @@ class BaseViewController: UIViewController {
 		self.dates = self.tupleData.0
 		self.values = self.tupleData.1
 		self.numberOfPoints = values.count
-		println("numberOfPoints is currently @ \(numberOfPoints)")
 		//update the refresh time
 		self.dataRefreshLabel.text = "Updated: \(df.stringFromDate(self.now))"
 	}

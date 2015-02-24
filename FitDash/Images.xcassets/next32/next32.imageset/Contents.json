@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "back-32.png"
+      "filename" : "next32.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "back-32@2x.png"
+      "filename" : "next32@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "back-32@3x.png"
+      "filename" : "next32@3x.png"
     }
   ],
   "info" : {

@@ -11,10 +11,12 @@ import UIKit
 class BarChartViewController: BaseViewController, JBBarChartViewDataSource, JBBarChartViewDelegate {
 	
 	@IBOutlet var chartTitle: UILabel!
+	@IBOutlet weak var source: UILabel!
 	@IBOutlet var minDate: UILabel!
 	@IBOutlet var maxDate: UILabel!
 	@IBOutlet var minValue: UILabel!
 	@IBOutlet var maxValue: UILabel!
+	var selectedValue = UILabel()
 	
 	@IBOutlet var barChart: JBBarChartView!
 	var footer: BarChartFooterView?
@@ -33,6 +35,7 @@ class BarChartViewController: BaseViewController, JBBarChartViewDataSource, JBBa
 		super.viewDidLoad()
 		self.chartTitle.textAlignment = .Center
 		self.chartTitle.text = dataTitle
+		self.source.text = "Source: com.Apple.Health..."
 		
 		self.barChart.dataSource = self
 		self.barChart.delegate = self
@@ -59,7 +62,8 @@ class BarChartViewController: BaseViewController, JBBarChartViewDataSource, JBBa
 		
 		self.barChart.footerView = footer!
 		self.view.addSubview(self.barChart)
-//		updateFooterTextLabels(footer!)
+		updateFooterTextLabels(footer!)
+		displayStatistics()
 		self.barChart.reloadData()
 	}
 	
@@ -67,12 +71,27 @@ class BarChartViewController: BaseViewController, JBBarChartViewDataSource, JBBa
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		self.barChart.reloadData()
+		selectedValue.contentMode = .ScaleAspectFill
+		selectedValue.frame = CGRect(x: 0, y: 130, width: 100, height: 20)
+		selectedValue.text = ""
+		self.view.addSubview(selectedValue)
 	}
 	
 	
 	func updateFooterTextLabels(footer: BarChartFooterView) {
-		footer.leftLabel.text = "\(df.stringFromDate(tupleData.0.first!))"
-		footer.rightLabel.text = "\(df.stringFromDate(tupleData.0.last!))"
+		if !dates.isEmpty {
+			footer.leftLabel.text = "\(df.stringFromDate(dates.first!))"
+			footer.rightLabel.text = "\(df.stringFromDate(dates.last!))"
+		}
+	}
+	
+	func displayStatistics() {
+		if !values.isEmpty {
+			self.minValue.text = "Min: \(barChart.minimumValue)"
+			self.maxValue.text = "Max: \(barChart.maximumValue)"
+//			self.minDate.text = "Date: \(barChart.m)"
+//			self.maxDate.text = "Date: \()"
+		}
 	}
 	
 	
@@ -97,27 +116,21 @@ class BarChartViewController: BaseViewController, JBBarChartViewDataSource, JBBa
 	
 	//MARK: JBBarChartView methods
 	
+	var selection: CGPoint?
+	
 	// a bar is selected (user touched)
 	func barChartView(barChartView: JBBarChartView!, didSelectBarAtIndex index: UInt) {
 		var value = self.values[Int(index)]
-		var date = self.dates[Int(index)]
-//		self.minValue.text = "Value: \(value)"
 		var valueString = String(format:"%.2f", value)
-		self.minValue.text = "Value: \(valueString)"
-		self.minDate.text = ""
-		self.maxDate.text = ""
-		df.dateStyle = .ShortStyle
-		df.timeStyle = .ShortStyle
-		self.maxValue.text = "Date: \(df.stringFromDate(date))"
+		self.selectedValue.text = "\(valueString)"
+		
+		if selection != nil {
+			self.selectedValue.frame = CGRect(x: selection!.x, y: CGFloat(130), width: CGFloat(100), height: CGFloat(20))
+		}
 	}
 	
 	//touchPoint is where the user touched on the bar that was selected.
 	func barChartView(barChartView: JBBarChartView!, didSelectBarAtIndex index: UInt, touchPoint: CGPoint) {
-//		println("user touchPoint: (\(touchPoint.x), \(touchPoint.y))")
+		selection = touchPoint
 	}
-	
-	func didDeselectBarChartView(barChartView: JBBarChartView!) {
-		
-	}
-	
 }

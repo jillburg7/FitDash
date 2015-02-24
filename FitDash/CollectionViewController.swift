@@ -32,6 +32,9 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	var activeCal = ([NSDate](), [Double]())
 	var dietaryCal = ([NSDate](), [Double]())
 	
+	var df = NSDateFormatter()
+	var lastRefreshDateTime: String?
+	
 	// MARK: - Overrides
 	
 	override func viewDidLoad() {
@@ -53,6 +56,8 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	
 	// initializes model data depending on the string was passed in denoting the class to use for function calls
 	func setup(objType: String) {
+		df.dateStyle = .ShortStyle
+		df.timeStyle = .MediumStyle
 		var components: (NSDateComponents, NSDate)
 		if objType == "day" {
 			timePeriod = "hourly"
@@ -72,6 +77,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 		updateActiveCalories()
 		updateDietaryCalories()
 		updateSleep()
+		lastRefreshDateTime = "Data last refreshed @ \(df.stringFromDate(NSDate()))"
 	}
 	
 	private func setQueryDateComponents(intervalHour:Int, intervalDay:Int, anchorHour:Int) -> (NSDateComponents, NSDate) {
@@ -141,7 +147,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	}
 	
 	
-	// MARK: - Query Setup & breakdown
+	// MARK: - Query Setup & completion logic (specific to data type)
 	
 	func updateStepQuery() {
 		let quantityType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
@@ -301,6 +307,8 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 		})
 	}
 	
+	// MARK: Utility Functions
+	
 	func durationsBySecond(seconds s: Double) -> (hours:Int,minutes:Int,seconds:Double) {
 		return (Int((s % (24 * 3600)) / 3600), Int(s % 3600 / 60), s % 60)
 	}
@@ -310,7 +318,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	}
 	
 	
-	// MARK: UICollectionViewDataSource
+	// MARK: - UICollectionViewDataSource
 	
 	// Return the number of sections
 	override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -340,12 +348,16 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	
 	
 	override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-		//1
 		switch kind {
 		case UICollectionElementKindSectionHeader:
 			let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "CollectionHeaderView", forIndexPath: indexPath) as CollectionHeaderView
-			headerView.currentDate.text = "\(endDate)"
+			df.timeStyle = .NoStyle
+			headerView.headerLabel.text = "\(df.stringFromDate(endDate))"
 			return headerView
+		case UICollectionElementKindSectionFooter:
+			let footerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "CollectionFooterView", forIndexPath: indexPath) as CollectionFooterView
+			footerView.footerLabel.text = lastRefreshDateTime
+			return footerView
 		default:
 			assert(false, "Unexpected element kind")
 		}
@@ -368,6 +380,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	
 	/*
 	// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+	
 	override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
 	return false
 	}
@@ -390,7 +403,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	}
 	
 	func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-		return UIEdgeInsets(top: 10.0, left: 20.0, bottom: 30.0, right: 20.0)
+		return UIEdgeInsets(top: 10.0, left: 20.0, bottom: 10.0, right: 20.0)
 	}
 	
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {

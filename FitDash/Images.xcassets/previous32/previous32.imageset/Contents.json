@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "CellView.png"
+      "filename" : "previous32.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "CellView@2x.png"
+      "filename" : "previous32@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "CellView@3x.png"
+      "filename" : "previous32@3x.png"
     }
   ],
   "info" : {

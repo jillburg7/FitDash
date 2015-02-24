@@ -18,6 +18,6 @@ class CollectionHeaderView: UICollectionReusableView {
 		// TODO: Next button press action
 		println("Pressed next")
 	}
-	@IBOutlet weak var currentDate: UILabel!
+	@IBOutlet weak var headerLabel: UILabel!
 	
 }
