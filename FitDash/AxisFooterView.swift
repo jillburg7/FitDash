@@ -18,8 +18,18 @@ class AxisFooterView: UIView {
 	var _topSeparatorView: UIView!
 	var leftLabel: UILabel!
 	var rightLabel: UILabel!
+	var count = 0
 	
-	var sectionCount = 5
+	var sectionCount: Int {
+		get {
+			return count
+		}
+		set(sections) {
+			count = sections
+			self.setNeedsDisplay()
+		}
+	}
+	
 	var separatorColor = UIColor.blackColor()
 	
 	override init(frame aRect: CGRect) {
@@ -106,11 +116,6 @@ class AxisFooterView: UIView {
 		leftLabel.frame = CGRectMake(xOffset, yOffset, width, self.bounds.size.height)
 		rightLabel.frame = CGRectMake(CGRectGetMaxX(leftLabel.frame), yOffset, width, self.bounds.size.height)
 
-	}
-	
-	func setSectionCount(sections: Int) {
-		sectionCount = sections
-		self.setNeedsDisplay()
 	}
 	
 	func setFooterSeparatorColor(footerSeparatorColor: UIColor) {

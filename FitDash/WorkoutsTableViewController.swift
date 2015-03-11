@@ -53,7 +53,7 @@ public class WorkoutsTableViewController: UITableViewController {
 			}
 			
 			//Keep workouts and refresh tableview in main thread
-			self.workouts = results as [HKWorkout]
+			self.workouts = results as! [HKWorkout]
 			dispatch_async(dispatch_get_main_queue(), {
 				() -> Void in
 				self.tableView.reloadData()
@@ -76,7 +76,7 @@ public class WorkoutsTableViewController: UITableViewController {
 	}
 	
 	public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier("workoutcellid", forIndexPath: indexPath) as UITableViewCell
+		let cell = tableView.dequeueReusableCellWithIdentifier("workoutcellid", forIndexPath: indexPath) as! UITableViewCell
 		
 		// 1. Get workout for the row. Cell text: Workout Date
 		let workout  = workouts[indexPath.row]

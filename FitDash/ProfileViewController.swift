@@ -133,7 +133,7 @@ class ProfileViewController: UITableViewController {
 		// 3. Show the calculated BMI
 		var bmiString = kUnknownString
 		if bmi != nil {
-			bmiLabel.text =  NSString(format: "%.02f", bmi!)
+			bmiLabel.text =  String(format: "%.02f", bmi!)
 		}
 	}
 	

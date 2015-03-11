@@ -98,33 +98,33 @@ class TableViewController: UITableViewController { //, UITableViewDelegate, UITa
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
 		if segue.identifier != nil {
 			if segue.identifier == "hourlyCollectionView" {
-				let collectionview = segue.destinationViewController as CollectionViewController
+				let collectionview = segue.destinationViewController as! CollectionViewController
 				collectionview.title = "Today's Hourly Statistics"
 				collectionview.healthManager = healthManager
 				collectionview.setup("day")
 			
 			} else if segue.identifier == "weeklyCollectionView" {
-				let collectionview = segue.destinationViewController as CollectionViewController
+				let collectionview = segue.destinationViewController as! CollectionViewController
 				collectionview.title = "This Week's Daily Statistics"
 				collectionview.healthManager = healthManager
 				collectionview.setup("week")
 			} else if segue.identifier == "profileSegue" {
-				let workoutViewController = segue.destinationViewController as ProfileViewController
+				let workoutViewController = segue.destinationViewController as! ProfileViewController
 				workoutViewController.healthManager = healthManager
 			} else if segue.identifier == "workoutSegue" {
-				let workoutViewController = segue.destinationViewController as WorkoutsTableViewController
+				let workoutViewController = segue.destinationViewController as! WorkoutsTableViewController
 				workoutViewController.healthManager = healthManager
 			} else if segue.identifier == "statisticsSegue" {
 				
 			} else {
-				var chartDetails = segue.destinationViewController as BaseViewController
+				var chartDetails = segue.destinationViewController as! BaseViewController
 				
 				if segue.identifier == "bemGraphView" {
 					println("TODO: BEMSimpleGraphViewController")
-					chartDetails = segue.destinationViewController as BEMSimpleGraphViewController
+					chartDetails = segue.destinationViewController as! BEMSimpleGraphViewController
 				} else if segue.identifier == "jawboneLineChart" {
 					println("TODO: JawboneChartViewController")
-					chartDetails = segue.destinationViewController as JawboneChartViewController
+					chartDetails = segue.destinationViewController as! JawboneChartViewController
 				}
 				dataDescription = dailyOverview.name
 				chartDetails.tupleData = ([NSDate(), NSDate()], [0.0, 0.0])

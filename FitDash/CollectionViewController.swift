@@ -71,7 +71,8 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 		queryParams.interval = components.0
 		queryParams.anchorDate = components.1
 		queryParams.predicate =  HKQuery.predicateForSamplesWithStartDate(queryParams.startDate, endDate: endDate, options: .None)
-		updateStepQuery()
+		
+		updateSteps()
 		updateDistance()
 		updateFlightsClimbed()
 		updateActiveCalories()
@@ -98,58 +99,42 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 		// Get the new view controller using [segue destinationViewController].
 		// Pass the selected object to the new view controller.
 		if segue.identifier == "barChartView" {
-			var chartDetails = segue.destinationViewController as BarChartViewController
-			chartDetails.tupleData = ([],[])
+			var destination = segue.destinationViewController as! BarChartViewController
+			destination.tupleData = ([],[])
 			
+			var str = ""
 			if timePeriod == "weekly" {
-				if selected == "Steps" {
-					chartDetails.tupleData = self.steps
-					chartDetails.dataTitle = "Week In Steps"
-				} else if selected == "Distance" {
-					chartDetails.tupleData = self.distance
-					chartDetails.dataTitle = "Week in Distance"
-				} else if selected == "Flights Climbed" {
-					chartDetails.tupleData = self.flightsClimbed
-					chartDetails.dataTitle = "Week in Flights Climbed"
-				} else if selected == "Sleep" {
-					chartDetails.tupleData = self.sleep
-					chartDetails.dataTitle = "Week in Sleep"
-				} else if selected == "Active Calories" {
-					chartDetails.tupleData = self.activeCal
-					chartDetails.dataTitle = "Week in Active Calories"
-				} else if selected == "Dietary Calories" {
-					chartDetails.tupleData = self.dietaryCal
-					chartDetails.dataTitle = "Week in Dietary Calories"
-				}
-			} else if timePeriod == "hourly" {
-				if selected == "Steps" {
-					chartDetails.tupleData = self.steps
-					chartDetails.dataTitle = "Day In Steps"
-				} else if selected == "Distance" {
-					chartDetails.tupleData = self.distance
-					chartDetails.dataTitle = "Day in Distance"
-				} else if selected == "Flights Climbed" {
-					chartDetails.tupleData = self.flightsClimbed
-					chartDetails.dataTitle = "Day in Flights Climbed"
-				} else if selected == "Sleep" {
-					chartDetails.tupleData = self.sleep
-					chartDetails.dataTitle = "Day in Sleep"
-				} else if selected == "Active Calories" {
-					chartDetails.tupleData = self.activeCal
-					chartDetails.dataTitle = "Day in Active Calories"
-				} else if selected == "Dietary Calories" {
-					chartDetails.tupleData = self.dietaryCal
-					chartDetails.dataTitle = "Day in Dietary Calories"
-				}
+				str = "Week in " + selected
+			} else {
+				str = "Day in " + selected
 			}
-			chartDetails.title = selected
+			destination.dataTitle = str
+			
+			switch selected {
+			case "Steps":
+				destination.tupleData = self.steps
+			case "Distance":
+				destination.tupleData = self.distance
+			case "Flights Climbed":
+				destination.tupleData = self.flightsClimbed
+			case "Sleep":
+				destination.tupleData = self.sleep
+			case "Active Calories":
+				destination.tupleData = self.activeCal
+			case "Dietary Calories":
+				destination.tupleData = self.dietaryCal
+			default:
+				destination.tupleData = self.steps
+			}
+			
+			destination.title = selected
 		}
 	}
 	
 	
 	// MARK: - Query Setup & completion logic (specific to data type)
 	
-	func updateStepQuery() {
+	func updateSteps() {
 		let quantityType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
 		
 		self.healthManager?.querySamplesWithCumulativeSum(quantityType, startDate: self.queryParams.startDate, predicate: self.queryParams.predicate, anchorDate: self.queryParams.anchorDate, interval: self.queryParams.interval, completion: {
@@ -162,7 +147,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 			
 			// Keep data and update in main thread
 			dispatch_async(dispatch_get_main_queue(), {
-				() -> Void in
+				() -> () in
 				var statisticObj = results as? HKStatistics
 				self.steps.0.append(statisticObj!.startDate)
 				if let quantity = statisticObj!.sumQuantity() {
@@ -331,10 +316,10 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	}
 	
 	override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-		let cell = self.collectionView!.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as CollectionViewCell
+		let cell = self.collectionView!.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
 		
 		// Configure the cell
-		cell.setBaseColor(colors[indexPath.item])
+		cell.setBase(colors[indexPath.item])
 		cell.label.text = self.collectionItems[indexPath.item]
 		
 		return cell
@@ -350,12 +335,12 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
 		switch kind {
 		case UICollectionElementKindSectionHeader:
-			let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "CollectionHeaderView", forIndexPath: indexPath) as CollectionHeaderView
+			let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "CollectionHeaderView", forIndexPath: indexPath) as! CollectionHeaderView
 			df.timeStyle = .NoStyle
 			headerView.headerLabel.text = "\(df.stringFromDate(endDate))"
 			return headerView
 		case UICollectionElementKindSectionFooter:
-			let footerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "CollectionFooterView", forIndexPath: indexPath) as CollectionFooterView
+			let footerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "CollectionFooterView", forIndexPath: indexPath) as! CollectionFooterView
 			footerView.footerLabel.text = lastRefreshDateTime
 			return footerView
 		default:
@@ -397,12 +382,12 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 	
 	// MARK: UICollectionViewDelegateFlowLayout
  
-	func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
+	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
 		let square = (view.frame.size.width / 2) - 30
 		return CGSize(width: square, height: square)
 	}
 	
-	func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
 		return UIEdgeInsets(top: 10.0, left: 20.0, bottom: 10.0, right: 20.0)
 	}
 	

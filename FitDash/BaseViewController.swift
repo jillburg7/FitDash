@@ -135,7 +135,7 @@ class BaseViewController: UIViewController {
 					println("There was an error running the query: \(error)")
 				}
 				
-				dispatch_async(dispatch_get_main_queue()) {
+				dispatch_async(dispatch_get_main_queue()) { () in
 					if let quantity = results.sumQuantity() {
 						let unit = HKUnit.countUnit()
 						self.steps = quantity.doubleValueForUnit(unit)

@@ -24,7 +24,7 @@ class CollectionViewCell: UICollectionViewCell {
 		}
 	}
 	
-	func setBaseColor(color: UIColor) {
+	func setBase(color: UIColor) {
 		baseColor = color
 		self.backgroundColor = color
 	}

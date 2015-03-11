@@ -39,7 +39,7 @@ class BEMSimpleGraphViewController: BaseViewController, BEMSimpleLineGraphDataSo
 		//		self.graphView.widthLine = 3.0
 		self.graphView.enableTouchReport = true
 		self.graphView.enablePopUpReport = true
-		self.graphView.enableReferenceAxisLines = true
+//		self.graphView.enableReferenceAxisLines = true
 		self.graphView.enableReferenceAxisFrame = true
 		self.graphView.reloadGraph()
 	}

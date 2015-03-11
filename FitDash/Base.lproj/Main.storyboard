@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6724" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7HK-ro-L0E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7519.1" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7HK-ro-L0E">
     <dependencies>
         <deployment version="2048" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6711"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7513.1"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -81,7 +82,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="d1m-Dc-Oau" customClass="BEMSimpleLineGraphView">
-                                <rect key="frame" x="0.0" y="279" width="600" height="301"/>
+                                <rect key="frame" x="0.0" y="280" width="600" height="300"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="0.12941176470588237" green="0.18431372549019609" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
@@ -650,8 +651,8 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DataSource: com.Apple.Health" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2bL-fY-VKg">
-                                <rect key="frame" x="408" y="584" width="192" height="16"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DataSource: com.Apple.Health" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2bL-fY-VKg">
+                                <rect key="frame" x="414" y="584" width="186" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="2Up-FS-Mq0"/>
                                 </constraints>
@@ -720,13 +721,35 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="num" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xnt-ab-l1r">
+                                <rect key="frame" x="0.0" y="130" width="32" height="20"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" none="YES" staticText="YES" updatesFrequently="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="vzq-Dw-iBc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0BW-Hx-aTu">
+                                <rect key="frame" x="0.0" y="389" width="33" height="20"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" none="YES" staticText="YES" updatesFrequently="YES"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="xnt-ab-l1r" firstAttribute="top" secondItem="ZuY-ob-sVp" secondAttribute="bottom" constant="18" id="0Cy-RT-ER4"/>
                             <constraint firstItem="Bys-bi-URT" firstAttribute="baseline" secondItem="I1M-jj-TJ6" secondAttribute="baseline" constant="-1" id="4Lu-Ld-IOG"/>
                             <constraint firstItem="Zku-uL-rkk" firstAttribute="leading" secondItem="sQE-x1-UbG" secondAttribute="trailing" constant="196" id="4Vh-fX-6EC"/>
                             <constraint firstItem="Bys-bi-URT" firstAttribute="firstBaseline" secondItem="I1M-jj-TJ6" secondAttribute="firstBaseline" id="5XP-7s-Suc"/>
-                            <constraint firstAttribute="centerX" secondItem="Zku-uL-rkk" secondAttribute="centerX" constant="-34.5" id="6RH-Ze-C1B"/>
+                            <constraint firstAttribute="centerX" secondItem="Zku-uL-rkk" secondAttribute="leading" id="6RH-Ze-C1B"/>
                             <constraint firstItem="Zku-uL-rkk" firstAttribute="firstBaseline" secondItem="sQE-x1-UbG" secondAttribute="firstBaseline" id="7TP-QU-HdN"/>
                             <constraint firstItem="edM-wY-4Ao" firstAttribute="top" secondItem="sQE-x1-UbG" secondAttribute="bottom" constant="39" id="7lC-2y-ACT"/>
                             <constraint firstItem="I1M-jj-TJ6" firstAttribute="baseline" secondItem="Bys-bi-URT" secondAttribute="baseline" id="8JH-0j-EKJ"/>
@@ -738,6 +761,7 @@
                             <constraint firstItem="Zku-uL-rkk" firstAttribute="firstBaseline" secondItem="sQE-x1-UbG" secondAttribute="firstBaseline" id="J3k-ei-xx9"/>
                             <constraint firstItem="XxT-jZ-Qfo" firstAttribute="top" secondItem="At7-fD-tAF" secondAttribute="bottom" id="KkZ-ti-c0m"/>
                             <constraint firstItem="Zku-uL-rkk" firstAttribute="baseline" secondItem="sQE-x1-UbG" secondAttribute="baseline" id="Kp5-1C-MQW"/>
+                            <constraint firstItem="edM-wY-4Ao" firstAttribute="top" secondItem="0BW-Hx-aTu" secondAttribute="bottom" constant="191" id="O0n-Rh-KnF"/>
                             <constraint firstItem="pOq-Nm-LI2" firstAttribute="trailing" secondItem="XxT-jZ-Qfo" secondAttribute="trailing" id="Pmh-Fh-SNb"/>
                             <constraint firstItem="pOq-Nm-LI2" firstAttribute="top" secondItem="ZuY-ob-sVp" secondAttribute="bottom" constant="38" id="R2j-zM-KkW"/>
                             <constraint firstAttribute="trailing" secondItem="Bys-bi-URT" secondAttribute="trailing" constant="200" id="Tgp-nf-p5A"/>
@@ -747,7 +771,7 @@
                             <constraint firstAttribute="trailing" secondItem="Zku-uL-rkk" secondAttribute="trailing" constant="231" id="WDh-de-E2W"/>
                             <constraint firstItem="Bys-bi-URT" firstAttribute="firstBaseline" secondItem="I1M-jj-TJ6" secondAttribute="firstBaseline" id="WwM-ab-Law"/>
                             <constraint firstItem="ZuY-ob-sVp" firstAttribute="trailing" secondItem="XxT-jZ-Qfo" secondAttribute="trailing" id="Y00-1c-QXI"/>
-                            <constraint firstAttribute="centerX" secondItem="Bys-bi-URT" secondAttribute="centerX" constant="-32" id="Yo3-qH-i39"/>
+                            <constraint firstAttribute="centerX" secondItem="Bys-bi-URT" secondAttribute="leading" id="Yo3-qH-i39"/>
                             <constraint firstItem="I1M-jj-TJ6" firstAttribute="leading" secondItem="0H3-HD-PBv" secondAttribute="leading" constant="30" id="bR7-eK-z5Y"/>
                             <constraint firstItem="2bL-fY-VKg" firstAttribute="bottom" secondItem="edM-wY-4Ao" secondAttribute="top" id="bRk-n5-tam"/>
                             <constraint firstAttribute="trailing" secondItem="pOq-Nm-LI2" secondAttribute="trailing" id="cop-MJ-nyo"/>
@@ -756,11 +780,12 @@
                             <constraint firstItem="pOq-Nm-LI2" firstAttribute="top" secondItem="XxT-jZ-Qfo" secondAttribute="bottom" constant="70" id="hFH-8r-OPe"/>
                             <constraint firstItem="pOq-Nm-LI2" firstAttribute="leading" secondItem="0H3-HD-PBv" secondAttribute="leading" id="i0I-rf-qhk"/>
                             <constraint firstAttribute="trailing" secondItem="Bys-bi-URT" secondAttribute="trailing" constant="200" id="k6s-zn-eqY"/>
-                            <constraint firstItem="2bL-fY-VKg" firstAttribute="leading" secondItem="XxT-jZ-Qfo" secondAttribute="leading" constant="9" id="lTI-N7-qfq"/>
+                            <constraint firstItem="xnt-ab-l1r" firstAttribute="leading" secondItem="ZuY-ob-sVp" secondAttribute="leading" id="klY-Iq-MQQ"/>
                             <constraint firstItem="sQE-x1-UbG" firstAttribute="top" secondItem="I1M-jj-TJ6" secondAttribute="bottom" constant="20" id="lZs-Gt-VFG"/>
                             <constraint firstItem="Zku-uL-rkk" firstAttribute="leading" secondItem="Bys-bi-URT" secondAttribute="leading" id="n61-fX-QJb"/>
                             <constraint firstItem="Bys-bi-URT" firstAttribute="trailing" secondItem="Zku-uL-rkk" secondAttribute="trailing" id="oMx-bP-Sn0"/>
                             <constraint firstItem="I1M-jj-TJ6" firstAttribute="leading" secondItem="0H3-HD-PBv" secondAttribute="leadingMargin" constant="14" id="oeO-r3-VOP"/>
+                            <constraint firstItem="0BW-Hx-aTu" firstAttribute="leading" secondItem="pOq-Nm-LI2" secondAttribute="leading" id="pIk-Iy-tFP"/>
                             <constraint firstItem="sQE-x1-UbG" firstAttribute="top" secondItem="I1M-jj-TJ6" secondAttribute="bottom" constant="20" id="tBp-wS-FyR"/>
                             <constraint firstItem="ZuY-ob-sVp" firstAttribute="leading" secondItem="pOq-Nm-LI2" secondAttribute="leading" id="w0R-Yx-Ng1"/>
                             <constraint firstItem="Zku-uL-rkk" firstAttribute="leading" secondItem="sQE-x1-UbG" secondAttribute="trailing" constant="226" id="yPz-0D-Mr6"/>
@@ -810,6 +835,8 @@
                         <outlet property="maxValue" destination="sQE-x1-UbG" id="wy6-mo-6GC"/>
                         <outlet property="minDate" destination="Bys-bi-URT" id="53u-57-nrp"/>
                         <outlet property="minValue" destination="I1M-jj-TJ6" id="nIU-rk-Uox"/>
+                        <outlet property="selectedDateValue" destination="0BW-Hx-aTu" id="krM-uP-vN5"/>
+                        <outlet property="selectedValue" destination="xnt-ab-l1r" id="tIM-se-aGv"/>
                         <outlet property="source" destination="2bL-fY-VKg" id="pYV-8Q-70b"/>
                     </connections>
                 </viewController>

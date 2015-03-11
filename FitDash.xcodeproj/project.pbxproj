@@ -24,10 +24,10 @@
 		F182014B19EAEEB500E5ACB4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F182014A19EAEEB500E5ACB4 /* Images.xcassets */; };
 		F182014E19EAEEB500E5ACB4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F182014C19EAEEB500E5ACB4 /* LaunchScreen.xib */; };
 		F182015A19EAEEB500E5ACB4 /* FitDashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F182015919EAEEB500E5ACB4 /* FitDashTests.swift */; };
-		F182016519EAEF3C00E5ACB4 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F182016419EAEF3C00E5ACB4 /* HealthKit.framework */; };
 		F1A19A661A3FDF8500237EBC /* StatisticDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A19A651A3FDF8500237EBC /* StatisticDetailsViewController.swift */; };
 		F1C213801A0C0A0C0050E00C /* BarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C2137F1A0C0A0C0050E00C /* BarChartViewController.swift */; };
 		F1CCA3411A6B6B2C001A4866 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CCA3401A6B6B2C001A4866 /* HealthManager.swift */; };
+		F1DC1B771AAE8D3F003F11B3 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1DC1B761AAE8D3F003F11B3 /* HealthKit.framework */; };
 		F1DD11801A058EC500602C53 /* JawboneChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DD117F1A058EC500602C53 /* JawboneChartViewController.swift */; };
 		F1E8339A1A6D797000D54287 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E833991A6D797000D54287 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
@@ -68,10 +68,10 @@
 		F182015819EAEEB500E5ACB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F182015919EAEEB500E5ACB4 /* FitDashTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitDashTests.swift; sourceTree = "<group>"; };
 		F182016319EAEF3C00E5ACB4 /* FitDash.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FitDash.entitlements; sourceTree = "<group>"; };
-		F182016419EAEF3C00E5ACB4 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		F1A19A651A3FDF8500237EBC /* StatisticDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticDetailsViewController.swift; sourceTree = "<group>"; };
 		F1C2137F1A0C0A0C0050E00C /* BarChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartViewController.swift; sourceTree = "<group>"; };
 		F1CCA3401A6B6B2C001A4866 /* HealthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthManager.swift; sourceTree = "<group>"; };
+		F1DC1B761AAE8D3F003F11B3 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		F1DD117F1A058EC500602C53 /* JawboneChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JawboneChartViewController.swift; sourceTree = "<group>"; };
 		F1E833991A6D797000D54287 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -81,8 +81,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F182016519EAEF3C00E5ACB4 /* HealthKit.framework in Frameworks */,
 				481C547B8561380FE3795EA1 /* libPods-FitDash.a in Frameworks */,
+				F1DC1B771AAE8D3F003F11B3 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +108,7 @@
 		3385C8B8D05D81FA7D2DBC61 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F1DC1B761AAE8D3F003F11B3 /* HealthKit.framework */,
 				959AE73FC8B7B5D7F28B4BE7 /* libPods-FitDash.a */,
 			);
 			name = Frameworks;
@@ -187,7 +188,6 @@
 		F182013519EAEEB500E5ACB4 = {
 			isa = PBXGroup;
 			children = (
-				F182016419EAEF3C00E5ACB4 /* HealthKit.framework */,
 				F182014019EAEEB500E5ACB4 /* FitDash */,
 				F182015619EAEEB500E5ACB4 /* FitDashTests */,
 				3385C8B8D05D81FA7D2DBC61 /* Frameworks */,
@@ -532,7 +532,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = FitDash/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -550,7 +550,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = FitDash/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
