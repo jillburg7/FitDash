@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7519.1" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7HK-ro-L0E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7519.1" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7HK-ro-L0E">
     <dependencies>
         <deployment version="2048" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7513.1"/>
@@ -835,7 +835,7 @@
                         <outlet property="maxValue" destination="sQE-x1-UbG" id="wy6-mo-6GC"/>
                         <outlet property="minDate" destination="Bys-bi-URT" id="53u-57-nrp"/>
                         <outlet property="minValue" destination="I1M-jj-TJ6" id="nIU-rk-Uox"/>
-                        <outlet property="selectedDateValue" destination="0BW-Hx-aTu" id="krM-uP-vN5"/>
+                        <outlet property="selectedDateForValue" destination="0BW-Hx-aTu" id="5xd-l9-AjE"/>
                         <outlet property="selectedValue" destination="xnt-ab-l1r" id="tIM-se-aGv"/>
                         <outlet property="source" destination="2bL-fY-VKg" id="pYV-8Q-70b"/>
                     </connections>

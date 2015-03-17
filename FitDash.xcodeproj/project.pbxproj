@@ -152,16 +152,16 @@
 			name = App;
 			sourceTree = "<group>";
 		};
-		F15897251A48845700E40C18 /* Views */ = {
+		F15897251A48845700E40C18 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				F136CA891A2B97FE0071EA51 /* Chart Views */,
 				F136CA8C1A2B98820071EA51 /* CollectionView */,
 			);
-			name = Views;
+			name = View;
 			sourceTree = "<group>";
 		};
-		F15897261A48846C00E40C18 /* View Controllers */ = {
+		F15897261A48846C00E40C18 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				F15897271A48849700E40C18 /* Chart View Controllers */,
@@ -171,7 +171,7 @@
 				F107F9721A05CCA000E3801C /* TableViewController.swift */,
 				F12190BD1A6CA9870080E90A /* WorkoutsTableViewController.swift */,
 			);
-			name = "View Controllers";
+			name = Controller;
 			sourceTree = "<group>";
 		};
 		F15897271A48849700E40C18 /* Chart View Controllers */ = {
@@ -214,8 +214,8 @@
 				F182014719EAEEB500E5ACB4 /* Main.storyboard */,
 				F1473F4B1A33FC5E00F1E6E1 /* App */,
 				F1473F4A1A33FC4D00F1E6E1 /* Constants */,
-				F15897261A48846C00E40C18 /* View Controllers */,
-				F15897251A48845700E40C18 /* Views */,
+				F15897261A48846C00E40C18 /* Controller */,
+				F15897251A48845700E40C18 /* View */,
 			);
 			path = FitDash;
 			sourceTree = "<group>";
